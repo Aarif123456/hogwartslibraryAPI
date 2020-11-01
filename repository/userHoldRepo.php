@@ -6,8 +6,11 @@ require_once 'statusConstants.php';
 
 function getUserHoldsResults($userID, $conn){
     // get query
-    $holdStmt = $conn->prepare("SELECT * FROM `holds` NATURAL JOIN `books` WHERE holderID = ? AND (holds.status=? OR holds.status=?)");
-    $holdStmt->bind_param("iii", $userID, HOLD_ACTIVE, HOLD_IN_QUEUE);
+    $query = "SELECT * FROM `holds` NATURAL JOIN `books` WHERE ". 
+    		 "holderID = ? AND (holds.status=". HOLD_ACTIVE.
+    	" OR holds.status=".HOLD_IN_QUEUE .")";
+    $holdStmt = $conn->prepare($query);
+    $holdStmt->bind_param("i", $userID);
     // if no query return back null
     if(empty($holdStmt)) return null;
     // otherwise return back result from query

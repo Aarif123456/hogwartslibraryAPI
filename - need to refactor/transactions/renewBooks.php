@@ -12,7 +12,7 @@ if (!session_id()) {
 require_once 'config/apiReturn.php';
 require_once 'config/constants.php';
 require_once 'config/authenticate.php';
-require_once 'verifyBookAvailability.php';
+require_once 'repository/verifyUserEligibility.php';
 require_once 'repository/database.php';
 
 /* Connect to database */
@@ -40,7 +40,7 @@ if (checkSessionInfo() && validateUser($_SESSION['userID']))
     //renewal code
     if(isset($_POST['bookBarcode']) && !(empty($_POST['bookBarcode']))) {
       $bookBarcode = $_POST['bookBarcode'];
-        checkUser($renewerID,$conn);
+      if(checkUserBlacklisted($renewerID, $conn)) exit(USER_BLACKLISTED);
         checkBookReservation($bookBarcode,$conn);
       $renewedTime = checkBorrower($bookBarcode, $renewerID,$conn); //check if user is allowed to hold 
       //purgeHoldTable($conn); //clean up hold table

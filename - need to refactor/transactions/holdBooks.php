@@ -12,7 +12,7 @@ if (!session_id()) {
 require_once 'config/apiReturn.php';
 require_once 'config/constants.php';
 require_once 'config/authenticate.php';
-require_once 'verifyBookAvailability.php';
+require_once 'repository/verifyUserEligibility.php';
 require_once 'repository/database.php';
 
 /* Connect to database */
@@ -43,7 +43,7 @@ if (checkSessionInfo() && validateUser($_SESSION['userID']))
     }
     //echo "$holderID";
     if(isValidPostVar('bookISBN')) {
-        checkUser($holderID,$conn); //check if user is allowed to hold 
+        if(checkUserBlacklisted($holderID,$conn)) exit(USER_BLACKLISTED);
         $bookISBN = $_POST['bookISBN'];
         purgeHoldTable($conn); //clean up hold table
         checkHold($bookISBN,$holderID,$conn); //make user does not have a previous hold on it

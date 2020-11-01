@@ -40,11 +40,11 @@ END IF;
 Cases
 
 1) check-out
-- UPDATE books SET remainingCopies = remainingCopies -1 WHERE bookISBN = OLD.bookISBN;
-- UPDATE transactions SET borrowedDate = CURDATE();
-- UPDATE transactions SET dueDate = DATE_ADD(CURDATE(), INTERVAL $NORMAL_LENDING_DAYS DAY); # When normal for express 10 days
+ /* Remove because we will simplify renewal so that we only renew when their are no holds */
+- # UPDATE books SET remainingCopies = remainingCopies -1 WHERE bookISBN = OLD.bookISBN;
 - UPDATE members SET numBooks = numBooks +1 where memberID = NEW.borrowedBy;
 - UPDATE bookItem SET status = 3  WHERE bookBarcode = NEW.bookBarcode;
+/* */
 2)returning
 - UPDATE books SET remainingCopies = remainingCopies +1 WHERE bookISBN = OLD.bookISBN;
 
@@ -118,3 +118,21 @@ UPDATE books SET `holds` = `holds` -1 WHERE bookISBN = OLD.bookISBN AND `holds` 
         UPDATE transactions SET NEW.onHold =1;
     END IF;
 
+
+UPDATE members, bookItem, holds, transactions
+    SET bookItem.status = 3,
+        members.numBooks = 1,
+        holds.status = 12
+        WHERE bookItem.bookBarcode=transactions.bookBarcode AND 
+            members.memberID=transactions.borrowedBy AND 
+            transactions.transactionID=238 AND
+            (bookItem.status=1
+                OR (bookItem.status=2
+                        AND 
+                            ( 
+                                  holderID = transactions.borrowedBy
+                                  AND holds.status = 14
+                                  AND holds.reservedCopy = transactions.bookBarcode
+                            ) 
+                    ) 
+            )

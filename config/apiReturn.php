@@ -37,7 +37,11 @@
     define('HEADMASTER_ADDED', 'Headmaster added');
     define('HEADMASTER_VERIFY_FAIL', 'Invalid password cannot reset user password');
     define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
-    
+    define('USER_BLACKLISTED', "user is blacklisted");
+    define('USER_LIMIT_REACHED',"User has reached their limit. They need to return some books!");
+    define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
+    define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
+
     /* error as functions*/
     /* We HTML entities any data coming back from the user before printing */
     function invalidUserType($userType){
@@ -55,6 +59,12 @@
 
     function userCreated($userID){
         return "Created user with id: $userID";
+    }
+    function successfulCheckout($bookBarcode, $borrowedBy, $librarianID){
+        $bookBarcode = htmlentities($bookBarcode);
+        $borrowedBy = htmlentities($borrowedBy);
+        $librarianID = htmlentities($librarianID);
+        return "Transaction successful : Book with barcode $bookBarcode has been issued to $borrowedBy by the librarianID $librarianID";
     }
     function verifyUserType($userType){
         switch ($userType){
@@ -104,6 +114,5 @@
     function isValidResquestVar($varName){
         return isset($_REQUEST[$varName]) && !(empty($_REQUEST[$varName]));
     }
-
 
 ?>
