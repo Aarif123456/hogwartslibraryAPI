@@ -12,5 +12,4 @@ function queryUsername($username, $conn){
     return getExecutedResult($stmt);
 }
 
-
 ?>

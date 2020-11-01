@@ -1,0 +1,26 @@
+<?php
+	/* VALUES TO KEEP UPDATED */
+	define('CURRENT_TERM', '');
+
+	/* VALUES THAT YOU MIGHT WANT TO CHANGE */
+	define('STUDENT_BOOK_LIMIT', 10);
+	define('PROFESSOR_BOOK_LIMIT', 50);
+	define('NORMAL_LENDING_DAYS', 21);
+	define('EXPRESS_LENDING_DAYS', 10);
+	define('FINE_PER_DAY_OVERDUE', 0.3);
+	define('REFUND_FOR_FOUND_BOOK', 0.85);
+
+	/* DO NOT CHANGE UNLES YOU CHANGE FROM DATABASE */
+	define('BOOK_AVAILABLE', 1);
+	define('BOOK_ON_HOLD', 2);
+	define('BOOK_CHECKED_OUT', 3);
+	define('BOOK_LOST', 4);
+	define('HOLD_ACTIVE', 11);
+	define('HOLD_COMPLETED', 12);
+	define('HOLD_CANCELLED', 13);
+	define('HOLD_IN_QUEUE', 14);
+	define('HOLD_EXPIRED', 15);
+	define('ACCOUNT_ACTIVE', 21);
+	define('ACCOUNT_CLOSED', 22);
+	define('ACCOUNT_BLACKLISTED', 23);
+?>

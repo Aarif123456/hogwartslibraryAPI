@@ -17,7 +17,7 @@ function getUserFines($userID, $listType, $conn){
 function getFineQuery($listType){
     switch ($listType) {
         case "getTransactionWithFines":
-            return "SELECT transactionID,bookName, author,bookBarcode, fine,returnDate,price FROM `transactions` NATURAL JOIN `bookItem` NATURAL JOIN `books` WHERE borrowedBy=? AND fine >0 ORDER BY CASE WHEN returnDate is NULL THEN 0 ELSE 1 END, returnDate DESC";
+            return "SELECT transactionID,bookName,author,bookBarcode,fine,returnDate,price FROM `transactions` NATURAL JOIN `bookItem` NATURAL JOIN `books` WHERE borrowedBy=? AND fine >0 ORDER BY CASE WHEN returnDate is NULL THEN 0 ELSE 1 END, returnDate DESC";
         case "getOutstandingFineOnAccount":
             /* get total fine */
             return "SELECT fines FROM `members` WHERE memberID = ?"; 

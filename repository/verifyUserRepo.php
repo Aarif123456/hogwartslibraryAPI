@@ -24,17 +24,21 @@ function bindUserVerifyQuery($username, $userType, $stmt){
 }
 
 function getQueryForUserType($userType){
+    $stdntVrfyQry = "SELECT userID,fname,lname,password, 'student' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN students ON userID=studentID WHERE userName = ?";
+    $prfsrVrfyQry = "SELECT userID,fname,lname,password,'professor' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN professor ON memberID=professorID WHERE userName = ?";
+    $hdmstrVrfyQry = "SELECT userID,fname,lname,password,'headmaster' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN headmasters ON memberID=headmasterID WHERE userName = ?";
+    $lbrnVrfyQry = "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN librarianAccount ON `userID` = `librarianID` WHERE userName = ?";
     switch ($userType){
         case "user":
-            return "SELECT userID,fname,lname,password, 'student' as userType FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN students ON `userID` = `studentID` WHERE userName = ? UNION  SELECT userID,fname,lname,password,'professor' as userType FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN professor ON memberID=professorID WHERE userName = ? UNION SELECT userID,fname,lname,password,'headmaster' as userType FROM userAccount INNER JOIN members ON `userID` = `memberID`INNER JOIN headmasters ON memberID=headmasterID WHERE userName = ?";
+            return  $stdntVrfyQry. " UNION " . $prfsrVrfyQry . " UNION " . $hdmstrVrfyQry;
         case "student":
-            return "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN students ON `userID` = `studentID` WHERE userName = ?";
+            return $stdntVrfyQry;
         case "professor":
-            return "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN professor ON `userID` = `professorID` WHERE userName = ?";
+            return $prfsrVrfyQry;
         case "headmaster":
-            return "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN headmaster ON `userID` = `headmasterID` WHERE userName = ?";
+            return $hdmstrVrfyQry;
         case "librarian":
-            return "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN librarianAccount ON `userID` = `librarianID` WHERE userName = ?";
+            return $lbrnVrfyQry;
         default:
             return "";  
     }

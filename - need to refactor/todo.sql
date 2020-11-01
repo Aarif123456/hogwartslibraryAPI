@@ -118,13 +118,3 @@ UPDATE books SET `holds` = `holds` -1 WHERE bookISBN = OLD.bookISBN AND `holds` 
         UPDATE transactions SET NEW.onHold =1;
     END IF;
 
-) create php file with constant list
-- SECRET_KEY
-- $NORMAL_LENDING_DAYS=21
-- $EXPRESS_LENDING_DAYS=10
-- $FINE_PER_DAY_OVERDUE=0.3
-- $REFUND_FOR_FOUND_BOOK=0.85 // 85% of book refunded
-
-
-- status meaning
-- 
