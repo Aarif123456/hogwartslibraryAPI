@@ -1,5 +1,7 @@
 <?php
-function getGuestCharts($chartType){
+
+function getGuestCharts($chartType)
+{
     switch ($chartType) {
         case "category":
             return "SELECT category,COUNT(*) as cnt FROM transactions NATURAL JOIN bookItem NATURAL JOIN books GROUP BY category ORDER BY cnt DESC";
@@ -12,6 +14,6 @@ function getGuestCharts($chartType){
         default:
             return "";
     }
-    return "";
+
 }
-?>
+

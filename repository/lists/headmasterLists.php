@@ -1,6 +1,7 @@
 <?php
 
-function headmasterListJSON($listType){
+function headmasterListJSON($listType)
+{
     switch ($listType) {
         case 'loadPotentialLibrarian':
             return 'SELECT memberID, fname, lname FROM members WHERE memberID NOT IN (Select `librarianID` as `memberID` FROM librarianAccount)';
@@ -21,7 +22,6 @@ function headmasterListJSON($listType){
         default:
             return "";
     }
-    return "";
+
 }
 
-?>

@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Content-Type: application/json');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
@@ -20,13 +21,15 @@ require_once 'repository/charts.php';
 $conn = getConnection();
 
 //guest charts
-if(isValidResquestVar('chartType')){
-    $chartType= trim($_REQUEST['chartType']);
+if (isValidRequestVar('chartType')) {
+    $chartType = trim($_REQUEST['chartType']);
     $result = getGuestChartsResults($chartType, $conn);
-    if(empty($result)) exit(INVALID_CHART);
+    if (empty($result)) {
+        exit(INVALID_CHART);
+    }
     echo createQueryJSON($result);
 }
 
 $conn->close();
-?>
+
 

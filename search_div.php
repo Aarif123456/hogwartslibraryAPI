@@ -1,4 +1,5 @@
 <?php
+
 /* Required header */
 header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
@@ -17,16 +18,16 @@ require_once 'repository/searchCatalogueRepo.php';
 /* Connect to database */
 $conn = getConnection();
 
-if (isValidResquestVar('searchType') && isset($_REQUEST['searchWord']))
-{
+if (isValidRequestVar('searchType') && isset($_REQUEST['searchWord'])) {
     $searchType = $_REQUEST['searchType'];
+    if(!validSearchMethod($searchType)) exit(INVALID_SEARCH_METHOD);
     $term = $_REQUEST['searchWord'];
     $result = queryCatalog($searchType, $term, $conn);
     echo createQueryJSON($result);
-} else{
+} else {
     echo MISSING_PARAMETERS;
 }
 $conn->close();
 
-?>
+
 

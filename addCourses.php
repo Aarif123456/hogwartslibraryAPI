@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 session_cache_limiter('private_no_expire');
@@ -18,19 +19,23 @@ require_once 'repository/manageCourseRepo.php';
 /* Connect to database */
 $conn = getConnection();
 
-if(!(isValidPostVar('courseName') && isValidPostVar('professorID'))) exit(MISSING_PARAMETERS);
+if (!(isValidPostVar('courseName') && isValidPostVar('professorID'))) {
+    exit(MISSING_PARAMETERS);
+}
 
-if (checkSessionInfo() && validateHeadmaster($_SESSION['userID']))   
-{  
+if (checkSessionInfo() && validateHeadmaster()) {
     $professorID = $_POST['professorID'];
     $courseName = $_POST['courseName'];
     $termOffered = isValidPostVar('TermOffered') ?? null;
-    if(insertCourse($courseName, $professorID, $termOffered, $conn))  echo COURSE_ADDED;
-    else echo COMMAND_FAILED;
-} else{
+    if (insertCourse($courseName, $professorID, $termOffered, $conn)) {
+        echo COURSE_ADDED;
+    } else {
+        echo COMMAND_FAILED;
+    }
+} else {
     redirectToLogin();
 }
 
-$conn->close();  
+$conn->close();
 
-?>
+

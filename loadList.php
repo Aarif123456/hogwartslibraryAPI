@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 session_cache_limiter('private_no_expire');
@@ -19,28 +20,30 @@ require_once 'repository/lists.php';
 $conn = getConnection();
 
 $result = null;
-if (checkSessionInfo() && validateUser($_SESSION['userID']))   
-{
+if (checkSessionInfo() && validateUser()) {
     $userType = trim($_SESSION['userType']);
-    if(isValidPostVar('listType')){
+    if (isValidPostVar('listType')) {
         $listType = $_POST['listType'] ?? "";
-        if(isLibrarian()) {
+        if (isLibrarian()) {
             $result = getLibrarianListResults($listType, $conn);
+        } else {
+            if (isHeadmaster()) {
+                $result = getHeadmasterListResults($listType, $conn);
+            }
         }
-        else if (isHeadmaster()){
-            $result = getHeadmasterListResults($listType, $conn);  
+        if (empty($result)) {
+            exit(INVALID_LIST);
         }
-        if(empty($result)) exit(INVALID_LIST);
         echo createQueryJSON($result);
     } else {
         exit(MISSING_PARAMETERS);
     }
-} else{
+} else {
     redirectToLogin();
 }
 
 $conn->close();
 
 
-?>
+
 

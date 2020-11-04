@@ -1,6 +1,7 @@
-<?php 
+<?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 session_cache_limiter('private_no_expire');
@@ -18,18 +19,15 @@ require_once 'repository/usernameRepo.php';
 $conn = getConnection();
 
 /* Code starts */
-if (isValidPostVar('username')){
+if (isValidPostVar('username')) {
     $result = queryUsername($_POST['username'], $conn);
-    if($result->num_rows == 0) {
+    if ($result->num_rows == 0) {
         echo USERNAME_NOT_IN_TABLE;
-    }
-    else{
+    } else {
         echo USERNAME_EXISTS;
     }
-}
-else{
+} else {
     echo MISSING_PARAMETERS;
 }
 
-$conn->close(); 
-?>
+$conn->close();

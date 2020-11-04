@@ -1,7 +1,8 @@
-<?php 
+<?php
 /* program to verify login*/
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
@@ -18,18 +19,18 @@ $conn = getConnection();
 /* Session reset */
 session_cache_limiter('private_no_expire');
 //ob_start();
-session_start(); 
-$_SESSION = array();
-unset($_COOKIE['rememberme']);
+session_start();
+$_SESSION = [];
+unset($_COOKIE['rememberMe']);
 session_destroy();
-session_start(); 
+session_start();
 
-if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('password')) { 
+if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('password')) {
     /* Store user type in session */
     $userType = trim($_POST['userType']);
     $_SESSION['userType'] = $userType;
 
-    if(!(verifyUserType($userType))){
+    if (!(verifyUserType($userType))) {
         /* Exit and tell the client that their user type is invalid */
         exit(invalidUserType($userType));
     }
@@ -39,42 +40,48 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
     /* Make sure the password is correct */
     if (password_verify($_POST['password'], $row['password'])) {
         /* If we are determining user from table then determine it */
-        $determineUser = strcmp($userType,"user")==0;
-        if($determineUser){
+        $determineUser = strcmp($userType, "user") == 0;
+        if ($determineUser) {
             $_SESSION['userType'] = $row['userType'];
         }
         $_SESSION['username'] = htmlentities($row['fname'] . " " . $row['lname']);
         storeUserAuthenticationInformation($row['userID']);
-        echo VALID_PASSWORD; 
-    } 
-    else {
+        echo VALID_PASSWORD;
+    } else {
         echo INVALID_PASSWORD;
-    }   
-} 
-else{
+    }
+} else {
     echo MISSING_PARAMETERS;
 }
 
-$conn->close(); 
+$conn->close();
 
 /* store information regarding the user's login */
-function storeUserAuthenticationInformation($userID){
-    $token = random_bytes(128);
+function storeUserAuthenticationInformation($userID)
+{
+    try {
+        $token = random_bytes(128);
+    } catch (Exception $e) {
+        exit(INTERNAL_SERVER_ERROR);
+    }
     $_SESSION['token'] = $token; //need some way for user to store token 
-    $cookie =  $userID . ':' . $token;
-    $mac = hash_hmac('sha256', $cookie, SECRET_KEY); 
+    $cookie = $userID . ':' . $token;
+    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
     $cookie .= ':' . $mac;
-    setcookie('rememberme', $cookie, time() + (86400 * 30), "/");
-    $_SESSION['userID'] = $userID ;
+    setcookie('rememberMe', $cookie, time() + (86400 * 30), "/");
+    $_SESSION['userID'] = $userID;
     ob_end_flush();
 }
 
 
-function getArrayFromResult($result){
+function getArrayFromResult($result)
+{
     $row = $result->fetch_assoc();
-    if($result->num_rows == 0) {
+    if ($result->num_rows == 0) {
         echo USERNAME_NOT_IN_TABLE;
     }
+
     return $row;
 }
-?>
+
+

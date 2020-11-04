@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 // header('Content-Type: application/json');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
@@ -19,8 +20,7 @@ require_once 'repository/charts.php';
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser($_SESSION['userID']))   
-{  
+if (checkSessionInfo() && validateUser()) {
     $userType = trim($_SESSION['userType']);
     /* Some users have a default chart that loads on the dashboard */
     $chartType = $_POST['chartType'] ?? $defaultChart[$userType] ?? "";
@@ -28,27 +28,35 @@ if (checkSessionInfo() && validateUser($_SESSION['userID']))
     switch ($userType) {
         case "headmaster": // INTENTIONAL FALL THROUGH FOR ESCALATING PERMISSION
             $result = getHeadmasterChartsResults($chartType, $conn);
-            if(!empty($result)) break;
+            if (!empty($result)) {
+                break;
+            }
         case "librarian":  // INTENTIONAL FALL THROUGH FOR ESCALATING PERMISSION
             $result = getLibrarianChartsResults($chartType, $conn);
-            if(!empty($result)) break;
+            if (!empty($result)) {
+                break;
+            }
         case "professor":  // INTENTIONAL FALL THROUGH FOR ESCALATING PERMISSION
             $result = getProfessorChartsResults($chartType, $conn);
-            if(!empty($result)) break;
-        case "student":    
+            if (!empty($result)) {
+                break;
+            }
+        case "student":
             $result = getStudentChartsResults($chartType, $conn);
             break;
         default:
             exit(invalidUserType($userType));
     }
-    if(empty($result)) exit(INVALID_CHART);
+    if (empty($result)) {
+        exit(INVALID_CHART);
+    }
     echo createQueryJSON($result);
-} else{
+} else {
     redirectToLogin();
 }
 
 $conn->close();
-?>
+
 
 
 

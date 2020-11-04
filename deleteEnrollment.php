@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 session_cache_limiter('private_no_expire');
@@ -19,17 +20,21 @@ require_once 'repository/manageEnrollmentRepo.php';
 $conn = getConnection();
 
 /* Check that parameter are set */
-if(!(isValidPostVar('enrollmentNumber'))) exit(MISSING_PARAMETERS);
+if (!(isValidPostVar('enrollmentNumber'))) {
+    exit(MISSING_PARAMETERS);
+}
 
-if (checkSessionInfo() && validateHeadmaster($_SESSION['userID']))   
-{  
+if (checkSessionInfo() && validateHeadmaster()) {
     $enrollmentNumber = $_POST['enrollmentNumber'];
-    if (deleteEnrollment($enrollmentNumber, $conn)) echo ENROLLMENT_DELETED;
-    else echo COMMAND_FAILED;
-} else{
+    if (deleteEnrollment($enrollmentNumber, $conn)) {
+        echo ENROLLMENT_DELETED;
+    } else {
+        echo COMMAND_FAILED;
+    }
+} else {
     redirectToLogin();
 }
 
 
-$conn->close();  
-?>
+$conn->close();
+

@@ -1,6 +1,7 @@
 <?php
+
 /* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech'); 
+header('Access-Control-Allow-Origin: https://abdullaharif.tech');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 86400');    // cache for 1 day
 session_cache_limiter('private_no_expire');
@@ -18,18 +19,18 @@ require_once 'repository/userFinesRepo.php';
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser($_SESSION['userID']))   
-{  
-    $userID = $_SESSION['userID']; 
+if (checkSessionInfo() && validateUser()) {
+    $userID = $_SESSION['userID'];
     $listType = $_REQUEST['listType'] ?? "";
     $result = getUserFines($userID, $listType, $conn);
-    if(empty($result)) exit(INVALID_LIST);
+    if (empty($result)) {
+        exit(INVALID_LIST);
+    }
     echo createQueryJSON($result);
-} 
-else{
+} else {
     redirectToLogin();
 }
 
 $conn->close();
-?>
+
 

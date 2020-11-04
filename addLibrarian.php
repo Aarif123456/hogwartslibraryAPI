@@ -18,18 +18,24 @@ require_once 'repository/manageLibrarianRepo.php';
 /* Connect to database */
 $conn = getConnection();
 
-if(!(isValidPostVar('userID'))) exit(MISSING_PARAMETERS);
-if(!(is_numeric($_POST['userID']))) exit(INVALID_PARAMETERS);
+if (!(isValidPostVar('userID'))) {
+    exit(MISSING_PARAMETERS);
+}
+if (!(is_numeric($_POST['userID']))) {
+    exit(INVALID_PARAMETERS);
+}
 
-if (checkSessionInfo() && validateHeadmaster($_SESSION['userID']))   
-{  
+if (checkSessionInfo() && validateHeadmaster()) {
     $userID = (int)$_POST['userID'];
-    if(insertLibrarian($userID, $conn)) echo librarianCreated($userID);
-    else echo COMMAND_FAILED;
-} else{
+    if (insertLibrarian($userID, $conn)) {
+        echo librarianCreated($userID);
+    } else {
+        echo COMMAND_FAILED;
+    }
+} else {
     redirectToLogin();
 }
 
-$conn->close();  
+$conn->close();
 
-?>
+
