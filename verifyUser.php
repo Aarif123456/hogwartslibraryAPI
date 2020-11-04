@@ -8,7 +8,7 @@ header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
 /* Imports */
 require_once 'config/apiReturn.php';
-require_once 'config/constants.php';
+require_once 'config/secretKey.php';
 require_once 'config/authenticate.php';
 require_once 'repository/database.php';
 require_once 'repository/verifyUserRepo.php';
