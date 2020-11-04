@@ -1,25 +1,18 @@
 <?php
 /* program to verify login*/
 
-/* Required header */
-header('Access-Control-Allow-Origin: https://abdullaharif.tech');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Max-Age: 86400');    // cache for 1 day
-
-/* Imports */
 require_once 'config/apiReturn.php';
 require_once 'config/secretKey.php';
 require_once 'config/authenticate.php';
 require_once 'repository/database.php';
 require_once 'repository/verifyUserRepo.php';
 
+/* Set required header and session start */
+requiredHeaderAndSessionStart();
+
 /* Connect to database */
 $conn = getConnection();
 
-/* Session reset */
-session_cache_limiter('private_no_expire');
-//ob_start();
-session_start();
 $_SESSION = [];
 unset($_COOKIE['rememberMe']);
 session_destroy();

@@ -48,6 +48,5 @@ function getQueryForUserType($userType)
         default:
             return "";
     }
-
 }
 

@@ -33,12 +33,35 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
+<summary> Registering user </summary>
+
+    1. Description: 
+    2. userManagement/addUser.php --> /api/userManagement/addUser
+    3. Parameter list:
+        Accepts POST variable:  
+    4. httpie command:
+*Note: it might make sense to separate the endpoints for different user types.*
+</details>
+
+<details>
 <summary> Check username </summary>
 
     1. Description: Check if username is in database
-    2. checkUserName.php  --> /api/checkUserName
+    2. userManagement/checkUserName.php  --> /api/userManagement/checkUserName
     3. Parameter list:
     4. httpie command:
+
+</details>
+
+<details>
+<summary> Reset user password</summary>
+
+    1. Description: The headmaster has the power to reset user's passwords
+    2. userManagement/resetPassword.php --> /api/userManagement/resetPassword
+    3. Parameter list:
+        Accepts POST variable: uID, uPassword, developerPassword
+    4. httpie command:
+        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/resetPassword uID=userID uPassword='newPasss' developerPassword='devPass'
 
 </details>
 
@@ -47,7 +70,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
     1. Description: Queries used to create charts and table that give meta 
     information about the system. These queries can be accessed by guest users as well
-    2. guestCharts.php --> /api/guestCharts
+    2. chart/guestCharts.php --> /api/chart/guestCharts
     3. Parameter list:
         Accepts request variable: chartType
         Current charts are:
@@ -73,7 +96,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
         be updated. However, this will cause them to be coupled. 
         For this reason I recommend not relying on the default query and have only 
         included them for backward compatibility.
-    2. loggedInChart.php --> /api/loggedInChart
+    2. chart/loggedInChart.php --> /api/chart/loggedInChart
     3. Parameter list:
         Accepts POST variable: chartType
     4. httpie command:
@@ -94,23 +117,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
-<summary> Searching catalog </summary>
-
-    1. Description: API used to search the catalog. You can search for books title, 
-    author, ISBN, tag or keyword which searches through all of the other search method
-    2. search_div.php --> /api/search_div
-    3. Parameter list:
-        Accepts REQUEST variable: searchType, searchWord
-    4. httpie command:
-
-
-</details>
-
-<details>
 <summary> Viewing checked out books </summary>
 
     1. Description: 
-    2. userCheckedOut.php --> /api/userCheckedOut
+    2. user/userCheckedOut.php --> /api/user/userCheckedOut
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -121,7 +131,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Viewing fines on user's account</summary>
 
     1. Description: 
-    2. userFines.php --> /api/userFines
+    2. user/userFines.php --> /api/user/userFines
     3. Parameter list:
         Accepts POST variable: listType: distinguish if we just want the total fine or a 
         list of the transaction with fines
@@ -136,7 +146,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Viewing holds on user account </summary>
 
     1. Description: 
-    2. userHolds.php --> /api/userHolds
+    2. user/userHolds.php --> /api/user/userHolds
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -147,7 +157,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary>Add course </summary>
 
     1. Description: Headmaster can add courses to the database
-    2. addCourses.php --> /api/addCourses
+    2. headmaster/addCourses.php --> /api/headmaster/addCourses
     3. Parameter list: courseName & professorID
         Accepts POST variable: 
     4. httpie command:
@@ -158,7 +168,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Delete course</summary>
 
     1. Description: Headmaster can delete courses from the database
-    2. deleteCourses.php --> /api/deleteCourses
+    2. headmaster/deleteCourses.php --> /api/headmaster/deleteCourses
     3. Parameter list: courseID
         Accepts POST variable: 
     4. httpie command:
@@ -170,7 +180,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
     1. Description: The headmaster can enroll students into the courses they are going 
     to take this semester 
-    2. addEnrollment.php --> /api/addEnrollment
+    2. headmaster/addEnrollment.php --> /api/headmaster/addEnrollment
     3. Parameter list: 
         Accepts POST variable: courseID, studentID
     4. httpie command:
@@ -181,7 +191,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Remove student from course</summary>
 
     1. Description: The headmaster can also remove students from their classes
-    2. deleteEnrollment.php --> /api/deleteEnrollment
+    2. headmaster/deleteEnrollment.php --> /api/headmaster/deleteEnrollment
     3. Parameter list: 
         Accepts POST variable: enrollmentNumber
     4. httpie command:
@@ -192,7 +202,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Make user's librarians</summary>
 
     1. Description: Give user's librarian privileges
-    2. addLibrarian.php --> /api/addLibrarian
+    2. headmaster/addLibrarian.php --> /api/headmaster/addLibrarian
     3. Parameter list:
         Accepts POST variable: userID
     4. httpie command:
@@ -205,7 +215,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: This api will be used to revoke librarian privileges from an account. 
     In the back-end we mark the librarian account as deactivated instead of 
     deleting them, to ensure integrity
-    2. deleteLibrarian.php --> /api/deleteLibrarian
+    2. headmaster/deleteLibrarian.php --> /api/headmaster/deleteLibrarian
     3. Parameter list:
         Accepts POST variable: userID
     4. httpie command:
@@ -213,34 +223,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
-<summary> Registering user </summary>
-
-    1. Description: 
-    2. addUser.php --> /api/addUser
-    3. Parameter list:
-        Accepts POST variable:  
-    4. httpie command:
-*Note: it might make sense to separate the endpoints for different user types.*
-</details>
-
-<details>
-<summary> Reset user password</summary>
-
-    1. Description: The headmaster has the power to reset user's passwords
-    2. resetPassword.php --> /api/resetPassword
-    3. Parameter list:
-        Accepts POST variable: uID, uPassword, developerPassword
-    4. httpie command:
-        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/resetPassword uID=userID uPassword='newPasss' developerPassword='devPass'
-
-</details>
-
-### TODO Refactor the code for the following endpoints ###
-<details>
 <summary> Check out book</summary>
 
     1. Description: 
-    2. checkOut.php --> /api/checkOut
+    2. librarian/checkOut.php --> /api/librarian/checkOut
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -248,10 +234,24 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
+<summary> Searching catalog </summary>
+
+    1. Description: API used to search the catalog. You can search for books title, 
+    author, ISBN, tag or keyword which searches through all of the other search method
+    2. library/searchCatalogue.php --> /api/library/searchCatalogue
+    3. Parameter list:
+        Accepts REQUEST variable: searchType, searchWord
+    4. httpie command:
+
+</details>
+
+### TODO Refactor the code for the following endpoints ###
+
+<details>
 <summary> Return book </summary>
 
     1. Description: 
-    2. returnBook.php --> /api/returnBook
+    2. librarian/returnBook.php --> /api/librarian/returnBook
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -262,7 +262,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> User pay off fine</summary>
 
     1. Description: 
-    2. payFine.php --> /api/payFine
+    2. librarian/payFine.php --> /api/librarian/payFine
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -273,7 +273,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Professor reserves book copies for class </summary>
 
     1. Description: 
-    2. addReservation.php --> /api/addReservation
+    2. reservation/addReservation.php --> /api/reservation/addReservation
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -284,7 +284,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary>Professor cancels reservation for book copies</summary>
 
     1. Description: 
-    2. deleteReservation.php --> /api/deleteReservation
+    2. reservation/deleteReservation.php --> /api/reservation/deleteReservation
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -295,7 +295,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> View books to reserve and list of current reservations</summary>
 
     1. Description: 
-    2. reservationList.php --> /api/reservationList
+    2. reservation/reservationList.php --> /api/reservation/reservationList
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -306,7 +306,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Put a hold on a book</summary>
 
     1. Description: 
-    2. holdBook.php --> /api/holdBook
+    2. library/holdBook.php --> /api/library/holdBook
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -317,7 +317,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Cancel a hold</summary>
 
     1. Description: 
-    2. cancelHoldBook.php --> /api/cancelHoldBook
+    2. library/cancelHoldBook.php --> /api/library/cancelHoldBook
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -328,7 +328,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Report book as lost</summary>
 
     1. Description: 
-    2. lostBook.php --> /api/lostBook
+    2. library/lostBook.php --> /api/library/lostBook
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -339,7 +339,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Renew a book</summary>
 
     1. Description: 
-    2. renewBook.php --> /api/renewBook
+    2. library/renewBook.php --> /api/library/renewBook
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:

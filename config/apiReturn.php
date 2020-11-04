@@ -134,7 +134,27 @@ function createQueryJSON($result, $noRowReturn = NO_ROWS_RETURNED)
 
     return json_encode($arr);
 }
+/* Required header */
+function getHeader()
+{
+    header('Access-Control-Allow-Origin: https://abdullaharif.tech');
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
+}
+
+function startSession()
+{
+    session_cache_limiter('private_no_expire');
+    if (!session_id()) {
+        session_start();
+    }
+}
+
+function requiredHeaderAndSessionStart(){
+    getHeader();
+    startSession();
+}
 /* utility function for post, get and session if enough function this will go to it's own file*/
 function isValidPostVar($varName): bool
 {
