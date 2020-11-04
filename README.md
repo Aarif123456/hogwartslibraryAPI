@@ -9,7 +9,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 * Description
 * File name - Since, code will always be updated even if the read me isn't
 * Parameter list -including which method to use such as POST, GET or REQUEST(both)
-* httpie command with expected result format to check if information about the command is updated
+* httpie command with expected result format to validate the listed information about the endpoint
 
 ## Format ##
 <details>
