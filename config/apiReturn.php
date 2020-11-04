@@ -58,6 +58,7 @@ function invalidUserType($userType): string
 function passwordReset($uID): string
 {
     $printableUserID = htmlentities($uID);
+
     return "Password has been reset for user with id $printableUserID";
 }
 
@@ -83,6 +84,7 @@ function successfulCheckout($bookBarcode, $borrowedBy, $librarianID): string
 function addedReservationReturn($bookISBN, $numCopies): string
 {
     $numCopies = htmlentities($numCopies);
+
     return "Successfully reserved $numCopies copies of book for class";
 }
 
@@ -134,6 +136,7 @@ function createQueryJSON($result, $noRowReturn = NO_ROWS_RETURNED)
 
     return json_encode($arr);
 }
+
 /* Required header */
 function getHeader()
 {
@@ -151,10 +154,12 @@ function startSession()
     }
 }
 
-function requiredHeaderAndSessionStart(){
+function requiredHeaderAndSessionStart()
+{
     getHeader();
     startSession();
 }
+
 /* utility function for post, get and session if enough function this will go to it's own file*/
 function isValidPostVar($varName): bool
 {
