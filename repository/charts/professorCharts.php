@@ -8,6 +8,5 @@ function getProfessorCharts($chartType)
         default:
             return "";
     }
-
 }
 

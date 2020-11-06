@@ -8,6 +8,5 @@ function getStudentCharts($chartType)
         default:
             return "";
     }
-
 }
 

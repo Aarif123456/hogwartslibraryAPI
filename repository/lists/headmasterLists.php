@@ -22,6 +22,5 @@ function headmasterListJSON($listType)
         default:
             return "";
     }
-
 }
 

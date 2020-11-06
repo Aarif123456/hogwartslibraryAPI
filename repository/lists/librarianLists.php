@@ -24,11 +24,13 @@ function librarianListJSON($listType, $conn)
                     "SELECT * FROM books NATURAL JOIN bookItem WHERE bookBarcode LIKE CONCAT('%',?,'%')"
                 );
                 $stmt->bind_param("s", $_POST['bookBarcode']);
+
                 return $stmt;
             }
             break;
         default:
     }
+
     return null;
 }
 

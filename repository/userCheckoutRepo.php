@@ -78,7 +78,6 @@ function checkOutBook($bookBarcode, $borrowedBy, $librarianID, $conn, $debug = f
         }
         exit(WRITE_QUERY_FAILED);
     }
-
 }
 
 /* Check out book if the following condition are true

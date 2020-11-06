@@ -24,7 +24,6 @@ function insertUser($user, $account, $conn, $debug = false)
         }
         exit(WRITE_QUERY_FAILED);
     }
-
 }
 
 function storeMemberInfo($user, $conn)
@@ -67,7 +66,8 @@ function storeUserTypeInfo($id, $user, $conn)
             break;
         default:
     }
-        return "";
+
+    return "";
 }
 
 function storeStudentInfo($id, $user, $conn)

@@ -15,7 +15,9 @@ $conn = getConnection();
 
 if (isValidRequestVar('searchType') && isset($_REQUEST['searchWord'])) {
     $searchType = $_REQUEST['searchType'];
-    if(!validSearchMethod($searchType)) exit(INVALID_SEARCH_METHOD);
+    if (!validSearchMethod($searchType)) {
+        exit(INVALID_SEARCH_METHOD);
+    }
     $term = $_REQUEST['searchWord'];
     $result = queryCatalog($searchType, $term, $conn);
     echo createQueryJSON($result);

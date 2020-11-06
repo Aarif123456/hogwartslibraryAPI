@@ -13,7 +13,7 @@ function validateUser()
 { //verify user did not fake authentication
     $cookie = isset($_COOKIE['rememberMe']) ? $_COOKIE['rememberMe'] : '';
     if ($cookie) {
-        list ($userID, $token, $mac) = explode(':', $cookie); //get info from cookie
+        [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
         if (!(hash_equals(hash_hmac('sha256', $userID . ':' . $token, SECRET_KEY), $mac))) {
             return false;
         }
@@ -87,7 +87,7 @@ function destroy_session_and_data()
     setcookie(session_name(), '', time() - 1, '/');
     $cookie = isset($_COOKIE['rememberMe']) ? $_COOKIE['rememberMe'] : '';
     if ($cookie) {
-        list ($userID, $token, $mac) = explode(':', $cookie); //get info from cookie
+        [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
         setcookie('rememberMe', $userID . ':' . $token . ':' . $mac, time() - 1, '/');
     }
     session_destroy();

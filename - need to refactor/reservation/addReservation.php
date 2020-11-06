@@ -20,7 +20,7 @@ if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN') && isValidPostVar
 if (checkSessionInfo() && validateUser()) {
     $bookISBN = $_POST['bookISBN'];
     $courseID = $_POST['courseID'];
-    $numCopies =  $_POST['numCopies'];
+    $numCopies = $_POST['numCopies'];
     $professorID = /* TODO From session if prof otherwise get from post if librarian */;
     if (insertReservation($courseID, $bookISBN, $conn)) {
         echo addedReservationReturn($bookISBN, $numCopies);

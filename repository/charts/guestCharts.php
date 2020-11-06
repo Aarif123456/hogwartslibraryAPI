@@ -14,6 +14,5 @@ function getGuestCharts($chartType)
         default:
             return "";
     }
-
 }
 
