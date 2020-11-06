@@ -32,3 +32,11 @@ function getFineQuery($listType)
     }
 }
 
+function payFine($pay, $userID, $conn, $debug=false)
+{
+    $fineStmt = $conn->prepare("UPDATE members SET fines = IF(fines<=?, 0, fines - ?) WHERE `memberID` =?");
+    $fineStmt->bind_param("ddi", $pay, $pay, $userID);
+    // otherwise return back result from query
+
+   return safeWriteQueries($fineStmt, $conn, $debug);
+}
