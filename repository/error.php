@@ -2,7 +2,7 @@
 
 /* Error handling for calls to the database */
 define('WRITE_QUERY_FAILED', 'Failed to update the database');
-define('SQL_ERROR', 'The following sql error was detected:');
+define('SQL_ERROR', 'The following SQL error was detected:');
 define('PHP_EXCEPTION', 'The following exception was thrown:');
 define(
     'MISSING_PARAMETER_FOR_USER_TYPE',

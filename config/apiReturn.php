@@ -45,6 +45,8 @@ define('USER_BLACKLISTED', "user is blacklisted");
 define('USER_LIMIT_REACHED', "User has reached their limit. They need to return some books!");
 define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
 define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
+define('BOOK_FOUND', 'The book is now found!!!');
+define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */
@@ -79,6 +81,13 @@ function successfulCheckout($bookBarcode, $borrowedBy, $librarianID): string
     $librarianID = htmlentities($librarianID);
 
     return "Transaction successful : Book with barcode $bookBarcode has been issued to $borrowedBy by the librarianID $librarianID";
+}
+
+function succesfulReturn($todayDate, $bookBarcode): string
+{
+    $bookBarcode = htmlentities($bookBarcode);
+
+    return "book with barcode $bookBarcode has been returned on $todayDate!";
 }
 
 function addedReservationReturn($bookISBN, $numCopies): string

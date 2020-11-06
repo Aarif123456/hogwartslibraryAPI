@@ -11,9 +11,10 @@ function getUserCheckedOutBooks($userID, $conn)
     $transactionStmt = $conn->prepare(
         "SELECT bookName, author,bookBarcode, dueDate, 
         renewedTime, holds FROM `transactions` NATURAL JOIN `bookItem` NATURAL JOIN
-        `books` WHERE transactions.borrowedBy = ? AND transactions.returnDate IS NULL"
+        `books` WHERE transactions.borrowedBy = ? AND transactions.returnDate IS NULL AND bookItem.status=?"
     );
-    $transactionStmt->bind_param("i", $userID);
+    $bookCheckedOut = BOOK_CHECKED_OUT;
+    $transactionStmt->bind_param("ii", $userID, $bookCheckedOut);
     // if no query return back null
     if (empty($transactionStmt)) {
         return null;
