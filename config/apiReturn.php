@@ -47,6 +47,7 @@ define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above thei
 define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
 define('BOOK_FOUND', 'The book is now found!!!');
 define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
+define('PAID_SUCCESSFULLY','The fine is paid');
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */
@@ -83,7 +84,7 @@ function successfulCheckout($bookBarcode, $borrowedBy, $librarianID): string
     return "Transaction successful : Book with barcode $bookBarcode has been issued to $borrowedBy by the librarianID $librarianID";
 }
 
-function succesfulReturn($todayDate, $bookBarcode): string
+function successfulReturn($todayDate, $bookBarcode): string
 {
     $bookBarcode = htmlentities($bookBarcode);
 

@@ -29,7 +29,7 @@ if (checkSessionInfo() && validateLibrarian()) {
         if (!returnBook($todayDate, $librarianID, $bookBarcode, $conn)) {
             echo(RETURN_FAILED);
         } else {
-            echo succesfulReturn($todayDate, $bookBarcode);
+            echo successfulReturn($todayDate, $bookBarcode);
         }
     }
 } else {

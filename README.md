@@ -234,6 +234,17 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
+<summary> Return book </summary>
+
+    1. Description: 
+    2. librarian/returnBook.php --> /api/librarian/returnBook
+    3. Parameter list:
+        Accepts POST variable: 
+    4. httpie command:
+
+</details>
+
+<details>
 <summary> Searching catalog </summary>
 
     1. Description: API used to search the catalog. You can search for books title, 
@@ -247,55 +258,13 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 ### TODO Refactor the code for the following endpoints ###
 
-<details>
-<summary> Return book </summary>
 
-    1. Description: 
-    2. librarian/returnBook.php --> /api/librarian/returnBook
-    3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
-
-</details>
 
 <details>
 <summary> User pay off fine</summary>
 
     1. Description: 
     2. librarian/payFine.php --> /api/librarian/payFine
-    3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
-
-</details>
-
-<details>
-<summary> Professor reserves book copies for class </summary>
-
-    1. Description: 
-    2. reservation/addReservation.php --> /api/reservation/addReservation
-    3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
-
-</details>
-
-<details>
-<summary>Professor cancels reservation for book copies</summary>
-
-    1. Description: 
-    2. reservation/deleteReservation.php --> /api/reservation/deleteReservation
-    3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
-
-</details>
-
-<details>
-<summary> View books to reserve and list of current reservations</summary>
-
-    1. Description: 
-    2. reservation/reservationList.php --> /api/reservation/reservationList
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:
@@ -340,6 +309,39 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
     1. Description: 
     2. library/renewBook.php --> /api/library/renewBook
+    3. Parameter list:
+        Accepts POST variable: 
+    4. httpie command:
+
+</details>
+
+<details>
+<summary> Professor reserves book copies for class </summary>
+
+    1. Description: 
+    2. reservation/addReservation.php --> /api/reservation/addReservation
+    3. Parameter list:
+        Accepts POST variable: 
+    4. httpie command:
+
+</details>
+
+<details>
+<summary>Professor cancels reservation for book copies</summary>
+
+    1. Description: 
+    2. reservation/deleteReservation.php --> /api/reservation/deleteReservation
+    3. Parameter list:
+        Accepts POST variable: 
+    4. httpie command:
+
+</details>
+
+<details>
+<summary> View books to reserve and list of current reservations</summary>
+
+    1. Description: 
+    2. reservation/reservationList.php --> /api/reservation/reservationList
     3. Parameter list:
         Accepts POST variable: 
     4. httpie command:

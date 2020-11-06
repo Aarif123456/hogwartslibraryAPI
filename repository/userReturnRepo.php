@@ -41,7 +41,27 @@ function updateReturnInfo($todayDate, $librarianID, $bookBarcode, $conn, $debug 
                                 transactions.returnerID=?,
                                 transactions.returnDate=DATE(?),
                                 members.fines = members.fines + transactions.fine,
-                                members.numBooks = members.numBooks - 1
+                                members.numBooks = members.numBooks - 1, 
+                                members.status = IF (
+                                                        (
+                                                            (
+                                                                members.fines >=? 
+                                                                AND members.memberID IN 
+                                                                (
+                                                                    SELECT studentID AS memberID FROM students
+                                                                )
+                                                            ) OR 
+                                                            (
+                                                                members.fines >=? 
+                                                                AND members.memberID IN 
+                                                                (
+                                                                    SELECT professorID AS memberID FROM professor
+                                                                )
+                                                            )
+                                                        ), 
+                                                        ?, 
+                                                        members.status 
+                                                    )
                                 WHERE transactions.returnDate IS NULL 
                                     AND transactions.bookBarcode =?
                                     AND bookItem.bookBarcode=transactions.bookBarcode
@@ -49,13 +69,21 @@ function updateReturnInfo($todayDate, $librarianID, $bookBarcode, $conn, $debug 
                                     AND bookItem.status=?
                 "
     );
+
     $bookAvailable = BOOK_AVAILABLE;
     $bookCheckedOut = BOOK_CHECKED_OUT;
+    $blacklisted = ACCOUNT_BLACKLISTED;
+    $studentLimit = STUDENT_BOOK_LIMIT;
+    $professorLimit = PROFESSOR_BOOK_LIMIT;
+
     $success = $stmt->bind_param(
-            "iisii",
+            "iisiiiii",
             $bookAvailable,
             $librarianID,
             $todayDate,
+            $studentLimit,
+            $professorLimit,
+            $blacklisted,
             $bookBarcode,
             $bookCheckedOut
         ) && $stmt->execute();
@@ -117,7 +145,7 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
     $bookAvailable = BOOK_AVAILABLE;
     $success = $stmt->bind_param(
             "iiiiiii",
-            $inQueue,                    // only target holds in waiting
+            $inQueue,                   // only target holds in waiting
             $bookBarcode,               // primary key in bookItem used to handle reservation
             $activeHold,                // Set hold status to active now that we have a copy
             $bookBarcode,               // reserve the copy for the hold
