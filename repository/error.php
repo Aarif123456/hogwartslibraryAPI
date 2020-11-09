@@ -28,13 +28,8 @@ function getExecutedResult($stmt)
 /* Catch exception that are set by MYSQLI_REPORT_ALL  */
 function safeWriteQueries($stmt, $conn, $debug)
 {
-    try { //prepare and insert to avoid injection
-        $conn->autocommit(false); //turn off transactions
-        $stmt->execute();
-        $stmt->close();
-        $conn->autocommit(true);
-
-        return true;
+    try {
+        return $stmt->execute() && $stmt->close();
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
         $conn->rollback();

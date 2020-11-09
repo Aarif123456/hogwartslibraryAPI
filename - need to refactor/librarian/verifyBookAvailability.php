@@ -1,18 +1,6 @@
 <?php
 //verify if user can take out book
 
-/* ONLY used in holdBook */
-function checkHold($bookISBN, $holderID, $conn)
-{
-    $holdStmt = $conn->prepare("SELECT * FROM holds WHERE bookISBN =? AND holderID =?");
-    $holdStmt->bind_param("si", $bookISBN, $holderID);
-    $holdStmt->execute();
-    $holdResult = $holdStmt->get_result();
-    if ($holdResult->num_rows != 0) {
-        exit("User already has an active hold on the book");
-    }
-}
-
 /* Used in hold book and cancel hold book - remove because we are know using timestamps */
 /* Currently we will manually skip the hold if it is expired - in the future mark it is expired
 if pass the expiry date -possibly a cron job */

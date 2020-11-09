@@ -256,10 +256,6 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
-### TODO Refactor the code for the following endpoints ###
-
-
-
 <details>
 <summary> User pay off fine</summary>
 
@@ -270,6 +266,8 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     4. httpie command:
 
 </details>
+
+### TODO Refactor the code for the following endpoints ###
 
 <details>
 <summary> Put a hold on a book</summary>

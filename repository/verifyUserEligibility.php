@@ -7,8 +7,9 @@ require_once 'error.php';
 function checkUserBlacklisted($userID, $conn)
 {
     $stmt = $conn->prepare("SELECT memberID FROM members WHERE memberID=? and status=?");
-    $stmt->bind_param("ii", $userID, ACCOUNT_BLACKLISTED);
+    $blacklisted = ACCOUNT_BLACKLISTED;
+    $stmt->bind_param("ii", $userID, $blacklisted);
 
-    return !(empty(getExecutedResult($stmt)));
+    return !(empty($stmt->num_rows));
 }
 

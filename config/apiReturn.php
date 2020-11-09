@@ -10,44 +10,51 @@ error_reporting(E_ALL);
 /* Define the strings the api will return  */
 
 /* constants */
-define('MISSING_PARAMETERS', 'Missing value');
+define('BOOK_FOUND', 'The book is now found!!!');
+define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
+define('BOOK_PLACED_ON_HOLD', 'Book was placed on hold.');
+define('COMMAND_FAILED', 'Query failed to execute, ensure you use the correct values');
+define('COURSE_ADDED', 'course added!');
+define('COURSE_DELETED', 'course deleted!');
+define('ENROLLMENT_ADDED', 'Student enrolled in course');
+define('ENROLLMENT_DELETED', 'course enrollment deleted!');
+define('HEADMASTER_ADDED', 'Headmaster added');
+define('HEADMASTER_VERIFY_FAIL', 'Invalid password cannot reset user password');
+define('HOLD_EXISTS', 'User already has an active hold on the book');
+define(
+    'HOLD_READY_FOR_PICKUP',
+    'A copy of the book is reserved for you at the library. Please pick it within a month.'
+);
+define('INTERNAL_SERVER_ERROR', 'something went wrong:(');
+define('INVALID_CHART', 'Invalid chart type');
+define('INVALID_COMMAND', 'No command with set parameter exist in endpoint');
+define('INVALID_LIST', 'Invalid list type');
 define('INVALID_PARAMETERS', 'Parameter do no have expected type');
-define('USERNAME_NOT_IN_TABLE', 'Username not taken');
-define('VALID_PASSWORD', 'Password is valid!');
-define('INVALID_PASSWORD', 'Invalid password.');
 define('INVALID_PASSCODE', 'Invalid passcode.');
-define('USERNAME_EXISTS', 'Username is taken');
+define('INVALID_PASSWORD', 'Invalid password.');
+define('INVALID_SEARCH_METHOD', 'Invalid search method');
+define('LIBRARIAN_DELETED', 'Librarian deactivated');
+define('MISSING_PARAMETERS', 'Missing value');
+define('NO_BOOK_MATCHED', 'no book was selected');
+define('NO_ROWS_RETURNED', 'No rows');
+define('PAID_SUCCESSFULLY', 'The fine is paid');
+define('PROFESSOR_ADDED', 'Professor added');
 define(
     'QUERY_FAILURE',
     'Query failed please check the integrity of the database as well as the PHP commands used to run the query'
 );
-define('NO_ROWS_RETURNED', 'No rows');
+define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
+define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
+define('STUDENT_ADDED', 'Student added');
 define('UNAUTHORIZED_NO_LOGIN', 'not logged in!');
 define('UNAUTHORIZED_NOT_OWNER', 'the book is not checked out to you');
-define('INTERNAL_SERVER_ERROR', 'something went wrong:(');
-define('NO_BOOK_MATCHED', 'no book was selected');
-define('INVALID_LIST', 'Invalid list type');
-define('INVALID_CHART', 'Invalid chart type');
-define('INVALID_SEARCH_METHOD', 'Invalid search method');
-define('INVALID_COMMAND', 'No command with set parameter exist in endpoint');
-define('COURSE_ADDED', 'course added!');
-define('COURSE_DELETED', 'course deleted!');
-define('COMMAND_FAILED', 'Query failed to execute, ensure you use the correct values');
-define('ENROLLMENT_ADDED', 'Student enrolled in course');
-define('ENROLLMENT_DELETED', 'course enrollment deleted!');
-define('LIBRARIAN_DELETED', 'Librarian deactivated');
-define('STUDENT_ADDED', 'Student added');
-define('PROFESSOR_ADDED', 'Professor added');
-define('HEADMASTER_ADDED', 'Headmaster added');
-define('HEADMASTER_VERIFY_FAIL', 'Invalid password cannot reset user password');
-define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
 define('USER_BLACKLISTED', "user is blacklisted");
-define('USER_LIMIT_REACHED', "User has reached their limit. They need to return some books!");
 define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
-define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
-define('BOOK_FOUND', 'The book is now found!!!');
-define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
-define('PAID_SUCCESSFULLY','The fine is paid');
+define('USER_LIMIT_REACHED', "User has reached their limit. They need to return some books!");
+define('USERNAME_EXISTS', 'Username is taken');
+define('USERNAME_NOT_IN_TABLE', 'Username not taken');
+define('VALID_PASSWORD', 'Password is valid!');
+
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */
