@@ -50,3 +50,9 @@ function debugPrint($e, $conn)
     echo $e;
 }
 
+function debugQuery($affectedRow, $success, $functionName): string
+{
+    return nl2br(
+        "FUNCTION $functionName: row affected = $affectedRow \n FUNCTION $functionName: successful = $success"
+    );
+}

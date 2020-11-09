@@ -88,8 +88,7 @@ function updateReturnInfo($todayDate, $librarianID, $bookBarcode, $conn, $debug 
             $bookCheckedOut
         ) && $stmt->execute();
     if ($debug) {
-        echo "FUNCTION updateReturnInfo: row affected " . $conn->affected_rows;
-        echo "FUNCTION updateReturnInfo: successful = " . $success;
+        echo debugQuery($conn->affected_rows, $success, "updateReturnInfo");
     }
 
     return $conn->affected_rows == 3 && $success;
@@ -157,8 +156,7 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
             $bookAvailable              // Make sure book is available
         ) && $stmt->execute();
     if ($debug) {
-        echo "FUNCTION reserveCopyForHolds: row affected " . $conn->affected_rows;
-        echo "FUNCTION reserveCopyForHolds: successful = " . $success;
+        echo debugQuery($conn->affected_rows, $success, "reserveCopyForHolds");
     }
 
     return $success;
@@ -180,8 +178,7 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
     $stmt = $conn->prepare($query);
     $success = $stmt->bind_param("diii", $percentRefunded, $bookAvailable, $bookLost, $bookBarcode) && $stmt->execute();
     if ($debug) {
-        echo "FUNCTION refundLostBook: row affected " . $conn->affected_rows;
-        echo "FUNCTION refundLostBook: successful = " . $success;
+        echo debugQuery($conn->affected_rows, $success, "refundLostBook");
     }
 
     return $conn->affected_rows == 2 && $success;

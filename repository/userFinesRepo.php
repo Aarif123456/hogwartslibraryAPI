@@ -39,5 +39,5 @@ function payFine($pay, $userID, $conn, $debug = false)
 
     // otherwise return back result from query
 
-    return safeWriteQueries($fineStmt, $conn, $debug);
+    return $pay > 0 && safeWriteQueries($fineStmt, $conn, $debug);
 }
