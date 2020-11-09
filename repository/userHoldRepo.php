@@ -80,13 +80,11 @@ function getReserveCopyForCourse($bookISBN, $holderID, $courseID, $conn)
                 ) AS reservedCopies
                 INNER JOIN holds ON holds.bookISBN = reservedCopies.bookISBN
                 INNER JOIN bookItem ON bookItem.bookBarcode = reservedCopies.bookBarcode
-                INNER JOIN books ON books.bookISBN = reservedCopies.bookISBN 
             SET
                 holds.reservedCopy = reservedCopies.bookBarcode,
                 holds.holdExpiryDate = DATE_ADD(CURDATE(), INTERVAL 1 MONTH),
                 holds.status = ?,
-                bookItem.status = ?,
-                books.holds = books.holds-1
+                bookItem.status = ?
             WHERE
                 reservedCopies.bookISBN = ?
                 AND holderID = ?
@@ -130,13 +128,11 @@ function getReserveCopy($bookISBN, $holderID, $conn)
                 ) AS reservedCopies
                 INNER JOIN holds ON holds.bookISBN = reservedCopies.bookISBN
                 INNER JOIN bookItem ON bookItem.bookBarcode = reservedCopies.bookBarcode
-                INNER JOIN books ON books.bookISBN = reservedCopies.bookISBN 
             SET
                 holds.reservedCopy = reservedCopies.bookBarcode,
                 holds.holdExpiryDate = DATE_ADD(CURDATE(), INTERVAL 1 MONTH),
                 holds.status = ?,
-                bookItem.status = ?,
-                books.holds = books.holds-1
+                bookItem.status = ?
             WHERE
                 reservedCopies.bookISBN = ?
                 AND holderID = ?

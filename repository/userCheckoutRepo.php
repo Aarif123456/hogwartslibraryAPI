@@ -171,15 +171,17 @@ function updateCheckOutInfo($id, $conn)
 
 function updateHoldTable($id, $conn)
 {
-    $updateQuery = "UPDATE holds INNER JOIN transactions ON 
-                        reservedCopy = bookBarcode AND 
-                        holderID = borrowedBy
+    $updateQuery = "
+                    UPDATE holds 
+                        INNER JOIN transactions ON reservedCopy = bookBarcode AND holderID = borrowedBy
                         NATURAL JOIN books
-                        SET holds.status = ?,
-                        books.holds= books.holds-1
-                        WHERE 
-                            holds.status=? AND
-                            transactionID=?";
+                    SET 
+                        holds.status = ?,
+                        books.holds = books.holds-1
+                    WHERE 
+                        holds.status=? AND
+                        transactionID=?
+                   ";
     $checkOutStmt = $conn->prepare($updateQuery);
     $holdCompleted = HOLD_COMPLETED;
     $readyForPickup = HOLD_IN_QUEUE;

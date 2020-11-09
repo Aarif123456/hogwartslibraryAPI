@@ -129,13 +129,11 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
                 ) AS filteredHold 
                     INNER JOIN bookItem ON bookItem.bookISBN=filteredHold.bookISBN
                     INNER JOIN holds ON filteredHold.holdID=holds.holdID
-                    INNER JOIN books ON filteredHold.bookISBN=book.bookISBN
                     SET
                             holds.status = ?,
                             holds.reservedCopy=?,
                             holds.holdExpiryDate= DATE_ADD(CURDATE(), INTERVAL 1 MONTH),
-                            bookItem.status = ?,
-                            books.hold = books.hold -1
+                            bookItem.status = ?
                     WHERE
                     bookItem.bookBarcode=?
                     AND bookItem.status =?

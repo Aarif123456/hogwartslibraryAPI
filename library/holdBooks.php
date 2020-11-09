@@ -33,7 +33,7 @@ if (checkSessionInfo() && validateUser()) {
     createHold($bookISBN, $holderID, $conn);
     // Reserve copy
     if (reserveCopy($bookISBN, $holderID, $courseID, $conn)) {
-       echo HOLD_READY_FOR_PICKUP;
+        echo HOLD_READY_FOR_PICKUP;
     } else {
         echo BOOK_PLACED_ON_HOLD;
     }
