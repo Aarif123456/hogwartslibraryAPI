@@ -21,10 +21,10 @@ if (checkSessionInfo() && validateLibrarian()) {
     $pay = $_POST['pay'];
     $librarianID = $_SESSION['userID'];
     verifySelfCheckout($librarianID, $pay);
-    if(payFine($pay, $userID, $conn)) {
+    if (payFine($pay, $userID, $conn)) {
         echo PAID_SUCCESSFULLY;
-    } else{
-         echo INTERNAL_SERVER_ERROR;
+    } else {
+        echo INTERNAL_SERVER_ERROR;
     }
 } else {
     redirectToLogin();
