@@ -15,7 +15,7 @@ define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to 
 define('BOOK_PLACED_ON_HOLD', 'Book was placed on hold.');
 define('BOOK_RENEW_FAILURE_DEBUG', 'Book also cannot be renewed if the book is not checked out to user');
 define('BOOK_RENEWED', 'Book renewed!');
-define('BOOX_MAXIMUM_RENEWED',  'Book has been renewed the maximum amount of times');
+define('BOOX_MAXIMUM_RENEWED', 'Book has been renewed the maximum amount of times');
 define('COMMAND_FAILED', 'Query failed to execute, ensure you use the correct values');
 define('COURSE_ADDED', 'course added!');
 define('COURSE_DELETED', 'course deleted!');

@@ -29,13 +29,15 @@ function renewBook($renewerID, $bookBarcode, $conn, $debug = false)
     $checkedOut = BOOK_CHECKED_OUT;
 
     try {
+        $success = false;
+
         return
             $conn->autocommit(false) &&
             /* calculating overdue fee if book is checked out */
             addOverdueFines($bookBarcode, $conn, $debug) &&
             /* Renew the book - change the new due date and increment renewal */
-            $stmt->bind_param("iiii", $renewerID, $bookBarcode, $maxRenewalTime, $checkedOut) &&
-            $stmt->execute() &&
+            ($success = $stmt->bind_param("iiii", $renewerID, $bookBarcode, $maxRenewalTime, $checkedOut) &&
+                        $stmt->execute()) &&
             $conn->affected_rows == 1 &&
             $conn->autocommit(true);
     } catch (Exception $e) {
