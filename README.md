@@ -267,8 +267,6 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
-### TODO Refactor the code for the following endpoints ###
-
 <details>
 <summary> Put a hold on a book</summary>
 
@@ -279,6 +277,18 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     4. httpie command:
 
 </details>
+
+<summary> Renew a book</summary>
+
+    1. Description: 
+    2. library/renewBook.php --> /api/library/renewBook
+    3. Parameter list:
+        Accepts POST variable: 
+    4. httpie command:
+
+</details>
+
+### TODO Refactor the code for the following endpoints ###
 
 <details>
 <summary> Cancel a hold</summary>
@@ -303,15 +313,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 </details>
 
 <details>
-<summary> Renew a book</summary>
 
-    1. Description: 
-    2. library/renewBook.php --> /api/library/renewBook
-    3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
-
-</details>
 
 <details>
 <summary> Professor reserves book copies for class </summary>
@@ -345,3 +347,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     4. httpie command:
 
 </details>
+
+## Potential changes ##
+It might make more sense to change the express designation to bookItem level instead of book level
+Also, need to add endpoint for addBooks, logout, closing account
