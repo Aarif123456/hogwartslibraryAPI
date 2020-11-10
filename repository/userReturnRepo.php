@@ -163,13 +163,23 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
 /* If lost book is found then return a portion of the money and mark book as available */
 function refundLostBook($bookBarcode, $conn, $debug = false)
 {
-    $query = "UPDATE bookItem, members, transactions
-            SET members.fines = members.fines-bookItem.price*?,
-            bookItem.status = ? 
-            WHERE bookItem.status= ? 
-            AND bookItem.bookBarcode=? 
-            AND transactions.bookBarcode=bookItem.bookBarcode
-            AND transactions.borrowedBy=members.memberID";
+    $query = "
+            UPDATE 
+                bookItem, 
+                members, 
+                transactions, 
+                books
+            SET 
+                members.fines = members.fines-bookItem.price*?,
+                bookItem.status = ?,
+                books.totalCopies =  books.totalCopies + 1
+            WHERE 
+                bookItem.status= ? 
+                AND bookItem.bookBarcode=? 
+                AND transactions.bookBarcode=bookItem.bookBarcode
+                AND transactions.borrowedBy=members.memberID
+                AND bookItem.bookISBN=books.bookISBN
+            ";
     $percentRefunded = REFUND_FOR_FOUND_BOOK;
     $bookAvailable = BOOK_AVAILABLE;
     $bookLost = BOOK_LOST;
