@@ -77,21 +77,22 @@ function updateReturnInfo($todayDate, $librarianID, $bookBarcode, $conn, $debug 
     $professorLimit = PROFESSOR_BOOK_LIMIT;
 
     $success = $stmt->bind_param(
-            "iisiiiii",
-            $bookAvailable,
-            $librarianID,
-            $todayDate,
-            $studentLimit,
-            $professorLimit,
-            $blacklisted,
-            $bookBarcode,
-            $bookCheckedOut
-        ) && $stmt->execute();
+        "iisiiiii",
+        $bookAvailable,
+        $librarianID,
+        $todayDate,
+        $studentLimit,
+        $professorLimit,
+        $blacklisted,
+        $bookBarcode,
+        $bookCheckedOut
+    );
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
-        echo debugQuery($conn->affected_rows, $success, "updateReturnInfo");
+        echo debugQuery($numRows, $success, "updateReturnInfo");
     }
 
-    return $conn->affected_rows == 3 && $success;
+    return $numRows == 3 && $success;
 }
 
 /* When the book get returned we check the holds table to see if the book has any holds, if it does we reserve this copy to 
@@ -144,17 +145,18 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
     $onHold = BOOK_ON_HOLD;
     $bookAvailable = BOOK_AVAILABLE;
     $success = $stmt->bind_param(
-            "iiiiiii",
-            $inQueue,                   // only target holds in waiting
-            $bookBarcode,               // primary key in bookItem used to handle reservation
-            $activeHold,                // Set hold status to active now that we have a copy
-            $bookBarcode,               // reserve the copy for the hold
-            $onHold,                    // change book status to ON_HOLD
-            $bookBarcode,               // make sure we only get one element from bookItem
-            $bookAvailable              // Make sure book is available
-        ) && $stmt->execute();
+        "iiiiiii",
+        $inQueue,                   // only target holds in waiting
+        $bookBarcode,               // primary key in bookItem used to handle reservation
+        $activeHold,                // Set hold status to active now that we have a copy
+        $bookBarcode,               // reserve the copy for the hold
+        $onHold,                    // change book status to ON_HOLD
+        $bookBarcode,               // make sure we only get one element from bookItem
+        $bookAvailable              // Make sure book is available
+    );
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
-        echo debugQuery($conn->affected_rows, $success, "reserveCopyForHolds");
+        echo debugQuery($numRows, $success, "reserveCopyForHolds");
     }
 
     return $success;
@@ -184,10 +186,11 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
     $bookAvailable = BOOK_AVAILABLE;
     $bookLost = BOOK_LOST;
     $stmt = $conn->prepare($query);
-    $success = $stmt->bind_param("diii", $percentRefunded, $bookAvailable, $bookLost, $bookBarcode) && $stmt->execute();
+    $success = $stmt->bind_param("diii", $percentRefunded, $bookAvailable, $bookLost, $bookBarcode);
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
-        echo debugQuery($conn->affected_rows, $success, "refundLostBook");
+        echo debugQuery($numRows, $success, "refundLostBook");
     }
 
-    return $conn->affected_rows == 2 && $success;
+    return $numRows == 2 && $success;
 }

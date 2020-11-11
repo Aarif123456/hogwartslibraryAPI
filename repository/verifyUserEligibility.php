@@ -3,12 +3,13 @@
 /* Imports */
 require_once 'error.php';
 
-/* For checkout, check blacklisted and if they have too many books for their user type*/
+/* Return true if user is blacklisted  */
 function checkUserBlacklisted($userID, $conn)
 {
     $stmt = $conn->prepare("SELECT memberID FROM members WHERE memberID=? and status=?");
     $blacklisted = ACCOUNT_BLACKLISTED;
     $stmt->bind_param("ii", $userID, $blacklisted);
+    $stmt->execute();
 
     return !(empty($stmt->num_rows));
 }

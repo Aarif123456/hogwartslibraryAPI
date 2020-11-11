@@ -19,14 +19,13 @@ define('CHECKOUT_UPDATE_FAILED', "Failed to update tables for checkout ");
 /* getting back the result of query as a JSON file */
 function getExecutedResult($stmt)
 {
-    //find all transaction
     $stmt->execute();
 
-    return $result = $stmt->get_result();
+    return $stmt->get_result();
 }
 
 /* Catch exception that are set by MYSQLI_REPORT_ALL  */
-function safeWriteQueries($stmt, $conn, $debug)
+function safeWriteQueries($stmt, $conn, $debug): bool
 {
     try {
         return $stmt->execute() && $stmt->close();
@@ -36,8 +35,40 @@ function safeWriteQueries($stmt, $conn, $debug)
         if ($debug) {
             debugPrint($e, $conn);
         }
-        exit(WRITE_QUERY_FAILED);
     }
+    exit(WRITE_QUERY_FAILED);
+}
+
+function safeUpdateQueries($stmt, $conn, $debug): bool
+{
+    try {
+        if ($stmt->execute() && $stmt->close()) {
+            return $conn->affected_rows;
+        }
+    } catch (Exception $e) {
+        /* remove all queries from queue if error (undo) */
+        $conn->rollback();
+        if ($debug) {
+            debugPrint($e, $conn);
+        }
+    }
+    exit(WRITE_QUERY_FAILED);
+}
+
+function safeInsertQueries($stmt, $conn, $debug): int
+{
+    try {
+        if ($stmt->execute() && $stmt->close()) {
+            return $conn->insert_id;
+        }
+    } catch (Exception $e) {
+        /* remove all queries from queue if error (undo) */
+        $conn->rollback();
+        if ($debug) {
+            debugPrint($e, $conn);
+        }
+    }
+    exit(WRITE_QUERY_FAILED);
 }
 
 function debugPrint($e, $conn)

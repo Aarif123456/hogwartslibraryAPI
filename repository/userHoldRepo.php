@@ -26,8 +26,7 @@ function holdExists($bookISBN, $holderID, $conn)
 {
     $holdStmt = $conn->prepare("SELECT * FROM holds WHERE bookISBN =? AND holderID =?");
     $holdStmt->bind_param("si", $bookISBN, $holderID);
-    $holdStmt->execute();
-    $holdResult = $holdStmt->get_result();
+    $holdResult = getExecutedResult($holdStmt);
 
     return $holdResult->num_rows != 0;
 }
@@ -43,7 +42,7 @@ function createHold($bookISBN, $holderID, $conn, $debug = false): bool
     return safeWriteQueries($stmt, $conn, $debug) && updateBooktable($bookISBN, $conn, $debug);
 }
 
-function updateBookTable($bookISBN, $conn, $debug): bool
+function updateBookTable($bookISBN, $conn, $debug = false): bool
 {
     $stmt = $conn->prepare(
         "UPDATE books SET holds=holds+1 WHERE bookISBN=?"
@@ -54,12 +53,13 @@ function updateBookTable($bookISBN, $conn, $debug): bool
 }
 
 /* Go through hold table and update book */
-function reserveCopy($bookISBN, $holderID, $courseID, $conn)
+function reserveCopy($bookISBN, $holderID, $courseID, $conn, $debug = false)
 {
     $stmt = $courseID ? getReserveCopyForCourse($bookISBN, $holderID, $courseID, $conn)
         : getReserveCopy($bookISBN, $holderID, $conn);
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
 
-    return $stmt->execute() && !empty($conn->affected_rows);
+    return !empty($numRows);
 }
 
 function getReserveCopyForCourse($bookISBN, $holderID, $courseID, $conn)

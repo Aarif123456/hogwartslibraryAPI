@@ -62,11 +62,11 @@ function checkOutBook($bookBarcode, $borrowedBy, $librarianID, $conn, $debug = f
     try {
         $conn->autocommit(false);
         /* create checkout transaction */
-        $id = createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $conn);
+        $id = createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $conn, $debug);
         /* Update information related to the transaction */
-        updateCheckOutInfo($id, $conn);
+        updateCheckOutInfo($id, $conn, $debug);
         /* Update hold table if we need */
-        updateHoldTable($id, $conn);
+        updateHoldTable($id, $conn, $debug);
         $conn->autocommit(true);
 
         return $id;
@@ -88,7 +88,7 @@ function checkOutBook($bookBarcode, $borrowedBy, $librarianID, $conn, $debug = f
         a. Not reserved for a class
         b. user in class the book is reserved For 
 */
-function createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $conn)
+function createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $conn, $debug = false)
 {
     $query = "INSERT INTO transactions (bookBarcode, borrowedBy, issuerID, borrowedDate, dueDate) 
         SELECT bookBarcode, 
@@ -142,8 +142,7 @@ function createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $con
         $readyForPickup,          // Ensure the book is waiting for pick up
         $bookBarcode              // Make sure we select the correct book in holds table
     );
-    $transactionStmt->execute();
-    $tranId = $conn->insert_id;
+    $tranId = safeInsertQueries($transactionStmt, $conn, $debug);
     if (empty($tranId)) {
         exit(CHECKOUT_FAILED);
     }
@@ -151,7 +150,7 @@ function createCheckOutTransaction($bookBarcode, $borrowedBy, $librarianID, $con
     return $tranId;
 }
 
-function updateCheckOutInfo($id, $conn)
+function updateCheckOutInfo($id, $conn, $debug = false)
 {
     $updateQuery = "UPDATE members, bookItem, transactions
         SET bookItem.status = ?,
@@ -163,13 +162,13 @@ function updateCheckOutInfo($id, $conn)
     $checkOutStmt = $conn->prepare($updateQuery);
     $bookCheckedOut = BOOK_CHECKED_OUT;
     $checkOutStmt->bind_param("ii", $bookCheckedOut, $id);
-    $checkOutStmt->execute();
-    if ($conn->affected_rows != 2) {
+    $numRows = safeUpdateQueries($checkOutStmt, $conn, $debug);
+    if ($numRows != 2) {
         exit(CHECKOUT_UPDATE_FAILED);
     }
 }
 
-function updateHoldTable($id, $conn)
+function updateHoldTable($id, $conn, $debug = false)
 {
     $updateQuery = "
                     UPDATE holds 
@@ -186,6 +185,6 @@ function updateHoldTable($id, $conn)
     $holdCompleted = HOLD_COMPLETED;
     $readyForPickup = HOLD_IN_QUEUE;
     $checkOutStmt->bind_param("iii", $holdCompleted, $readyForPickup, $id);
-    $checkOutStmt->execute();
+    safeWriteQueries($checkOutStmt, $conn, $debug);
 }
 

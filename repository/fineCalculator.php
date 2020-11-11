@@ -19,9 +19,10 @@ function addOverdueFines($bookBarcode, $conn, $debug = false)
     );
     $finePerBookOverdue = FINE_PER_DAY_OVERDUE;
     $bookCheckedOut = BOOK_CHECKED_OUT;
-    $success = $stmt->bind_param("dii", $finePerBookOverdue, $bookBarcode, $bookCheckedOut) && $stmt->execute();
+    $success = $stmt->bind_param("dii", $finePerBookOverdue, $bookBarcode, $bookCheckedOut);
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
-        echo debugQuery($conn->affected_rows, $success, "addOverdueFines");
+        echo debugQuery($numRows, $success, "addOverdueFines");
     }
 
     return $success;
