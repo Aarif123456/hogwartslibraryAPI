@@ -15,7 +15,7 @@ define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to 
 define('BOOK_PLACED_ON_HOLD', 'Book was placed on hold.');
 define('BOOK_RENEW_FAILURE_DEBUG', 'Book also cannot be renewed if the book is not checked out to user');
 define('BOOK_RENEWED', 'Book renewed!');
-define('BOOX_MAXIMUM_RENEWED', 'Book has been renewed the maximum amount of times');
+define('BOOK_MAXIMUM_RENEWED', 'Book has been renewed the maximum amount of times');
 define('COMMAND_FAILED', 'Query failed to execute, ensure you use the correct values');
 define('COURSE_ADDED', 'course added!');
 define('COURSE_DELETED', 'course deleted!');
@@ -23,7 +23,9 @@ define('ENROLLMENT_ADDED', 'Student enrolled in course');
 define('ENROLLMENT_DELETED', 'course enrollment deleted!');
 define('HEADMASTER_ADDED', 'Headmaster added');
 define('HEADMASTER_VERIFY_FAIL', 'Invalid password cannot reset user password');
+define('HOLD_CANCELLED_RETURN', 'Hold cancelled.');
 define('HOLD_EXISTS', 'User already has an active hold on the book');
+define('HOLD_NOT_EXISTS', 'Hold does not exist""Hold does not exist');
 define(
     'HOLD_READY_FOR_PICKUP',
     'A copy of the book is reserved for you at the library. Please pick it within a month.'

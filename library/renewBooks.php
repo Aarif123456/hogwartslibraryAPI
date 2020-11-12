@@ -28,7 +28,7 @@ if (checkSessionInfo() && validateUser()) {
     if (renewBook($renewerID, $bookBarcode, $conn, $debug)) {
         echo BOOK_RENEWED;
     } else {
-        echo BOOX_MAXIMUM_RENEWED;
+        echo BOOK_MAXIMUM_RENEWED;
         if ($debug) {
             echo BOOK_RENEW_FAILURE_DEBUG;
         }
