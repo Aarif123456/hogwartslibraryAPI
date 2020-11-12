@@ -39,8 +39,9 @@ function cancelHold($holdID, $holderID, $conn, $debug = false)
         $holdActive,
         $holdInQueue
     );
+    $numRows = safeUpdateQueries($stmt, $conn, $debug);
 
-    return ($numRows = safeUpdateQueries($stmt, $conn, $debug)) && !empty($numRows);
+    return $numRows === 3;
 }
 
 /* Reserve newly freed copy to user next in line for holds */

@@ -25,7 +25,7 @@ define('HEADMASTER_ADDED', 'Headmaster added');
 define('HEADMASTER_VERIFY_FAIL', 'Invalid password cannot reset user password');
 define('HOLD_CANCELLED_RETURN', 'Hold cancelled.');
 define('HOLD_EXISTS', 'User already has an active hold on the book');
-define('HOLD_NOT_EXISTS', 'Hold does not exist""Hold does not exist');
+define('HOLD_NOT_EXISTS', 'Hold does not exist');
 define(
     'HOLD_READY_FOR_PICKUP',
     'A copy of the book is reserved for you at the library. Please pick it within a month.'

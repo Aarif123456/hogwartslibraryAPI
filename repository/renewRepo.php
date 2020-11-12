@@ -59,6 +59,6 @@ function renewBookQuery($renewerID, $bookBarcode, $conn, $debug = false): bool
         echo debugQuery($numRows, $success, "renewBookQuery");
     }
 
-    return $success && $numRows == 1;
+    return $success && $numRows === 1;
 }
 

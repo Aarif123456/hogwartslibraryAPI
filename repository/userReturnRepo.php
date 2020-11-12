@@ -92,7 +92,7 @@ function updateReturnInfo($todayDate, $librarianID, $bookBarcode, $conn, $debug 
         echo debugQuery($numRows, $success, "updateReturnInfo");
     }
 
-    return $numRows == 3 && $success;
+    return $numRows === 3 && $success;
 }
 
 /* When the book get returned we check the holds table to see if the book has any holds, if it does we reserve this copy to 
@@ -179,6 +179,7 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
                 bookItem.status= ? 
                 AND bookItem.bookBarcode=? 
                 AND transactions.bookBarcode=bookItem.bookBarcode
+                AND transactions.returnDate IS NULL
                 AND transactions.borrowedBy=members.memberID
                 AND bookItem.bookISBN=books.bookISBN
             ";
@@ -192,5 +193,5 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
         echo debugQuery($numRows, $success, "refundLostBook");
     }
 
-    return $numRows == 2 && $success;
+    return $success && $numRows === 3 && reserveCopyForHolds($bookBarcode, $conn, $debug);
 }
