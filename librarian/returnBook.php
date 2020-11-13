@@ -21,12 +21,13 @@ if (checkSessionInfo() && validateLibrarian()) {
     $todayDate = date("Y-m-d");
     $bookBarcode = $_POST['bookBarcode'];
     $librarianID = $_SESSION['userID'];
+    $debug = false;
     /* If book is marked as lost then change book status and update member to refund 85% of their money */
-    if (refundLostBook($bookBarcode, $conn)) {
+    if (refundLostBook($librarianID, $bookBarcode, $conn, $debug)) {
         echo BOOK_FOUND;
         echo '<br>';
     } else {
-        if (!returnBook($todayDate, $librarianID, $bookBarcode, $conn)) {
+        if (!returnBook($todayDate, $librarianID, $bookBarcode, $conn, $debug)) {
             echo(RETURN_FAILED);
         } else {
             echo successfulReturn($todayDate, $bookBarcode);

@@ -12,10 +12,11 @@ error_reporting(E_ALL);
 /* constants */
 define('BOOK_FOUND', 'The book is now found!!!');
 define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
+define('BOOK_LOST_RETURN', 'Book is has successfully been reported as lost');
+define('BOOK_MAXIMUM_RENEWED', 'Book has been renewed the maximum amount of times');
 define('BOOK_PLACED_ON_HOLD', 'Book was placed on hold.');
 define('BOOK_RENEW_FAILURE_DEBUG', 'Book also cannot be renewed if the book is not checked out to user');
 define('BOOK_RENEWED', 'Book renewed!');
-define('BOOK_MAXIMUM_RENEWED', 'Book has been renewed the maximum amount of times');
 define('COMMAND_FAILED', 'Query failed to execute, ensure you use the correct values');
 define('COURSE_ADDED', 'course added!');
 define('COURSE_DELETED', 'course deleted!');
@@ -32,7 +33,6 @@ define(
 );
 define('INTERNAL_SERVER_ERROR', 'something went wrong:(');
 define('INVALID_CHART', 'Invalid chart type');
-define('INVALID_COMMAND', 'No command with set parameter exist in endpoint');
 define('INVALID_LIST', 'Invalid list type');
 define('INVALID_PARAMETERS', 'Parameter do no have expected type');
 define('INVALID_PASSCODE', 'Invalid passcode.');
@@ -40,6 +40,7 @@ define('INVALID_PASSWORD', 'Invalid password.');
 define('INVALID_SEARCH_METHOD', 'Invalid search method');
 define('LIBRARIAN_DELETED', 'Librarian deactivated');
 define('MISSING_PARAMETERS', 'Missing value');
+define('NO_AVAILABLE_COPIES_TO_RESERVE', 'there are no available copies to reserve for this book:(');
 define('NO_BOOK_MATCHED', 'no book was selected');
 define('NO_ROWS_RETURNED', 'No rows');
 define('PAID_SUCCESSFULLY', 'The fine is paid');
@@ -49,6 +50,7 @@ define(
     'Query failed please check the integrity of the database as well as the PHP commands used to run the query'
 );
 define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
+define('RESERVATION_DELETED', 'book reservation deleted');
 define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
 define('STUDENT_ADDED', 'Student added');
 define('UNAUTHORIZED_NO_LOGIN', 'not logged in!');
@@ -59,7 +61,6 @@ define('USER_LIMIT_REACHED', "User has reached their limit. They need to return 
 define('USERNAME_EXISTS', 'Username is taken');
 define('USERNAME_NOT_IN_TABLE', 'Username not taken');
 define('VALID_PASSWORD', 'Password is valid!');
-
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */

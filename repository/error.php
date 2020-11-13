@@ -39,11 +39,17 @@ function safeWriteQueries($stmt, $conn, $debug): bool
     exit(WRITE_QUERY_FAILED);
 }
 
-function safeUpdateQueries($stmt, $conn, $debug): bool
+function safeUpdateQueries($stmt, $conn, $debug): int
 {
     try {
-        if ($stmt->execute() && $stmt->close()) {
-            return $conn->affected_rows;
+        if ($stmt->execute()) {
+            $num = $conn->affected_rows;
+            $stmt->close();
+            if ($debug) {
+                echo $conn->info . '<br />';
+            }
+
+            return $num;
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
@@ -58,8 +64,11 @@ function safeUpdateQueries($stmt, $conn, $debug): bool
 function safeInsertQueries($stmt, $conn, $debug): int
 {
     try {
-        if ($stmt->execute() && $stmt->close()) {
-            return $conn->insert_id;
+        if ($stmt->execute()) {
+            $num = $conn->insert_id;
+            $stmt->close();
+
+            return $num;
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */

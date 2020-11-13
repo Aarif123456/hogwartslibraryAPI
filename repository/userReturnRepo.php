@@ -163,8 +163,9 @@ function reserveCopyForHolds($bookBarcode, $conn, $debug = false)
 }
 
 /* If lost book is found then return a portion of the money and mark book as available */
-function refundLostBook($bookBarcode, $conn, $debug = false)
+function refundLostBook($librarianID, $bookBarcode, $conn, $debug = false)
 {
+    // TODO If this moves user out of blacklist zone then change status
     $query = "
             UPDATE 
                 bookItem, 
@@ -174,10 +175,12 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
             SET 
                 members.fines = members.fines-bookItem.price*?,
                 bookItem.status = ?,
-                books.totalCopies =  books.totalCopies + 1
+                books.totalCopies =  books.totalCopies + 1,
+                transactions.returnDate = CURDATE(),
+                transactions.returnerID = ?
             WHERE 
-                bookItem.status= ? 
-                AND bookItem.bookBarcode=? 
+                bookItem.status = ? 
+                AND bookItem.bookBarcode = ?  
                 AND transactions.bookBarcode=bookItem.bookBarcode
                 AND transactions.returnDate IS NULL
                 AND transactions.borrowedBy=members.memberID
@@ -187,11 +190,18 @@ function refundLostBook($bookBarcode, $conn, $debug = false)
     $bookAvailable = BOOK_AVAILABLE;
     $bookLost = BOOK_LOST;
     $stmt = $conn->prepare($query);
-    $success = $stmt->bind_param("diii", $percentRefunded, $bookAvailable, $bookLost, $bookBarcode);
+    $success = $stmt->bind_param(
+        "diiii",
+        $percentRefunded,
+        $bookAvailable,
+        $librarianID,
+        $bookLost,
+        $bookBarcode
+    );
     $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
         echo debugQuery($numRows, $success, "refundLostBook");
     }
 
-    return $success && $numRows === 3 && reserveCopyForHolds($bookBarcode, $conn, $debug);
+    return $success && $numRows === 4 && reserveCopyForHolds($bookBarcode, $conn, $debug);
 }
