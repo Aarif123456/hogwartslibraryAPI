@@ -39,7 +39,7 @@ if (checkSessionInfo() && isset($_SESSION['userType'])) {
                     $conn->autocommit(true); //commit delete and insert
                 } elseif (isset($_POST['delete'])) { //in delete mode
                     $conn->autocommit(true); //commit delete
-                    echo "book reservation deleted";
+                    echo RESERVATION_DELETED;
                 } else { //failed too add
                     $conn->rollback(); //if we can't add then roll back
                     exit("Missing values... cannot add reservation");
@@ -75,8 +75,9 @@ function checkProf($userID, $courseID, $conn)
 
 function checkCopies($numCopies, $bookISBN, $conn)
 {
-    if ($numCopies > 10) { //can not reserve more than 10 copies
-        $numCopies = 10;
+    //can not reserve more than MAXIMUM_COPIES_RESERVED copies
+    if ($numCopies > MAXIMUM_COPIES_RESERVED) {
+        $numCopies = MAXIMUM_COPIES_RESERVED;
     }
     if ($numCopies < 1) {
         $numCopies = 1;
@@ -90,7 +91,7 @@ function checkCopies($numCopies, $bookISBN, $conn)
         exit("this course does not exist");
     }
     if ($result['num'] <= 0) {
-        exit("there are no available copies to reserve for this book:(");
+        exit(NO_AVAILABLE_COPIES_TO_RESERVE);
     }
 
     return ($result['num'] <= $numCopies) ? $result['num'] : $numCopies;
@@ -103,15 +104,6 @@ function deleteReservation($courseID, $bookISBN, $conn)
     $deleteStmt->execute();
 }
 
-function addReservation($courseID, $bookISBN, $numCopies, $conn)
-{
-    $reserveStmt = $conn->prepare(
-        "UPDATE bookItem SET reservedFor = ? WHERE reservedFor IS NULL AND bookISBN = ? LIMIT ?"
-    );
-    $reserveStmt->bind_param("isi", $courseID, $bookISBN, $numCopies);
-    $reserveStmt->execute();
-    echo "book successfully reserved $numCopies copies";
-}
 
 
 

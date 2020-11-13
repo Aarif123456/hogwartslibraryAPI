@@ -34,3 +34,12 @@ if (checkSessionInfo() && validateUser()) {
 $conn->close();
 
 
+function addReservation($courseID, $bookISBN, $numCopies, $conn)
+{
+    $reserveStmt = $conn->prepare(
+        "UPDATE bookItem SET reservedFor = ? WHERE reservedFor IS NULL AND bookISBN = ? LIMIT ?"
+    );
+    $reserveStmt->bind_param("isi", $courseID, $bookISBN, $numCopies);
+    $reserveStmt->execute();
+    echo addedReservationReturn($bookISBN, $numCopies);
+}
