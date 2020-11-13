@@ -45,7 +45,7 @@ function cancelHold($holdID, $holderID, $conn, $debug = false)
 }
 
 /* Reserve newly freed copy to user next in line for holds */
-function reserveHoldCopy($holdID, $holderID, $conn, $debug = false)
+function reserveHoldCopy($holdID, $conn, $debug = false)
 {
     $query =
         "

@@ -30,7 +30,7 @@ if (checkSessionInfo() && validateUser()) {
         exit(HOLD_NOT_EXISTS);
     }
 
-    if (!reserveHoldCopy($holdID, $holderID, $conn, $debug)) {
+    if (!reserveHoldCopy($holdID, $conn, $debug)) {
         exit(INTERNAL_SERVER_ERROR);
     }
     echo HOLD_CANCELLED_RETURN;
