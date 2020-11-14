@@ -1,6 +1,7 @@
 <?php
 
 /* Imports */
+require_once 'reservationHelper.php';
 require_once '../config/apiReturn.php';
 require_once '../config/constants.php';
 require_once '../config/authenticate.php';
@@ -18,12 +19,18 @@ if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN') && isValidPostVar
 }
 
 if (checkSessionInfo() && validateUser()) {
+    $debug = false;
     $bookISBN = $_POST['bookISBN'];
     $courseID = $_POST['courseID'];
     $numCopies = $_POST['numCopies'];
-    $professorID = /* TODO From session if prof otherwise get from post if librarian */;
-    if (insertReservation($courseID, $bookISBN, $conn)) {
-        echo addedReservationReturn($bookISBN, $numCopies);
+    $professorID = getProfessorID();
+    if (!deleteReservation($professorID, $courseID, $bookISBN, $conn, $debug)) {
+        exit(RESERVATION_RESET_FAILED);
+    }
+    $actuallyReserved = insertReservation($courseID, $bookISBN, $professorID, $numCopies, $conn, $debug);
+    if ($actuallyReserved > 0) {
+        /* TODO add in warning if numCopies does not match actuallyReserved */
+        echo addedReservationReturn($bookISBN, $actuallyReserved);
     } else {
         echo COMMAND_FAILED;
     }
@@ -34,12 +41,3 @@ if (checkSessionInfo() && validateUser()) {
 $conn->close();
 
 
-function addReservation($courseID, $bookISBN, $numCopies, $conn)
-{
-    $reserveStmt = $conn->prepare(
-        "UPDATE bookItem SET reservedFor = ? WHERE reservedFor IS NULL AND bookISBN = ? LIMIT ?"
-    );
-    $reserveStmt->bind_param("isi", $courseID, $bookISBN, $numCopies);
-    $reserveStmt->execute();
-    echo addedReservationReturn($bookISBN, $numCopies);
-}
