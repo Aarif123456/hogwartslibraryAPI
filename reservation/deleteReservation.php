@@ -1,10 +1,12 @@
 <?php
 
 /* Imports */
+require_once 'reservationHelper.php';
 require_once '../config/apiReturn.php';
 require_once '../config/constants.php';
 require_once '../config/authenticate.php';
 require_once '../repository/database.php';
+require_once '../repository/manageReservationRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -12,98 +14,21 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && isset($_SESSION['userType'])) {
-    if (validateLibrarian()) {
-        if (!(isset($_POST['userID']))) {
-            exit("no user is selected");
-        }
-        $userID = $_POST['userID'];
-    } //not a librarian but a valid professor
-    elseif (validateProfessor() && !($_SESSION['librarian'])) {
-        $userID = $_SESSION['userID'];
+if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN'))) {
+    exit(MISSING_PARAMETERS);
+}
+
+if (checkSessionInfo() && validateUser()) {
+    $professorID = getProfessorID();
+    $debug = false;
+    $courseID = $_POST['courseID'];
+    $bookISBN = $_POST['bookISBN'];
+    if (deleteReservation($professorID, $courseID, $bookISBN, $conn, $debug)) {
+        echo RESERVATION_DELETED;
     } else {
-        redirectToLogin();
-    }
-    //Make sure we have all the info we need
-    if (isset($_POST['courseID']) && isset($_POST['bookISBN'])) {
-        $courseID = $_POST['courseID'];
-        $bookISBN = $_POST['bookISBN'];
-        if (checkProf($userID, $courseID, $conn)) {  //check if professor is teaching the course
-            try {
-                $conn->autocommit(false);
-                //delete reservations before inserting if it exists TODO - change to update
-                deleteReservation($courseID, $bookISBN, $conn);
-                if (isset($_POST['add']) && isset($_POST['numCopies'])) { //if in add mode
-                    $numCopies = checkCopies($_POST['numCopies'], $bookISBN, $conn);
-                    addReservation($courseID, $bookISBN, $numCopies, $conn);
-                    $conn->autocommit(true); //commit delete and insert
-                } elseif (isset($_POST['delete'])) { //in delete mode
-                    $conn->autocommit(true); //commit delete
-                    echo RESERVATION_DELETED;
-                } else { //failed too add
-                    $conn->rollback(); //if we can't add then roll back
-                    exit("Missing values... cannot add reservation");
-                }
-            } catch (Exception $e) {
-                $conn->rollback(); //remove all queries from queue if error (undo)
-                echo "Please enter a valid ISBN number";
-            }
-        } else {
-            exit("the professor is not teaching the course");
-        }
-    } else {
-        exit("not enough info to reserve");
+        exit(COMMAND_FAILED);
     }
 } else {
     redirectToLogin();
 }
 $conn->close();
-function checkProf($userID, $courseID, $conn)
-{
-    $profStmt = $conn->prepare("SELECT professorID FROM `courses` WHERE courseID =? AND professorID >0");
-    //find all transaction
-    $profStmt->bind_param("i", $courseID);
-    $profStmt->execute();
-    $result = $profStmt->get_result();
-    $result = $result->fetch_assoc();
-    if (!$result) {
-        exit("this course does not exist");
-    }
-
-    return $result['professorID'] == $userID;
-}
-
-function checkCopies($numCopies, $bookISBN, $conn)
-{
-    //can not reserve more than MAXIMUM_COPIES_RESERVED copies
-    if ($numCopies > MAXIMUM_COPIES_RESERVED) {
-        $numCopies = MAXIMUM_COPIES_RESERVED;
-    }
-    if ($numCopies < 1) {
-        $numCopies = 1;
-    }
-    $profStmt = $conn->prepare("SELECT Count(*) as num FROM bookItem WHERE bookISBN = ? AND reservedFor IS NULL");
-    $profStmt->bind_param("s", $bookISBN);
-    $profStmt->execute();
-    $result = $profStmt->get_result();
-    $result = $result->fetch_assoc();
-    if (!$result) {
-        exit("this course does not exist");
-    }
-    if ($result['num'] <= 0) {
-        exit(NO_AVAILABLE_COPIES_TO_RESERVE);
-    }
-
-    return ($result['num'] <= $numCopies) ? $result['num'] : $numCopies;
-}
-
-function deleteReservation($courseID, $bookISBN, $conn)
-{
-    $deleteStmt = $conn->prepare("UPDATE bookItem SET reservedFor = NULL WHERE `reservedFor` = ? AND `bookISBN` = ?");
-    $deleteStmt->bind_param("is", $courseID, $bookISBN);
-    $deleteStmt->execute();
-}
-
-
-
-
