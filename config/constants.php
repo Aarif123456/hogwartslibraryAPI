@@ -7,5 +7,3 @@ $defaultChart = [
     'student' => 'numBooksPerCategory',
     'professor' => 'activityPerMajorAndDepartment'
 ];
-
-define('MAXIMUM_COPIES_RESERVED', 10);

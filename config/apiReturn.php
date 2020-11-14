@@ -51,13 +51,13 @@ define(
 );
 define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
 define('RESERVATION_DELETED', 'book reservation deleted');
+define('RESERVATION_RESET_FAILED', 'Unable to reset old reservation. Failed to reserve books');
 define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
 define('STUDENT_ADDED', 'Student added');
 define('UNAUTHORIZED_NO_LOGIN', 'not logged in!');
 define('UNAUTHORIZED_NOT_OWNER', 'the book is not checked out to you');
 define('USER_BLACKLISTED', "user is blacklisted");
 define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
-define('USER_LIMIT_REACHED', "User has reached their limit. They need to return some books!");
 define('USERNAME_EXISTS', 'Username is taken');
 define('USERNAME_NOT_IN_TABLE', 'Username not taken');
 define('VALID_PASSWORD', 'Password is valid!');
