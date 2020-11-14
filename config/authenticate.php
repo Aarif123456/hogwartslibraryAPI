@@ -35,7 +35,7 @@ function redirectToLogin()
 {
     destroy_session_and_data();
     //header("Location: /login");
-    exit(); //in case the redirect didn't work
+    exit(UNAUTHORIZED_NO_LOGIN);
 }
 
 /* Utility functions to check user's type */
