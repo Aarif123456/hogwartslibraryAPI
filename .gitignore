@@ -23,3 +23,6 @@
 # for security
 /repository/loginConstants.php
 /config/secretKey.php
+
+# for composer
+/vendor/
