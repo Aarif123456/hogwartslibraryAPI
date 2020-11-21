@@ -11,7 +11,7 @@ require_once 'secretKey.php';
 /*Make sure user is validated */
 function validateUser()
 { //verify user did not fake authentication
-    $cookie = isset($_COOKIE['rememberMe']) ? $_COOKIE['rememberMe'] : '';
+    $cookie = $_COOKIE['rememberMe'] ?? '';
     if ($cookie) {
         [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
         if (!(hash_equals(hash_hmac('sha256', $userID . ':' . $token, SECRET_KEY), $mac))) {
@@ -85,10 +85,19 @@ function destroy_session_and_data()
 {
     $_SESSION = [];
     setcookie(session_name(), '', time() - 1, '/');
-    $cookie = isset($_COOKIE['rememberMe']) ? $_COOKIE['rememberMe'] : '';
+    $cookie = $_COOKIE['rememberMe'] ?? '';
     if ($cookie) {
         [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
-        setcookie('rememberMe', $userID . ':' . $token . ':' . $mac, time() - 1, '/');
+        setcookie(
+            'rememberMe',
+            $userID . ':' . $token . ':' . $mac,
+            time() - 1,
+            '/',
+            'arif115.myweb.cs.uwindsor.ca',
+            true,
+            true
+        );
+        unset($_COOKIE['rememberMe']);
     }
     session_destroy();
 }

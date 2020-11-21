@@ -12,12 +12,17 @@ requiredHeaderAndSessionStart();
 
 /* Connect to database */
 $conn = getConnection();
-
+/*$cookie = $_COOKIE['rememberMe'] ?? '';
+if ($cookie) {
+    exit(ALREADY_LOGGED_IN);
+}
 $_SESSION = [];
+*/
+
 unset($_COOKIE['rememberMe']);
 session_destroy();
 session_start();
-
+$_SESSION = [];
 if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('password')) {
     /* Store user type in session */
     $userType = trim($_POST['userType']);
@@ -41,10 +46,14 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
         storeUserAuthenticationInformation($row['userID']);
         echo VALID_PASSWORD;
     } else {
+        http_response_code(403);
+        header('HTTP/1.0 403 Forbidden');
         echo INVALID_PASSWORD;
     }
 } else {
     echo MISSING_PARAMETERS;
+
+
 }
 
 $conn->close();
@@ -61,9 +70,8 @@ function storeUserAuthenticationInformation($userID)
     $cookie = $userID . ':' . $token;
     $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
     $cookie .= ':' . $mac;
-    setcookie('rememberMe', $cookie, time() + (86400 * 30), "/");
+    setcookie('rememberMe', $cookie, time() + (86400 * 30), '/', 'arif115.myweb.cs.uwindsor.ca', true, true);
     $_SESSION['userID'] = $userID;
-    ob_end_flush();
 }
 
 

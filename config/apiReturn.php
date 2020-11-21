@@ -10,6 +10,7 @@ error_reporting(E_ALL);
 /* Define the strings the api will return  */
 
 /* constants */
+define('ALREADY_LOGGED_IN', 'ERROR: User is already logged in');
 define('BOOK_FOUND', 'The book is now found!!!');
 define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
 define('BOOK_LOST_RETURN', 'Book is has successfully been reported as lost');
@@ -36,12 +37,11 @@ define('INVALID_CHART', 'Invalid chart type');
 define('INVALID_LIST', 'Invalid list type');
 define('INVALID_PARAMETERS', 'Parameter do no have expected type');
 define('INVALID_PASSCODE', 'Invalid passcode.');
-define('INVALID_PASSWORD', 'Invalid password.');
+define('INVALID_PASSWORD', '{"success":false}');
 define('INVALID_SEARCH_METHOD', 'Invalid search method');
 define('LIBRARIAN_DELETED', 'Librarian deactivated');
 define('MISSING_PARAMETERS', 'Missing value');
 define('NO_AVAILABLE_COPIES_TO_RESERVE', 'there are no available copies to reserve for this book:(');
-define('NO_BOOK_MATCHED', 'no book was selected');
 define('NO_ROWS_RETURNED', 'No rows');
 define('PAID_SUCCESSFULLY', 'The fine is paid');
 define('PROFESSOR_ADDED', 'Professor added');
@@ -58,9 +58,10 @@ define('UNAUTHORIZED_NO_LOGIN', 'not logged in!');
 define('UNAUTHORIZED_NOT_OWNER', 'the book is not checked out to you');
 define('USER_BLACKLISTED', "user is blacklisted");
 define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
+define('USER_LOGGED_OUT', 'User has successfully logged out');
 define('USERNAME_EXISTS', 'Username is taken');
 define('USERNAME_NOT_IN_TABLE', 'Username not taken');
-define('VALID_PASSWORD', 'Password is valid!');
+define('VALID_PASSWORD', '{"success":true}');
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */
@@ -164,6 +165,7 @@ function createQueryJSON($result, $noRowReturn = NO_ROWS_RETURNED)
 function getHeader()
 {
     header('Access-Control-Allow-Origin: https://abdullaharif.tech');
+    // header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Credentials: true');
     header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
@@ -171,10 +173,19 @@ function getHeader()
 
 function startSession()
 {
-    session_cache_limiter('private_no_expire');
-    if (!session_id()) {
+   
+    $status = session_status();
+
+    if ( PHP_SESSION_DISABLED === $status ) {
+        // That's why you cannot rely on sessions!
+        return;
+    }
+
+    if ( PHP_SESSION_NONE === $status ) {
+        session_cache_limiter('private_no_expire');
         session_start();
     }
+
 }
 
 function requiredHeaderAndSessionStart()
