@@ -20,8 +20,9 @@ if (checkSessionInfo() && validateLibrarian($conn)) {
     $userID = $_POST['userID'];
     $pay = $_POST['pay'];
     $librarianID = $_SESSION['userID'];
+    $debug = DEBUG;
     verifySelfCheckout($librarianID, $pay);
-    if (payFine($pay, $userID, $conn)) {
+    if (payFine($pay, $userID, $conn, $debug)) {
         echo PAID_SUCCESSFULLY;
     } else {
         echo INTERNAL_SERVER_ERROR;

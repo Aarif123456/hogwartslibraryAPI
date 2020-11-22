@@ -15,9 +15,10 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $holderID = isLibrarian() ? $_POST['userID'] ?? "" : $_SESSION['userID'];
-    $bookISBN = $_POST['bookISBN'] ?? "";
-    $courseID = $_POST['courseID'] ?? "";
+    $holderID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $bookISBN = $_POST['bookISBN'] ?? '';
+    $courseID = $_POST['courseID'] ?? '';
+    $debug = DEBUG;
     if (empty($bookISBN) || empty($holderID)) {
         exit(MISSING_PARAMETERS);
     }
@@ -30,9 +31,9 @@ if (checkSessionInfo() && validateUser($conn)) {
         exit(HOLD_EXISTS);
     }
     // create entry in hold table
-    createHold($bookISBN, $holderID, $conn);
+    createHold($bookISBN, $holderID, $conn, $debug);
     // Reserve copy
-    if (reserveCopy($bookISBN, $holderID, $courseID, $conn)) {
+    if (reserveCopy($bookISBN, $holderID, $courseID, $conn, $debug)) {
         echo HOLD_READY_FOR_PICKUP;
     } else {
         echo BOOK_PLACED_ON_HOLD;

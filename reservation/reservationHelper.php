@@ -7,8 +7,8 @@ require_once '../config/authenticate.php';
 function getProfessorID(): int
 {
     if (isLibrarian()) {
-        return $_POST['userID'] ?? "";
+        return $_POST['userID'] ?? '';
     }
 
-    return isProfessor() ? $_SESSION['userID'] : "";
+    return isProfessor() ? $_SESSION['userID'] : '';
 }

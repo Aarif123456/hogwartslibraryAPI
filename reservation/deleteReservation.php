@@ -20,7 +20,7 @@ if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN'))) {
 
 if (checkSessionInfo() && validateUser($conn)) {
     $professorID = getProfessorID();
-    $debug = false;
+    $debug = DEBUG;
     $courseID = $_POST['courseID'];
     $bookISBN = $_POST['bookISBN'];
     if (deleteReservation($professorID, $courseID, $bookISBN, $conn, $debug)) {

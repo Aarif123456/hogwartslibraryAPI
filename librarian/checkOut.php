@@ -20,14 +20,15 @@ if (checkSessionInfo() && validateLibrarian($conn)) {
     $bookBarcode = $_POST['bookBarcode'];
     $borrowedBy = $_POST['borrowedBy'];
     $librarianID = $_SESSION['userID'];
+    $debug = DEBUG;
     verifySelfCheckout($librarianID, $borrowedBy);
     /* Make sure user is not blacklisted or above their limit */
     $blackListLimitResult = checkUserEligibleForCheckout($borrowedBy, $conn);
-    if (empty($blackListLimitResult)) {
+    if (empty(count($blackListLimitResult))) {
         exit(USER_INELIGIBLE_FOR_CHECKOUT);
     }
     /* Check out book if valid */
-    if (!checkOutBook($bookBarcode, $borrowedBy, $librarianID, $conn)) {
+    if (!checkOutBook($bookBarcode, $borrowedBy, $librarianID, $conn, $debug)) {
         exit(BOOK_INELIGIBLE_FOR_CHECKOUT);
     }
     echo successfulCheckout($bookBarcode, $borrowedBy, $librarianID);

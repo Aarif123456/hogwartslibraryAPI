@@ -8,7 +8,8 @@ $conn = getConnection();
 
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $userID = (int)$_POST['userID'];
-    if (insertLibrarian($userID, $conn)) {
+    $debug = DEBUG;
+    if (insertLibrarian($userID, $conn, $debug)) {
         echo librarianCreated($userID);
     } else {
         echo COMMAND_FAILED;

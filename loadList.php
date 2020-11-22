@@ -19,7 +19,7 @@ if (!(isValidPostVar('listType'))) {
 $result = null;
 if (checkSessionInfo() && validateUser($conn)) {
     $userType = trim($_SESSION['userType']);
-    $listType = $_POST['listType'] ?? "";
+    $listType = $_POST['listType'] ?? '';
     if (isLibrarian()) {
         $result = getLibrarianListResults($listType, $conn);
     } else {

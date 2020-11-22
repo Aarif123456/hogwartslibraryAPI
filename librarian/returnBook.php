@@ -18,10 +18,10 @@ if (!(isValidPostVar('bookBarcode'))) {
 }
 
 if (checkSessionInfo() && validateLibrarian($conn)) {
-    $todayDate = date("Y-m-d");
+    $todayDate = date('Y-m-d');
     $bookBarcode = $_POST['bookBarcode'];
     $librarianID = $_SESSION['userID'];
-    $debug = false;
+    $debug = DEBUG;
     /* If book is marked as lost then change book status and update member to refund 85% of their money */
     if (refundLostBook($librarianID, $bookBarcode, $conn, $debug)) {
         echo BOOK_FOUND;

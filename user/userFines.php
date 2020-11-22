@@ -15,7 +15,7 @@ $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
     $userID = $_SESSION['userID'];
-    $listType = $_REQUEST['listType'] ?? "";
+    $listType = $_REQUEST['listType'] ?? '';
     $result = getUserFines($userID, $listType, $conn);
     if (empty($result)) {
         exit(INVALID_LIST);

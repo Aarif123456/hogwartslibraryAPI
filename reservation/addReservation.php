@@ -19,7 +19,7 @@ if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN') && isValidPostVar
 }
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $debug = false;
+    $debug = DEBUG;
     $bookISBN = $_POST['bookISBN'];
     $courseID = $_POST['courseID'];
     $numCopies = $_POST['numCopies'];

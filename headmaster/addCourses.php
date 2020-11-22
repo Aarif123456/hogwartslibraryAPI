@@ -21,7 +21,8 @@ if (checkSessionInfo() && validateHeadmaster($conn)) {
     $professorID = $_POST['professorID'];
     $courseName = $_POST['courseName'];
     $termOffered = isValidPostVar('TermOffered') ?? null;
-    if (insertCourse($courseName, $professorID, $termOffered, $conn)) {
+    $debug = DEBUG;
+    if (insertCourse($courseName, $professorID, $termOffered, $conn, $debug)) {
         echo COURSE_ADDED;
     } else {
         echo COMMAND_FAILED;

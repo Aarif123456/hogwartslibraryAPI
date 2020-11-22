@@ -20,7 +20,8 @@ if (!(isValidPostVar('courseID') && isValidPostVar('studentID'))) {
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $courseID = $_POST['courseID'];
     $studentID = $_POST['studentID'];
-    if (insertEnrollment($studentID, $courseID, $conn)) {
+    $debug = DEBUG;
+    if (insertEnrollment($studentID, $courseID, $conn, $debug)) {
         echo ENROLLMENT_ADDED;
     } else {
         echo COMMAND_FAILED;

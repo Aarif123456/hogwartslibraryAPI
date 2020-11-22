@@ -16,7 +16,7 @@ $conn = getConnection();
 /* Code starts */
 if (isValidPostVar('username')) {
     $result = queryUsername($_POST['username'], $conn);
-    if ($result->num_rows == 0) {
+    if (count($result) == 0) {
         echo USERNAME_NOT_IN_TABLE;
     } else {
         echo USERNAME_EXISTS;

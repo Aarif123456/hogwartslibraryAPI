@@ -20,7 +20,8 @@ if (!(isValidPostVar('enrollmentNumber'))) {
 
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $enrollmentNumber = $_POST['enrollmentNumber'];
-    if (deleteEnrollment($enrollmentNumber, $conn)) {
+    $debug = DEBUG;
+    if (deleteEnrollment($enrollmentNumber, $conn, $debug)) {
         echo ENROLLMENT_DELETED;
     } else {
         echo COMMAND_FAILED;

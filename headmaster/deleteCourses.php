@@ -19,7 +19,8 @@ if (!(isValidPostVar('courseID'))) {
 
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $courseID = $_POST['courseID'];
-    if (deleteCourse($courseID, $conn)) {
+    $debug = DEBUG;
+    if (deleteCourse($courseID, $conn, $debug)) {
         echo COURSE_DELETED;
     } else {
         echo COMMAND_FAILED;

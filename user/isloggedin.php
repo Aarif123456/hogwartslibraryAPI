@@ -13,8 +13,8 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
-    echo "true";
+    echo 'true';
 } else {
-    echo "false";
+    echo 'false';
 }
 

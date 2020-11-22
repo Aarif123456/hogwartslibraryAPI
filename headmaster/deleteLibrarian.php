@@ -15,7 +15,8 @@ if (!(is_numeric($_POST['userID']))) {
 
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $userID = (int)$_POST['userID'];
-    if (deleteLibrarian($userID, $conn)) {
+    $debug = DEBUG;
+    if (deleteLibrarian($userID, $conn, $debug)) {
         echo LIBRARIAN_DELETED;
     } else {
         echo COMMAND_FAILED;

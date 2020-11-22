@@ -23,15 +23,15 @@ if (!(isValidPostVar('uID') && isValidPostVar('uPassword')
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $developerPassword = $_POST['developerPassword'];
     $developerID = $_SESSION['userID'];
-    $result = queryDeveloperPassword($developerID, $conn);
-    $row = $result->fetch_assoc();
+    $rows = queryDeveloperPassword($developerID, $conn);
     $password = $_POST['uPassword'];
     $uID = $_POST['uID'];
+    $debug = DEBUG;
     /* Make sure the password is correct */
-    if ($result->num_rows != 0 && password_verify($developerPassword, $row['password'])) {
+    if (count($rows) && password_verify($developerPassword, $rows[0]['password'])) {
         /* Reset invalid password count, because admin entered the correct password */
         $_SESSION['invalidPasswordCount'] = 0;
-        if (resetQuery($uID, $password, $conn)) {
+        if (resetQuery($uID, $password, $conn, $debug)) {
             echo passwordReset($uID);
         }
     } else {

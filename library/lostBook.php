@@ -20,7 +20,7 @@ if (!(isValidPostVar('bookBarcode'))) {
 if (checkSessionInfo() && validateUser($conn)) {
     $userID = $_SESSION['userID'];
     $bookBarcode = $_POST['bookBarcode'];
-    $debug = false;
+    $debug = DEBUG;
     if (reportLostBook($userID, $bookBarcode, $conn, $debug)) {
         echo(BOOK_LOST_RETURN);
     } else {
