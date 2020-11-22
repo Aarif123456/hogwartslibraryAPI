@@ -6,11 +6,10 @@ require_once 'error.php';
 /* Return true if user is blacklisted  */
 function checkUserBlacklisted($userID, $conn)
 {
-    $stmt = $conn->prepare("SELECT memberID FROM members WHERE memberID=? and status=?");
-    $blacklisted = ACCOUNT_BLACKLISTED;
-    $stmt->bind_param("ii", $userID, $blacklisted);
-    $stmt->execute();
+    $stmt = $conn->prepare('SELECT memberID FROM members WHERE memberID=:id and status=:blacklisted');
+    $stmt->bindValue(':id', $userID, PDO::PARAM_INT);
+    $stmt->bindValue(':blacklisted', ACCOUNT_BLACKLISTED, PDO::PARAM_INT);
 
-    return !(empty($stmt->num_rows));
+    return !(empty(count(getExecutedResult($stmt))));
 }
 

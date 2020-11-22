@@ -33,7 +33,9 @@ function safeWriteQueries($stmt, $conn, $debug): bool
         return $stmt->execute() && $stmt->closeCursor();
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        $conn->rollback();
+        if($conn->inTransaction()) {
+            $conn->rollback();
+        }
         if ($debug) {
             debugPrint($e, $conn);
         }
@@ -45,7 +47,7 @@ function safeUpdateQueries($stmt, $conn, $debug): int
 {
     try {
         if ($stmt->execute()) {
-            $num = $conn->rowCount();
+            $num = $stmt->rowCount();
             $stmt->closeCursor();
             if ($debug) {
                 echo json_encode($conn->errorInfo()) . '<br />';
@@ -55,7 +57,9 @@ function safeUpdateQueries($stmt, $conn, $debug): int
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        $conn->rollback();
+        if($conn->inTransaction()) {
+            $conn->rollback();
+        }
         if ($debug) {
             debugPrint($e, $conn);
         }
@@ -74,7 +78,9 @@ function safeInsertQueries($stmt, $conn, $debug): int
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        $conn->rollback();
+        if($conn->inTransaction()) {
+            $conn->rollback();
+        }
         if ($debug) {
             debugPrint($e, $conn);
         }

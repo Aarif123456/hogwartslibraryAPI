@@ -1,11 +1,11 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
-require_once '../repository/userReturnRepo.php';
+require_once __DIR__ .'/../config/apiReturn.php';
+require_once __DIR__ .'/../config/constants.php';
+require_once __DIR__ .'/../config/authenticate.php';
+require_once __DIR__ .'/../repository/database.php';
+require_once __DIR__ .'/../repository/userReturnRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -20,14 +20,19 @@ if (!(isValidPostVar('bookBarcode'))) {
 if (checkSessionInfo() && validateLibrarian($conn)) {
     $todayDate = date('Y-m-d');
     $bookBarcode = $_POST['bookBarcode'];
-    $librarianID = $_SESSION['userID'];
+    $librarianID = getUserID($conn);
+    $parameter = (object)[
+        'todayDate' => $todayDate,
+        'bookBarcode' => $bookBarcode,
+        'librarianID' => $librarianID
+    ];
     $debug = DEBUG;
     /* If book is marked as lost then change book status and update member to refund 85% of their money */
-    if (refundLostBook($librarianID, $bookBarcode, $conn, $debug)) {
+    if (refundLostBook($parameter, $conn, $debug)) {
         echo BOOK_FOUND;
         echo '<br>';
     } else {
-        if (!returnBook($todayDate, $librarianID, $bookBarcode, $conn, $debug)) {
+        if (!returnBook($parameter, $conn, $debug)) {
             echo(RETURN_FAILED);
         } else {
             echo successfulReturn($todayDate, $bookBarcode);

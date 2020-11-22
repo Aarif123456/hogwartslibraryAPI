@@ -44,8 +44,9 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
         // IF user is a student we need parameter of house and major
         // If professor we need department
         userType (valid values) : professor, student, headmaster
-        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/addUser username='JKRowling' password='whats in a dream' userType='professor'  fname='Joanne' lname='Rowling' department='English' passcode='ENTER_THE_PASSCODE'
+        
     4. httpie command:
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/addUser username='JKRowling' password='whats in a dream' userType='professor'  fname='Joanne' lname='Rowling' department='English' passcode='ENTER_THE_PASSCODE'
    
 *Note: it might make sense to separate the endpoints for different user types.*
 </details>
@@ -241,7 +242,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Check out book</summary>
 
-    1. Description: 
+    1. Description: Endpoint used by librarian's to checkout book to users
     2. librarian/checkOut.php --> /api/librarian/checkOut
     3. Parameter list:
         Accepts POST variable: 
@@ -252,11 +253,12 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Return book </summary>
 
-    1. Description: 
+    1. Description:  Endpoint used by librarian's to return book for users. When book is returned we add fine to the user's account, store the librarian who returned the book. We also decrement the numberOfBooks on the members account. And, if the book is on hold, we reserve the book to the first user in line.
     2. librarian/returnBook.php --> /api/librarian/returnBook
-    3. Parameter list:
-        Accepts POST variable: 
+    3. Parameter list: 
+        Accepts POST variable: bookBarcode
     4. httpie command:
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/librarian/returnBook bookBarcode=
 
 </details>
 
