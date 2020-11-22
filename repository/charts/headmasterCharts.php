@@ -13,7 +13,7 @@ function getHeadmasterCharts($chartType)
             /* user and teacher active and inactive */
             return "SELECT 'active: professors' AS userCategory,COUNT(*) AS cnt FROM transactions INNER JOIN professor ON borrowedBy  = professorID WHERE borrowedDate >DATE_SUB(NOW(),INTERVAL 1 YEAR) UNION SELECT 'active: students' AS userCategory,COUNT(*) AS cnt FROM transactions INNER JOIN students ON borrowedBy = studentID WHERE borrowedDate >DATE_SUB(NOW(),INTERVAL 1 YEAR) UNION SELECT 'inactive: professors' AS userCategory,COUNT(*) AS cnt FROM transactions RIGHT OUTER JOIN professor ON borrowedBy = professorID WHERE borrowedBy IS NULL OR borrowedDate <DATE_SUB(NOW(),INTERVAL 1 YEAR) UNION SELECT 'inactive: students' AS userCategory,COUNT(*) AS cnt FROM transactions RIGHT OUTER JOIN students ON borrowedBy  = studentID WHERE borrowedBy IS NULL OR borrowedDate <DATE_SUB(NOW(),INTERVAL 1 YEAR)";
         default:
-            return "";
+            return '';
     }
 }
 
