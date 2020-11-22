@@ -11,8 +11,8 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if(logout($conn)){
+if (logout($conn)) {
     echo USER_LOGGED_OUT;
-} else{
+} else {
     exit(INTERNAL_SERVER_ERROR);
 }

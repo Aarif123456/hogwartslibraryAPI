@@ -1,242 +1,242 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "5c0bcb1840007fbc46f1f8e8fb315d06",
-    "packages": [
-        {
-            "name": "bjeavons/zxcvbn-php",
-            "version": "0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bjeavons/zxcvbn-php.git",
-                "reference": "7a7e1130c74c715e84c60c27384f657e9574a933"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bjeavons/zxcvbn-php/zipball/7a7e1130c74c715e84c60c27384f657e9574a933",
-                "reference": "7a7e1130c74c715e84c60c27384f657e9574a933",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*",
-                "satooshi/php-coveralls": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ZxcvbnPhp\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "See contributors",
-                    "homepage": "https://github.com/bjeavons/zxcvbn-php"
-                }
-            ],
-            "description": "Realistic password strength estimation PHP library based on Zxcvbn JS",
-            "homepage": "https://github.com/bjeavons/zxcvbn-php",
-            "keywords": [
-                "password",
-                "zxcvbn"
-            ],
-            "support": {
-                "issues": "https://github.com/bjeavons/zxcvbn-php/issues",
-                "source": "https://github.com/bjeavons/zxcvbn-php/tree/master"
-            },
-            "time": "2018-07-23T05:05:36+00:00"
-        },
-        {
-            "name": "google/recaptcha",
-            "version": "1.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/google/recaptcha.git",
-                "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/google/recaptcha/zipball/614f25a9038be4f3f2da7cbfd778dc5b357d2419",
-                "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ReCaptcha\\": "src/ReCaptcha"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
-            "homepage": "https://www.google.com/recaptcha/",
-            "keywords": [
-                "Abuse",
-                "captcha",
-                "recaptcha",
-                "spam"
-            ],
-            "support": {
-                "forum": "https://groups.google.com/forum/#!forum/recaptcha",
-                "issues": "https://github.com/google/recaptcha/issues",
-                "source": "https://github.com/google/recaptcha"
-            },
-            "time": "2020-03-31T17:50:54+00:00"
-        },
-        {
-            "name": "phpauth/phpauth",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPAuth/PHPAuth.git",
-                "reference": "f43c43a43eee830053352c4b6f0ad5aecfb69b91"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPAuth/PHPAuth/zipball/f43c43a43eee830053352c4b6f0ad5aecfb69b91",
-                "reference": "f43c43a43eee830053352c4b6f0ad5aecfb69b91",
-                "shasum": ""
-            },
-            "require": {
-                "bjeavons/zxcvbn-php": "^0.4",
-                "google/recaptcha": "^1.2",
-                "php": ">=7.0.0",
-                "phpmailer/phpmailer": "^6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "6.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPAuth\\": "/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A secure user authentication class for PHP websites, using a powerful password hashing system and attack blocking to keep your website and users secure.",
-            "homepage": "http://phpauth.github.io/PHPAuth/",
-            "keywords": [
-                "Authentication",
-                "class",
-                "secure"
-            ],
-            "support": {
-                "issues": "https://github.com/PHPAuth/PHPAuth/issues",
-                "source": "https://github.com/PHPAuth/PHPAuth/tree/1.2.0"
-            },
-            "time": "2020-10-05T04:45:41+00:00"
-        },
-        {
-            "name": "phpmailer/phpmailer",
-            "version": "v6.1.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "917ab212fa00dc6eacbb26e8bc387ebe40993bc1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/917ab212fa00dc6eacbb26e8bc387ebe40993bc1",
-                "reference": "917ab212fa00dc6eacbb26e8bc387ebe40993bc1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-filter": "*",
-                "ext-hash": "*",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "^1.2",
-                "friendsofphp/php-cs-fixer": "^2.2",
-                "phpunit/phpunit": "^4.8 || ^5.7"
-            },
-            "suggest": {
-                "ext-mbstring": "Needed to send email in multibyte encoding charset",
-                "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
-                "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
-                "psr/log": "For optional PSR-3 debug logging",
-                "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
-                "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPMailer\\PHPMailer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1-only"
-            ],
-            "authors": [
-                {
-                    "name": "Marcus Bointon",
-                    "email": "phpmailer@synchromedia.co.uk"
-                },
-                {
-                    "name": "Jim Jagielski",
-                    "email": "jimjag@gmail.com"
-                },
-                {
-                    "name": "Andy Prevost",
-                    "email": "codeworxtech@users.sourceforge.net"
-                },
-                {
-                    "name": "Brent R. Matzelle"
-                }
-            ],
-            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "support": {
-                "issues": "https://github.com/PHPMailer/PHPMailer/issues",
-                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.1.8"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/synchro",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-10-09T14:55:58+00:00"
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "5c0bcb1840007fbc46f1f8e8fb315d06",
+  "packages": [
+    {
+      "name": "bjeavons/zxcvbn-php",
+      "version": "0.4.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/bjeavons/zxcvbn-php.git",
+        "reference": "7a7e1130c74c715e84c60c27384f657e9574a933"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/bjeavons/zxcvbn-php/zipball/7a7e1130c74c715e84c60c27384f657e9574a933",
+        "reference": "7a7e1130c74c715e84c60c27384f657e9574a933",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^5.6 || ^7.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "*",
+        "satooshi/php-coveralls": "*"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "ZxcvbnPhp\\": "src/"
         }
-    ],
-    "packages-dev": [],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
-    "prefer-lowest": false,
-    "platform": {
-        "ext-pdo": "*",
-        "ext-json": "*"
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "See contributors",
+          "homepage": "https://github.com/bjeavons/zxcvbn-php"
+        }
+      ],
+      "description": "Realistic password strength estimation PHP library based on Zxcvbn JS",
+      "homepage": "https://github.com/bjeavons/zxcvbn-php",
+      "keywords": [
+        "password",
+        "zxcvbn"
+      ],
+      "support": {
+        "issues": "https://github.com/bjeavons/zxcvbn-php/issues",
+        "source": "https://github.com/bjeavons/zxcvbn-php/tree/master"
+      },
+      "time": "2018-07-23T05:05:36+00:00"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    {
+      "name": "google/recaptcha",
+      "version": "1.2.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/google/recaptcha.git",
+        "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/google/recaptcha/zipball/614f25a9038be4f3f2da7cbfd778dc5b357d2419",
+        "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.5"
+      },
+      "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "1.2.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "ReCaptcha\\": "src/ReCaptcha"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
+      "homepage": "https://www.google.com/recaptcha/",
+      "keywords": [
+        "Abuse",
+        "captcha",
+        "recaptcha",
+        "spam"
+      ],
+      "support": {
+        "forum": "https://groups.google.com/forum/#!forum/recaptcha",
+        "issues": "https://github.com/google/recaptcha/issues",
+        "source": "https://github.com/google/recaptcha"
+      },
+      "time": "2020-03-31T17:50:54+00:00"
+    },
+    {
+      "name": "phpauth/phpauth",
+      "version": "1.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/PHPAuth/PHPAuth.git",
+        "reference": "f43c43a43eee830053352c4b6f0ad5aecfb69b91"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/PHPAuth/PHPAuth/zipball/f43c43a43eee830053352c4b6f0ad5aecfb69b91",
+        "reference": "f43c43a43eee830053352c4b6f0ad5aecfb69b91",
+        "shasum": ""
+      },
+      "require": {
+        "bjeavons/zxcvbn-php": "^0.4",
+        "google/recaptcha": "^1.2",
+        "php": ">=7.0.0",
+        "phpmailer/phpmailer": "^6.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "6.*"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "PHPAuth\\": "/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "description": "A secure user authentication class for PHP websites, using a powerful password hashing system and attack blocking to keep your website and users secure.",
+      "homepage": "http://phpauth.github.io/PHPAuth/",
+      "keywords": [
+        "Authentication",
+        "class",
+        "secure"
+      ],
+      "support": {
+        "issues": "https://github.com/PHPAuth/PHPAuth/issues",
+        "source": "https://github.com/PHPAuth/PHPAuth/tree/1.2.0"
+      },
+      "time": "2020-10-05T04:45:41+00:00"
+    },
+    {
+      "name": "phpmailer/phpmailer",
+      "version": "v6.1.8",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/PHPMailer/PHPMailer.git",
+        "reference": "917ab212fa00dc6eacbb26e8bc387ebe40993bc1"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/917ab212fa00dc6eacbb26e8bc387ebe40993bc1",
+        "reference": "917ab212fa00dc6eacbb26e8bc387ebe40993bc1",
+        "shasum": ""
+      },
+      "require": {
+        "ext-ctype": "*",
+        "ext-filter": "*",
+        "ext-hash": "*",
+        "php": ">=5.5.0"
+      },
+      "require-dev": {
+        "doctrine/annotations": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2.2",
+        "phpunit/phpunit": "^4.8 || ^5.7"
+      },
+      "suggest": {
+        "ext-mbstring": "Needed to send email in multibyte encoding charset",
+        "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
+        "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
+        "psr/log": "For optional PSR-3 debug logging",
+        "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
+        "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "PHPMailer\\PHPMailer\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "LGPL-2.1-only"
+      ],
+      "authors": [
+        {
+          "name": "Marcus Bointon",
+          "email": "phpmailer@synchromedia.co.uk"
+        },
+        {
+          "name": "Jim Jagielski",
+          "email": "jimjag@gmail.com"
+        },
+        {
+          "name": "Andy Prevost",
+          "email": "codeworxtech@users.sourceforge.net"
+        },
+        {
+          "name": "Brent R. Matzelle"
+        }
+      ],
+      "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+      "support": {
+        "issues": "https://github.com/PHPMailer/PHPMailer/issues",
+        "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.1.8"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/synchro",
+          "type": "github"
+        }
+      ],
+      "time": "2020-10-09T14:55:58+00:00"
+    }
+  ],
+  "packages-dev": [],
+  "aliases": [],
+  "minimum-stability": "stable",
+  "stability-flags": [],
+  "prefer-stable": false,
+  "prefer-lowest": false,
+  "platform": {
+    "ext-pdo": "*",
+    "ext-json": "*"
+  },
+  "platform-dev": [],
+  "plugin-api-version": "2.0.0"
 }
