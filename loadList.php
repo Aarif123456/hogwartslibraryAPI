@@ -12,31 +12,30 @@ requiredHeaderAndSessionStart();
 
 /* Connect to database */
 $conn = getConnection();
+if (!(isValidPostVar('listType'))) {
+    exit(MISSING_PARAMETERS);
+}
 
 $result = null;
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $userType = trim($_SESSION['userType']);
-    if (isValidPostVar('listType')) {
-        $listType = $_POST['listType'] ?? "";
-        if (isLibrarian()) {
-            $result = getLibrarianListResults($listType, $conn);
-        } else {
-            if (isHeadmaster()) {
-                $result = getHeadmasterListResults($listType, $conn);
-            }
-        }
-        if (empty($result)) {
-            exit(INVALID_LIST);
-        }
-        echo createQueryJSON($result);
+    $listType = $_POST['listType'] ?? "";
+    if (isLibrarian()) {
+        $result = getLibrarianListResults($listType, $conn);
     } else {
-        exit(MISSING_PARAMETERS);
+        if (isHeadmaster()) {
+            $result = getHeadmasterListResults($listType, $conn);
+        }
     }
+    if (empty($result)) {
+        exit(INVALID_LIST);
+    }
+    echo createQueryJSON($result);
 } else {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 
 

@@ -18,7 +18,7 @@ if (!(isValidPostVar('enrollmentNumber'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $enrollmentNumber = $_POST['enrollmentNumber'];
     if (deleteEnrollment($enrollmentNumber, $conn)) {
         echo ENROLLMENT_DELETED;
@@ -30,5 +30,5 @@ if (checkSessionInfo() && validateHeadmaster()) {
 }
 
 
-$conn->close();
+$conn = null;
 

@@ -20,7 +20,7 @@ if (!(is_numeric($_POST['userID']))) {
     exit(INVALID_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $userID = (int)$_POST['userID'];
     if (deleteLibrarian($userID, $conn)) {
         echo LIBRARIAN_DELETED;
@@ -31,6 +31,6 @@ if (checkSessionInfo() && validateHeadmaster()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

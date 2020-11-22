@@ -13,7 +13,7 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $userID = $_SESSION['userID'];
     $listType = $_REQUEST['listType'] ?? "";
     $result = getUserFines($userID, $listType, $conn);
@@ -25,6 +25,6 @@ if (checkSessionInfo() && validateUser()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

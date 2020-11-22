@@ -17,7 +17,7 @@ if (!(isValidPostVar('bookBarcode'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateLibrarian()) {
+if (checkSessionInfo() && validateLibrarian($conn)) {
     $todayDate = date("Y-m-d");
     $bookBarcode = $_POST['bookBarcode'];
     $librarianID = $_SESSION['userID'];
@@ -37,7 +37,7 @@ if (checkSessionInfo() && validateLibrarian()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 
 

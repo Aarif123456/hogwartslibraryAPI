@@ -17,7 +17,7 @@ if (!(isValidPostVar('bookBarcode'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $userID = $_SESSION['userID'];
     $bookBarcode = $_POST['bookBarcode'];
     $debug = false;
@@ -30,4 +30,4 @@ if (checkSessionInfo() && validateUser()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;

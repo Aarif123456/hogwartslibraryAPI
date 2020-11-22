@@ -17,7 +17,7 @@ if (!(isValidPostVar('courseName') && isValidPostVar('professorID'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $professorID = $_POST['professorID'];
     $courseName = $_POST['courseName'];
     $termOffered = isValidPostVar('TermOffered') ?? null;
@@ -30,6 +30,6 @@ if (checkSessionInfo() && validateHeadmaster()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

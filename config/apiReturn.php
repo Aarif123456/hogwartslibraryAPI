@@ -6,6 +6,7 @@ Some API return that come from SQL related error are located in repository/error
 /* Manually turn on error reporting */
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
+ini_set("session.cookie_secure", 1);
 error_reporting(E_ALL);
 /* Define the strings the api will return  */
 
@@ -41,7 +42,6 @@ define('INVALID_PASSWORD', '{"success":false}');
 define('INVALID_SEARCH_METHOD', 'Invalid search method');
 define('LIBRARIAN_DELETED', 'Librarian deactivated');
 define('MISSING_PARAMETERS', 'Missing value');
-define('NO_AVAILABLE_COPIES_TO_RESERVE', 'there are no available copies to reserve for this book:(');
 define('NO_ROWS_RETURNED', 'No rows');
 define('PAID_SUCCESSFULLY', 'The fine is paid');
 define('PROFESSOR_ADDED', 'Professor added');
@@ -147,16 +147,11 @@ function verifySelfCheckout($librarianID, $borrowedBy)
     }
 }
 
-function createQueryJSON($result, $noRowReturn = NO_ROWS_RETURNED)
+function createQueryJSON($arr, $noRowReturn = NO_ROWS_RETURNED)
 {
-    if (!$result) {
-        exit(QUERY_FAILURE);
-    }
-    $arr = $result->fetch_all(MYSQLI_ASSOC);
     if (!$arr) {
         exit($noRowReturn);
     }
-    $result->close();
 
     return json_encode($arr);
 }
@@ -164,28 +159,27 @@ function createQueryJSON($result, $noRowReturn = NO_ROWS_RETURNED)
 /* Required header */
 function getHeader()
 {
-    header('Access-Control-Allow-Origin: https://abdullaharif.tech');
+    // header('Access-Control-Allow-Origin: https://abdullaharif.tech');
     // header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: https://localhost:3000');
     header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Allow-Headers: X-Requested-With,content-type');
     header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
 }
 
 function startSession()
 {
-   
     $status = session_status();
-
-    if ( PHP_SESSION_DISABLED === $status ) {
+    if (PHP_SESSION_DISABLED === $status) {
         // That's why you cannot rely on sessions!
         return;
     }
 
-    if ( PHP_SESSION_NONE === $status ) {
+    if (PHP_SESSION_NONE === $status) {
         session_cache_limiter('private_no_expire');
         session_start();
     }
-
 }
 
 function requiredHeaderAndSessionStart()

@@ -13,7 +13,7 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $userID = $_SESSION['userID'];
     $result = getUserHoldsResults($userID, $conn);
     echo createQueryJSON($result);
@@ -21,6 +21,6 @@ if (checkSessionInfo() && validateUser()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

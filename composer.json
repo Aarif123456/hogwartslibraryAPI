@@ -1,5 +1,22 @@
 {
-    "require": {
-        "phpauth/phpauth": "1.2.0"
+  "name": "aarif12345/hogwartslibrary",
+  "keywords": [
+    "pdo",
+    "mysql",
+    "database",
+    "iterator"
+  ],
+  "description": "A API for the Hogwarts library website",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Abdullah Arif",
+      "email": "abdullahmeo11@gmail.com"
     }
+  ],
+  "require": {
+    "phpauth/phpauth": "1.2.0",
+    "ext-pdo": "*",
+    "ext-json": "*"
+  }
 }

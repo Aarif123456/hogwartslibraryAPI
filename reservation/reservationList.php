@@ -1,76 +1,39 @@
 <?php
-
+// TODO finish reservation list
 /* Imports */
 require_once '../config/apiReturn.php';
 require_once '../config/constants.php';
 require_once '../config/authenticate.php';
 require_once '../repository/database.php';
+require_once '../repository/lists.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
 
 /* Connect to database */
 $conn = getConnection();
+if (!(isValidPostVar('listType'))) {
+    exit(MISSING_PARAMETERS);
+}
 
-if (checkSessionInfo() &&
-    isset($_SESSION['userType']) && isset($_POST['listType'])) {
-    if (validateLibrarian()) {
-        if (!(isset($_POST['userID']))) {
-            exit("no user is selected");
-        }
-        $userID = $_POST['userID'];
-        //echo "Am librarian holding on behalf of $userID";
-    } elseif (validateUser()) {
-        $userID = $_SESSION['userID'];
-    } elseif (!(validateUser()) && !($_SESSION['librarian'])) {
-        redirectToLogin();
-    } else {
-        echo "I am no one";
-        exit();
-    }
+if (checkSessionInfo() && validateUser($conn)) {
+    $userID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $debug = false;
     $listType = $_POST['listType'];
-    if (strcmp($listType, "loadReservedBooks") == 0 && isset($_POST['courseID'])) { //load books per course
-        $stmt = $conn->prepare(
-            "SELECT `bookISBN`,`bookName`,`author`,`numCopies`FROM bookItems NATURAL JOIN books WHERE `reservedFor`=? "
-        );
-        //find all transaction 
-        $stmt->bind_param("i", $_POST['courseID']);
-    } elseif (strcmp($listType, "loadCourses") == 0) {
-        if (strcmp($_SESSION['userType'], "professor") == 0 || $_SESSION['librarian']) { //if teacher load
-            $stmt = $conn->prepare("SELECT `courseID`,`courseName`FROM `courses` WHERE `professorID`=?");
-        } else {
-            $stmt = $conn->prepare(
-                "SELECT `courseID`, `courseName` FROM `courseEnrolled` NATURAL JOIN `courses` WHERE `studentID` = ?"
-            );
-        }
-        $stmt->bind_param("i", $userID);
-    } elseif (strcmp($listType, "loadAvailableBooks") == 0) {
-        $stmt = $conn->prepare("SELECT `bookISBN`,`bookName`,`author`FROM `books` WHERE `totalCopies`>0");
-    } elseif (strcmp($listType, "loadProfessor") == 0) {
-        $stmt = $conn->prepare(
-            "SELECT `professorID`,`fname`,`lname` FROM `professor` INNER JOIN `members` ON professorID= memberID WHERE professorID>0 ORDER BY professorID"
-        );
-    } else {
-        exit("Incorrect list Type:(");
+    $courseID = isset($_POST['courseID']) ?? '';
+    $params = (object)[
+        'userID' => (int)$userID,
+        'courseID' => $courseID,
+    ];
+    $result = getReservationListResults($listType, $params, $conn);
+    if (empty($result)) {
+        exit(INVALID_LIST);
     }
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if (!$result) {
-        exit (QUERY_FAILURE);
-    }
-    $arr = $result->fetch_all(MYSQLI_ASSOC);
-    if (!$arr) {
-        exit(NO_ROWS_RETURNED);
-    }
-    echo json_encode($arr);
-    $result->close();
+    echo createQueryJSON($result);
 } else {
-    //echo "Session not set";
-    //var_dump($_SESSION);
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

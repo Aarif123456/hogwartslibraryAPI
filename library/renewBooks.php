@@ -14,7 +14,7 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $renewerID = isLibrarian() ? $_POST['userID'] ?? "" : $_SESSION['userID'];
     $bookBarcode = $_POST['bookBarcode'] ?? "";
     $debug = false;
@@ -37,6 +37,6 @@ if (checkSessionInfo() && validateUser()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

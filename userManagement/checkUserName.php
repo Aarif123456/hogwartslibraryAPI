@@ -25,4 +25,4 @@ if (isValidPostVar('username')) {
     echo MISSING_PARAMETERS;
 }
 
-$conn->close();
+$conn = null;

@@ -20,7 +20,7 @@ if (!(isValidPostVar('uID') && isValidPostVar('uPassword')
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $developerPassword = $_POST['developerPassword'];
     $developerID = $_SESSION['userID'];
     $result = queryDeveloperPassword($developerID, $conn);
@@ -42,7 +42,7 @@ if (checkSessionInfo() && validateHeadmaster()) {
 }
 
 
-$conn->close();
+$conn = null;
 function wrongDeveloperPassword()
 {
     $_SESSION['invalidPasswordCount'] = ($_SESSION['invalidPasswordCount'] ?? 0) + 1;

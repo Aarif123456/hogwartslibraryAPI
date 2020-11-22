@@ -13,7 +13,7 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $userType = trim($_SESSION['userType']);
     /* Some users have a default chart that loads on the dashboard */
     $chartType = $_POST['chartType'] ?? $defaultChart[$userType] ?? "";
@@ -48,7 +48,7 @@ if (checkSessionInfo() && validateUser()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 
 

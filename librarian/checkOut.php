@@ -16,14 +16,14 @@ if (!(isValidPostVar('bookBarcode') && isValidPostVar('borrowedBy'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateLibrarian()) {
+if (checkSessionInfo() && validateLibrarian($conn)) {
     $bookBarcode = $_POST['bookBarcode'];
     $borrowedBy = $_POST['borrowedBy'];
     $librarianID = $_SESSION['userID'];
     verifySelfCheckout($librarianID, $borrowedBy);
     /* Make sure user is not blacklisted or above their limit */
     $blackListLimitResult = checkUserEligibleForCheckout($borrowedBy, $conn);
-    if (empty($blackListLimitResult->fetch_all(MYSQLI_ASSOC))) {
+    if (empty($blackListLimitResult)) {
         exit(USER_INELIGIBLE_FOR_CHECKOUT);
     }
     /* Check out book if valid */

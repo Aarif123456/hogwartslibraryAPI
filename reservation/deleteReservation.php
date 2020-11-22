@@ -18,7 +18,7 @@ if (!(isValidPostVar('courseID') && isValidPostVar('bookISBN'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateUser()) {
+if (checkSessionInfo() && validateUser($conn)) {
     $professorID = getProfessorID();
     $debug = false;
     $courseID = $_POST['courseID'];
@@ -31,4 +31,4 @@ if (checkSessionInfo() && validateUser()) {
 } else {
     redirectToLogin();
 }
-$conn->close();
+$conn = null;

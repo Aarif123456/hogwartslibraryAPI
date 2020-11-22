@@ -16,7 +16,7 @@ if (!(isValidPostVar('userID') && isValidPostVar('pay'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateLibrarian()) {
+if (checkSessionInfo() && validateLibrarian($conn)) {
     $userID = $_POST['userID'];
     $pay = $_POST['pay'];
     $librarianID = $_SESSION['userID'];
@@ -30,4 +30,4 @@ if (checkSessionInfo() && validateLibrarian()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;

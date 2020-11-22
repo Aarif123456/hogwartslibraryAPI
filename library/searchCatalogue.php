@@ -24,7 +24,7 @@ if (isValidRequestVar('searchType') && isset($_REQUEST['searchWord'])) {
 } else {
     echo MISSING_PARAMETERS;
 }
-$conn->close();
+$conn = null;
 
 
 

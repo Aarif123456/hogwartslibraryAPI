@@ -17,7 +17,7 @@ if (!(isValidPostVar('courseID') && isValidPostVar('studentID'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $courseID = $_POST['courseID'];
     $studentID = $_POST['studentID'];
     if (insertEnrollment($studentID, $courseID, $conn)) {
@@ -29,6 +29,6 @@ if (checkSessionInfo() && validateHeadmaster()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

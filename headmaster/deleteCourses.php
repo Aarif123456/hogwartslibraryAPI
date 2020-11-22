@@ -17,7 +17,7 @@ if (!(isValidPostVar('courseID'))) {
     exit(MISSING_PARAMETERS);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     $courseID = $_POST['courseID'];
     if (deleteCourse($courseID, $conn)) {
         echo COURSE_DELETED;
@@ -28,6 +28,6 @@ if (checkSessionInfo() && validateHeadmaster()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 

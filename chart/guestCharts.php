@@ -25,6 +25,6 @@ if (isValidRequestVar('chartType')) {
     echo createQueryJSON($result);
 }
 
-$conn->close();
+$conn = null;
 
 

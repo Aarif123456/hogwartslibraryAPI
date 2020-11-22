@@ -21,7 +21,7 @@ if (strcmp($_POST['passcode'], REGISTRATION_PASSCODE) != 0) {
     exit(INVALID_PASSCODE);
 }
 
-if (checkSessionInfo() && validateHeadmaster()) {
+if (checkSessionInfo() && validateHeadmaster($conn)) {
     /* Get user info in a object */
     $user = (object)[
         'fname' => trim($_POST['fname']),
@@ -33,7 +33,7 @@ if (checkSessionInfo() && validateHeadmaster()) {
     $account = null;
     if (isValidPostVar('username') && isValidPostVar('password')) {
         $account = (object)[
-            'username' => $_POST['username'],
+            'email' => $_POST['username'],
             'password' => $_POST['password'],
         ];
     }
@@ -51,7 +51,7 @@ if (checkSessionInfo() && validateHeadmaster()) {
     redirectToLogin();
 }
 
-$conn->close();
+$conn = null;
 
 function updateUserCategory($user)
 {
