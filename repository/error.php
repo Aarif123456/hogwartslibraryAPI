@@ -21,7 +21,7 @@ function getExecutedResult($stmt)
 {
     $stmt->execute();
 
-    return $stmt->get_result();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /* Catch exception that are set by MYSQLI_REPORT_ALL  */
@@ -43,7 +43,7 @@ function safeUpdateQueries($stmt, $conn, $debug): int
 {
     try {
         if ($stmt->execute()) {
-            $num = $conn->affected_rows;
+            $num = $conn->rowCount();
             $stmt->close();
             if ($debug) {
                 echo $conn->info . '<br />';
@@ -65,7 +65,7 @@ function safeInsertQueries($stmt, $conn, $debug): int
 {
     try {
         if ($stmt->execute()) {
-            $num = $conn->insert_id;
+            $num = $conn->lastInsertId();
             $stmt->close();
 
             return $num;
