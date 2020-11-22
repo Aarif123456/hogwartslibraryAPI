@@ -6,7 +6,7 @@ Some API return that come from SQL related error are located in repository/error
 /* Manually turn on error reporting */
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
-ini_set("session.cookie_secure", 1);
+ini_set('session.cookie_secure', 1);
 error_reporting(E_ALL);
 /* Define the strings the api will return  */
 
@@ -56,12 +56,11 @@ define('SELF_CHECKOUT', 'You can\'t sign out a book to your self!');
 define('STUDENT_ADDED', 'Student added');
 define('UNAUTHORIZED_NO_LOGIN', 'not logged in!');
 define('UNAUTHORIZED_NOT_OWNER', 'the book is not checked out to you');
-define('USER_BLACKLISTED', "user is blacklisted");
+define('USER_BLACKLISTED', 'user is blacklisted');
 define('USER_INELIGIBLE_FOR_CHECKOUT', 'User is either blacklisted or above their limit to checkout the book');
 define('USER_LOGGED_OUT', 'User has successfully logged out');
 define('USERNAME_EXISTS', 'Username is taken');
 define('USERNAME_NOT_IN_TABLE', 'Username not taken');
-define('VALID_PASSWORD', '{"success":true}');
 
 /* error as functions*/
 /* We HTML entities any data coming back from the user before printing */
@@ -70,6 +69,17 @@ function invalidUserType($userType): string
     $userType = htmlentities($userType);
 
     return "'$userType' is not a recognized userType";
+}
+
+function authenticatedSuccesfully($userType): string
+{
+    $userType = htmlentities($userType);
+    $return = (object)[
+        'success' => true,
+        'userType' => $userType
+    ];
+
+    return json_encode($return);
 }
 
 function passwordReset($uID): string
@@ -115,11 +125,24 @@ function addedReservationReturn($bookISBN, $numCopies): string
 function verifyUserType($userType): bool
 {
     switch ($userType) {
-        case "user":       // INTENTIONAL FALLTHROUGH
-        case "student":    // INTENTIONAL FALLTHROUGH
-        case "professor":  // INTENTIONAL FALLTHROUGH
-        case "headmaster": // INTENTIONAL FALLTHROUGH
-        case "librarian":  // INTENTIONAL FALLTHROUGH
+        case 'user':       // INTENTIONAL FALLTHROUGH
+        case 'student':    // INTENTIONAL FALLTHROUGH
+        case 'professor':  // INTENTIONAL FALLTHROUGH
+        case 'headmaster': // INTENTIONAL FALLTHROUGH
+        case 'librarian':  // INTENTIONAL FALLTHROUGH
+            return true;
+        default:
+            return false;
+    }
+}
+
+function isValidHouse($house): bool
+{
+    switch ($house) {
+        case 'Gryffindor':       // INTENTIONAL FALLTHROUGH
+        case 'Ravenclaw':    // INTENTIONAL FALLTHROUGH
+        case 'Hufflepuff':  // INTENTIONAL FALLTHROUGH
+        case 'Slytherin': // INTENTIONAL FALLTHROUGH
             return true;
         default:
             return false;
@@ -136,7 +159,7 @@ function userTypeCreated($userType): string
         case 'headmaster':
             return HEADMASTER_ADDED;
         default:
-            return "";
+            return '';
     }
 }
 

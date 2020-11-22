@@ -21,32 +21,92 @@ function queryUserVerify($username, $userType, $conn)
 
 function bindUserVerifyQuery($username, $userType, $stmt)
 {
-    if (strcmp($userType, "user") == 0) {
-        $stmt->bind_param("sss", $username, $username, $username);
-    } else {
-        $stmt->bind_param("s", $username);
+    switch ($userType) {
+        case "student":
+            $stmt->bindValue(":studentEmail", $username, PDO::PARAM_STR);
+            break;
+        case "professor":
+            $stmt->bindValue(":professorEmail", $username, PDO::PARAM_STR);
+            break;
+        case "headmaster":
+            $stmt->bindValue(":headmasterEmail", $username, PDO::PARAM_STR);
+            break;
+        case "librarian":
+            $stmt->bindValue(":librarianEmail", $username, PDO::PARAM_STR);
+            break;
+        default: // Case for user
+            $stmt->bindValue(":studentEmail", $username, PDO::PARAM_STR);
+            $stmt->bindValue(":professorEmail", $username, PDO::PARAM_STR);
+            $stmt->bindValue(":headmasterEmail", $username, PDO::PARAM_STR);
     }
 }
 
 function getQueryForUserType($userType)
 {
-    $stdntVrfyQry = "SELECT userID,fname,lname,password, 'student' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN students ON userID=studentID WHERE userName = ?";
-    $prfsrVrfyQry = "SELECT userID,fname,lname,password,'professor' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN professor ON memberID=professorID WHERE userName = ?";
-    $hdmstrVrfyQry = "SELECT userID,fname,lname,password,'headmaster' as userType FROM userAccount INNER JOIN members ON userID=memberID INNER JOIN headmasters ON memberID=headmasterID WHERE userName = ?";
-    $lbrnVrfyQry = "SELECT userID,fname,lname,password FROM userAccount INNER JOIN members ON `userID` = `memberID` INNER JOIN librarianAccount ON `userID` = `librarianID` WHERE userName = ?";
+    $studentVerifyQuery = "
+                            SELECT 
+                                id,
+                                fname,
+                                lname,
+                                password,
+                                'student' as userType 
+                            FROM 
+                                phpauth_users 
+                                INNER JOIN members ON id=memberID 
+                                INNER JOIN students ON id=studentID 
+                            WHERE 
+                                email = :studentEmail";
+    $professorVerifyQuery = "
+                            SELECT 
+                                id,
+                                fname,
+                                lname,
+                                password,
+                                'professor' as userType 
+                            FROM 
+                                phpauth_users 
+                                INNER JOIN members ON id=memberID 
+                                INNER JOIN professor ON memberID=professorID 
+                            WHERE 
+                                email = :professorEmail";
+    $headmasterVerifyQuery = "
+                            SELECT 
+                                id,
+                                fname,
+                                lname,
+                                password,
+                                'headmaster' as userType 
+                            FROM 
+                                phpauth_users 
+                                INNER JOIN members ON id=memberID 
+                                INNER JOIN headmasters ON memberID=headmasterID 
+                            WHERE 
+                                email = :headmasterEmail";
+    $librarianVerifyQuery = "
+                            SELECT 
+                                id,
+                                fname,
+                                lname,
+                                password 
+                            FROM 
+                                phpauth_users 
+                                INNER JOIN members ON `id` = `memberID` 
+                                INNER JOIN librarianAccount ON `id` = `librarianID` 
+                            WHERE 
+                                email = :librarianEmail";
     switch ($userType) {
         case "user":
-            return $stdntVrfyQry . " UNION " . $prfsrVrfyQry . " UNION " . $hdmstrVrfyQry;
+            return "$studentVerifyQuery UNION $professorVerifyQuery UNION $headmasterVerifyQuery";
         case "student":
-            return $stdntVrfyQry;
+            return $studentVerifyQuery;
         case "professor":
-            return $prfsrVrfyQry;
+            return $professorVerifyQuery;
         case "headmaster":
-            return $hdmstrVrfyQry;
+            return $headmasterVerifyQuery;
         case "librarian":
-            return $lbrnVrfyQry;
+            return $librarianVerifyQuery;
         default:
-            return "";
+            return '';
     }
 }
 

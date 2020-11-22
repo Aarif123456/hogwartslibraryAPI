@@ -32,7 +32,6 @@ function validateUser($conn)
     if ($cookie) {
         [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
         if (!(hash_equals(hash_hmac('sha256', $userID . ':' . $token, SECRET_KEY), $mac))) {
-
             return false;
         }
         $userToken = $_SESSION['token']; //**  vulnerable if session was compromised
@@ -43,27 +42,22 @@ function validateUser($conn)
 
     return false;
 }
-/*
+
 function getUserID($conn): int
 {
-    $auth = getAuth($conn);
+    /*$auth = getAuth($conn);
 
-    return $auth->getCurrentUID();
+    return $auth->getCurrentUID();*/
+    return $_SESSION['userID'];
 }
 
-function login($email, $password, $remember, $conn)
+function login($loginInfo, $conn)
 {
-    $auth = getAuth($conn);
+    /* $auth = getAuth($conn);
 
-    return $auth->login($email, $password, $remember);
+     return $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);*/
+    return password_verify($loginInfo->password, $loginInfo->hashedPassword);
 }
-
-function checkUsername($email, $conn): bool
-{
-    $auth = getAuth($conn);
-
-    return $auth->isEmailTaken($email);
-}*/
 
 function logout($conn): bool
 {
@@ -90,22 +84,22 @@ function redirectToLogin()
 /* Utility functions to check user's type */
 function isProfessor(): bool
 {
-    return strcmp(trim($_SESSION['userType'] ?? ""), "professor") == 0;
+    return strcmp(trim($_SESSION['userType'] ?? ''), 'professor') == 0;
 }
 
 function isStudent(): bool
 {
-    return strcmp(trim($_SESSION['userType'] ?? ""), "student") == 0;
+    return strcmp(trim($_SESSION['userType'] ?? ''), 'student') == 0;
 }
 
 function isHeadmaster(): bool
 {
-    return strcmp(trim($_SESSION['userType'] ?? ""), "headmaster") == 0;
+    return strcmp(trim($_SESSION['userType'] ?? ''), 'headmaster') == 0;
 }
 
 function isLibrarian(): bool
 {
-    return strcmp(trim($_SESSION['userType'] ?? ""), "librarian") == 0;
+    return strcmp(trim($_SESSION['userType'] ?? ''), 'librarian') == 0;
 }
 
 /* utility function to make sure user has the correct permission*/
@@ -149,5 +143,6 @@ function destroy_session_and_data()
         unset($_COOKIE['rememberMe']);
     }
     session_destroy();
+
     return true;
 }
