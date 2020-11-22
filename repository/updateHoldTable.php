@@ -4,14 +4,25 @@
 /* Imports */
 require_once 'error.php';
 require_once 'statusConstants.php';
-require_once 'database.php';
 
-/* Connect to database */
-$conn = getConnection();
-
-$stmt = $conn->prepare("UPDATE holds SET status=? WHERE (status=? OR status=?) AND CURDATE() > holdExpiryDate ");
-$holdExpired = HOLD_EXPIRED;
-$readyForPickup = HOLD_ACTIVE;
-$holdPending = HOLD_IN_QUEUE;
-$stmt->bind_param("iii", $holdExpired, $readyForPickup, $holdPending);
-echo safeWriteQueries($stmt, $conn, false);
+function updateHoldTable($conn, $debug = false)
+{
+    $stmt = $conn->prepare(
+        '
+                            UPDATE 
+                                holds 
+                            SET 
+                                status = :holdExpired
+                            WHERE 
+                                (
+                                    status = :readyForPickup 
+                                    OR status = :holdPending
+                                ) 
+                                AND CURDATE() > holdExpiryDate 
+                        '
+    );
+    $stmt->bindValue(':holdExpired', HOLD_EXPIRED, PDO::PARAM_INT);
+    $stmt->bindValue(':readyForPickup', HOLD_ACTIVE, PDO::PARAM_INT);
+    $stmt->bindValue(':holdPending', HOLD_IN_QUEUE, PDO::PARAM_INT);
+    echo safeWriteQueries($stmt, $conn, $debug);
+}
