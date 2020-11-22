@@ -28,8 +28,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: Log the user in and then store the cookie
     2. verifyUser.php  --> /api/verifyUser
     3. Parameter list:
+        Accepts POST variable:  username, password, userType
+        userType (valid values) : professor, student, headmaster, user, librarian
     4. httpie command:
-
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/verifyUser username='hGranger' password='actors1Reserve9Vegas7Portugal9Plants' userType='librarian'
 </details>
 
 <details>
@@ -38,8 +40,13 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: 
     2. userManagement/addUser.php --> /api/userManagement/addUser
     3. Parameter list:
-        Accepts POST variable:  
+        Accepts POST variable: fname, lname, userType, username, password, passcode
+        // IF user is a student we need parameter of house and major
+        // If professor we need department
+        userType (valid values) : professor, student, headmaster
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/addUser username='JKRowling' password='whats in a dream' userType='professor'  fname='Joanne' lname='Rowling' department='English' passcode='ENTER_THE_PASSCODE'
     4. httpie command:
+   
 *Note: it might make sense to separate the endpoints for different user types.*
 </details>
 
@@ -48,7 +55,8 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
     1. Description: Check if username is in database
     2. userManagement/checkUserName.php  --> /api/userManagement/checkUserName
-    3. Parameter list:
+    3. Parameter list: 
+         Accepts POST variable:  username
     4. httpie command:
 
 </details>
@@ -73,11 +81,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     2. chart/guestCharts.php --> /api/chart/guestCharts
     3. Parameter list:
         Accepts request variable: chartType
-        Current charts are:
-        category - 
-        major -
-        allTime -
-        houseFine - 
+        Current charts are: category,  major, allTime, houseFine, 
     4. httpie command:
 
 </details>
@@ -99,6 +103,14 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     2. chart/loggedInChart.php --> /api/chart/loggedInChart
     3. Parameter list:
         Accepts POST variable: chartType
+        if headmaster
+            valid values: reservationList ,fineList ,activeList
+        if librarian
+            valid values: unusedList, lostList
+        if professor
+            valid values: activityPerMajorAndDepartment
+        if student
+            valid values: numBooksPerCategory
     4. httpie command:
 
 </details>
@@ -112,6 +124,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     2. loadList.php --> /api/loadList
     3. Parameter list:
         Accepts POST variable: listType
+        if headmaster
+            valid values: reservationList ,fineList ,activeList
+        if librarian
+            valid values: unusedList, lostList
     4. httpie command:
 
 </details>

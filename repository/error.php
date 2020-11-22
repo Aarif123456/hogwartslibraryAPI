@@ -14,21 +14,23 @@ define(
     'The book may be on hold to another user ' .
     'or the reserved to a class that the user is not taking'
 );
-define('CHECKOUT_UPDATE_FAILED', "Failed to update tables for checkout ");
+define('CHECKOUT_UPDATE_FAILED', 'Failed to update tables for checkout');
 
 /* getting back the result of query as a JSON file */
 function getExecutedResult($stmt)
 {
     $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
 }
 
 /* Catch exception that are set by MYSQLI_REPORT_ALL  */
 function safeWriteQueries($stmt, $conn, $debug): bool
 {
     try {
-        return $stmt->execute() && $stmt->close();
+        return $stmt->execute() && $stmt->closeCursor();
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
         $conn->rollback();
@@ -44,9 +46,9 @@ function safeUpdateQueries($stmt, $conn, $debug): int
     try {
         if ($stmt->execute()) {
             $num = $conn->rowCount();
-            $stmt->close();
+            $stmt->closeCursor();
             if ($debug) {
-                echo $conn->info . '<br />';
+                echo json_encode($conn->errorInfo()) . '<br />';
             }
 
             return $num;
@@ -66,7 +68,7 @@ function safeInsertQueries($stmt, $conn, $debug): int
     try {
         if ($stmt->execute()) {
             $num = $conn->lastInsertId();
-            $stmt->close();
+            $stmt->closeCursor();
 
             return $num;
         }
@@ -82,9 +84,9 @@ function safeInsertQueries($stmt, $conn, $debug): int
 
 function debugPrint($e, $conn)
 {
-    if (!empty($conn->error)) {
+    if (!empty($conn->errorCode())) {
         echo SQL_ERROR;
-        echo $conn->error;
+        echo json_encode($conn->errorInfo());
     }
     echo PHP_EXCEPTION;
     echo $e;

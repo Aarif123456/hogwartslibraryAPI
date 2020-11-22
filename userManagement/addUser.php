@@ -14,6 +14,7 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (!(isValidPostVar('fname') && isValidPostVar('lname')
+      && isValidPostVar('userType') && isValidPostVar('passcode')
       && isValidPostVar('userType') && isValidPostVar('passcode'))) {
     exit(MISSING_PARAMETERS);
 }
@@ -21,34 +22,30 @@ if (strcmp($_POST['passcode'], REGISTRATION_PASSCODE) != 0) {
     exit(INVALID_PASSCODE);
 }
 
-if (checkSessionInfo() && validateHeadmaster($conn)) {
-    /* Get user info in a object */
-    $user = (object)[
-        'fname' => trim($_POST['fname']),
-        'lname' => trim($_POST['lname']),
-        'userType' => trim($_POST['userType'])
-    ];
-    updateUserCategory($user);
-    /* If we have the information needed to create new account then we will make it */
-    $account = null;
-    if (isValidPostVar('username') && isValidPostVar('password')) {
-        $account = (object)[
-            'email' => $_POST['username'],
-            'password' => $_POST['password'],
-        ];
-    }
+$debug = DEBUG;
 
-    $userID = insertUser($user, $account, $conn);
+/* Get user info in a object */
+$user = (object)[
+    'fname' => trim($_POST['fname']),
+    'lname' => trim($_POST['lname']),
+    'userType' => trim($_POST['userType'])
+];
+updateUserCategory($user);
+/* If we have the information needed to create new account then we will make it */
+$account = null;
+$account = (object)[
+    'email' => $_POST['username'] ?? '',
+    'password' => $_POST['password'] ?? '',
+];
 
-    if (!(empty($userID))) {
-        echo userCreated($userID);
-        echo '<br>';
-        echo userTypeCreated($user->userType);
-    } else {
-        echo COMMAND_FAILED;
-    }
+$userID = insertUser($user, $account, $conn, $debug);
+
+if (!(empty($userID))) {
+    echo userCreated($userID);
+    echo '<br>';
+    echo userTypeCreated($user->userType);
 } else {
-    redirectToLogin();
+    echo COMMAND_FAILED;
 }
 
 $conn = null;
@@ -58,7 +55,7 @@ function updateUserCategory($user)
     $userType = $user->userType;
     switch ($userType) {
         case 'student':
-            if (isValidPostVar('major') && isValidPostVar('house')) {
+            if (isValidPostVar('major') && isValidPostVar('house') && isValidHouse($_POST['house'])) {
                 $user->major = trim($_POST['major']);
                 $user->house = trim($_POST['house']);
             } else {

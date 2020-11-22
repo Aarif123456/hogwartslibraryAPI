@@ -2,18 +2,27 @@
 
 /* Imports */
 require_once 'error.php';
+require_once 'statusConstants.php';
+// require_once 'vendor/autoload.php';
+
+// use PHPAuth\Auth as PHPAuth;
+// use PHPAuth\Config as PHPAuthConfig;
 
 function insertUser($user, $account, $conn, $debug = false)
 {
     try {
-        $conn->autocommit(false);
-        /* store user info in member table */
-        $id = storeMemberInfo($user, $conn, $debug);
-        /* Store information specific to the user type in the appropriate table */
-        storeUserTypeInfo($id, $user, $conn);
+        // $config = new PHPAuthConfig($conn);
+        // $auth = new PHPAuth($conn, $config);
+
+        $conn->beginTransaction();
+        // $auth->register($account->email, $account->password, $account->password);
         /* Store the user's login info */
-        storeUserAccountInfo($id, $account, $conn, $debug);
-        $conn->autocommit(true);
+        $id = storeUserInfo($account, $conn, $debug);
+        /* store user info in member table */
+        storeMemberInfo($id, $user, $conn, $debug);
+        /* Store information specific to the user type in the appropriate table */
+        storeUserTypeInfo($id, $user, $conn, $debug);
+        $conn->commit();
 
         return $id;
     } catch (Exception $e) {
@@ -26,51 +35,61 @@ function insertUser($user, $account, $conn, $debug = false)
     }
 }
 
-function storeMemberInfo($user, $conn, $debug = false)
+function storeMemberInfo($id, $user, $conn, $debug = false)
 {
-    $stmt = $conn->prepare("INSERT INTO members (fname, lname) VALUES (?, ?)");
-    $stmt->bind_param("ss", $user->fname, $user->lname);
+    $stmt = $conn->prepare('INSERT INTO members (memberID, fname, lname) VALUES (:id, :fname, :lname)');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':fname', $user->fname, PDO::PARAM_STR);
+    $stmt->bindValue(':lname', $user->lname, PDO::PARAM_STR);
 
-    return safeInsertQueries($stmt, $conn, $debug);
+    return safeWriteQueries($stmt, $conn, $debug);
 }
 
 /* Insert user account info */
-function storeUserAccountInfo($id, $account, $conn, $debug = false)
+function storeUserInfo($account, $conn, $debug = false)
 {
     if (!(empty($account))) {
-        $stmt = $conn->prepare("INSERT INTO userAccount (userID, userName,password) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare(
+            'INSERT INTO phpauth_users (email, password, isactive) VALUES (:email, :password, :isActive)'
+        );
         /* hash password and store */
         $password = password_hash($account->password, PASSWORD_DEFAULT);
-        /* password_verify will make sure it is correct without having to store it */
-        $stmt->bind_param("iss", $id, $account->username, $password);
-        safeWriteQueries($stmt, $conn, $debug);
+        $stmt->bindValue(':email', $account->email, PDO::PARAM_STR);
+        $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+        $stmt->bindValue(':isActive', DEFAULT_ACCOUNT_ACTIVE, PDO::PARAM_BOOL);
+
+        return safeInsertQueries($stmt, $conn, $debug);
     }
+
+    return '';
 }
 
-function storeUserTypeInfo($id, $user, $conn)
+function storeUserTypeInfo($id, $user, $conn, $debug = false)
 {
     $userType = $user->userType;
     switch ($userType) {
         case 'student':
-            storeStudentInfo($id, $user, $conn);
+            storeStudentInfo($id, $user, $conn, $debug);
             break;
         case 'professor':
-            storeProfessorInfo($id, $user, $conn);
+            storeProfessorInfo($id, $user, $conn, $debug);
             break;
         case 'headmaster':
-            storeHeadmasterInfo($id, $user, $conn);
+            storeHeadmasterInfo($id, $user, $conn, $debug);
             break;
         default:
     }
 
-    return "";
+    return '';
 }
 
 function storeStudentInfo($id, $user, $conn, $debug = false)
 {
     if (!(empty($user->house) || empty($user->major))) {
-        $stmt = $conn->prepare("INSERT INTO students (studentID,major, house) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $id, $user->major, $user->house);
+        $stmt = $conn->prepare('INSERT INTO students (studentID, major, house) VALUES (:id, :major, :house)');
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':major', $user->major, PDO::PARAM_STR);
+        $stmt->bindValue(':house', $user->house, PDO::PARAM_STR);
         safeWriteQueries($stmt, $conn, $debug);
     } else {
         throw new Exception(MISSING_PARAMETER_FOR_USER_TYPE, 1);
@@ -80,8 +99,9 @@ function storeStudentInfo($id, $user, $conn, $debug = false)
 function storeProfessorInfo($id, $user, $conn, $debug = false)
 {
     if (!(empty($user->department))) {
-        $stmt = $conn->prepare("INSERT INTO professor (professorID, department) VALUES (?, ?)");
-        $stmt->bind_param("is", $id, $user->department);
+        $stmt = $conn->prepare('INSERT INTO professor (professorID, department) VALUES (:id, :department)');
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':department', $user->department, PDO::PARAM_STR);
         safeWriteQueries($stmt, $conn, $debug);
     } else {
         throw new Exception(MISSING_PARAMETER_FOR_USER_TYPE, 1);
@@ -90,8 +110,8 @@ function storeProfessorInfo($id, $user, $conn, $debug = false)
 
 function storeHeadmasterInfo($id, $user, $conn, $debug = false)
 {
-    $stmt = $conn->prepare("INSERT INTO headmasters (headmasterID) VALUES (?)");
-    $stmt->bind_param("i", $id);
+    $stmt = $conn->prepare('INSERT INTO headmasters (headmasterID) VALUES (:id)');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     safeWriteQueries($stmt, $conn, $debug);
 }
 
