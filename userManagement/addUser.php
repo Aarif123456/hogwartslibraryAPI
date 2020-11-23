@@ -15,7 +15,7 @@ $conn = getConnection();
 
 if (!(isValidPostVar('fname') && isValidPostVar('lname')
       && isValidPostVar('userType') && isValidPostVar('passcode')
-      && isValidPostVar('userType') && isValidPostVar('passcode'))) {
+      && isValidPostVar('username') && isValidPostVar('password'))) {
     exit(MISSING_PARAMETERS);
 }
 if (strcmp($_POST['passcode'], REGISTRATION_PASSCODE) != 0) {

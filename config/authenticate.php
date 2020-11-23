@@ -33,11 +33,11 @@ function getUserID($conn): int
     return $auth->getCurrentUID();
 }
 
-function login($loginInfo, $conn, $debug=false)
+function login($loginInfo, $conn, $debug = false)
 {
     $auth = getAuth($conn);
     $result = $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);
-    if($debug){
+    if ($debug) {
         echo $result['message'];
         echo 'br />';
         echo $result['hash'];

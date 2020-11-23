@@ -3,21 +3,28 @@
 /* Imports */
 require_once __DIR__ . '/error.php';
 require_once __DIR__ . '/statusConstants.php';
-// require_once __DIR__ .'/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// use PHPAuth\Auth as PHPAuth;
-// use PHPAuth\Config as PHPAuthConfig;
+use PHPAuth\Auth as PHPAuth;
+use PHPAuth\Config as PHPAuthConfig;
 
 function insertUser($user, $account, $conn, $debug = false)
 {
     try {
-        // $config = new PHPAuthConfig($conn);
-        // $auth = new PHPAuth($conn, $config);
+        $config = new PHPAuthConfig($conn);
+        $auth = new PHPAuth($conn, $config);
 
         $conn->beginTransaction();
-        // $auth->register($account->email, $account->password, $account->password);
+        $result = $auth->register($account->email, $account->password, $account->password);
+        if($result['error']){
+            exit($result['message']);
+        }
+        if($debug){
+            echo $result['message'];
+            echo "<br />";
+        }
         /* Store the user's login info */
-        $id = storeUserInfo($account, $conn, $debug);
+        $id = $auth->getUID($account->email);
         /* store user info in member table */
         storeMemberInfo($id, $user, $conn, $debug);
         /* Store information specific to the user type in the appropriate table */
@@ -43,25 +50,6 @@ function storeMemberInfo($id, $user, $conn, $debug = false)
     $stmt->bindValue(':lname', $user->lname, PDO::PARAM_STR);
 
     return safeWriteQueries($stmt, $conn, $debug);
-}
-
-/* Insert user account info */
-function storeUserInfo($account, $conn, $debug = false)
-{
-    if (!(empty($account))) {
-        $stmt = $conn->prepare(
-            'INSERT INTO phpauth_users (email, password, isactive) VALUES (:email, :password, :isActive)'
-        );
-        /* hash password and store */
-        $password = password_hash($account->password, PASSWORD_DEFAULT);
-        $stmt->bindValue(':email', $account->email, PDO::PARAM_STR);
-        $stmt->bindValue(':password', $password, PDO::PARAM_STR);
-        $stmt->bindValue(':isActive', DEFAULT_ACCOUNT_ACTIVE, PDO::PARAM_BOOL);
-
-        return safeInsertQueries($stmt, $conn, $debug);
-    }
-
-    return '';
 }
 
 function storeUserTypeInfo($id, $user, $conn, $debug = false)
