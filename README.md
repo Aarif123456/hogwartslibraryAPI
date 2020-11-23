@@ -291,8 +291,11 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: 
     2. library/holdBook.php --> /api/library/holdBook
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: bookISBN 
+        if librarian is placing hold on behalf of user: userID
+        If hold is for a book reserved for course: courseID
     4. httpie command:
+        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/library/holdBooks userID=500  bookISBN='978-1-6685-9857-3'
 
 </details>
 
