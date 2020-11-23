@@ -324,8 +324,6 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
-### TODO Refactor the code for the following endpoints ###
-
 <details>
 <summary> Report book as lost</summary>
 
@@ -370,6 +368,26 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
+<summary> check if user is logged in</summary>
+
+    1. Description: returns true if user is logged in and false if they are not 
+    2. user/isLoggedIn.php --> /api/user/isLoggedIn
+    3. Parameter list:
+    4. httpie command: 
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/isLoggedIn
+
+</details>
+
+
+<summary> logout user</summary>
+
+    1. Description: Logout the user
+    2. user/logout.php --> /api/user/logout
+    3. Parameter list:
+    4. httpie command: 
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/logout
+
+</details>
 ## Potential changes ##
 It might make more sense to change the express designation to bookItem level instead of book level
-Also, need to add an endpoint for addBooks, logout, closing account
+Also, need to add an endpoint for addBooks, closing account
