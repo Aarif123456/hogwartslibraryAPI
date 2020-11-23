@@ -368,6 +368,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
+<details>
 <summary> check if user is logged in</summary>
 
     1. Description: returns true if user is logged in and false if they are not 
@@ -378,7 +379,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
 </details>
 
-
+<details>
 <summary> logout user</summary>
 
     1. Description: Logout the user

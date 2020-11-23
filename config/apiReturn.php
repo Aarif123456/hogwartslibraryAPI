@@ -11,7 +11,6 @@ error_reporting(E_ALL);
 /* Define the strings the api will return  */
 
 /* constants */
-define('ALREADY_LOGGED_IN', 'ERROR: User is already logged in');
 define('BOOK_FOUND', 'The book is now found!!!');
 define('BOOK_INELIGIBLE_FOR_CHECKOUT', 'Book is ineligible to be checked out to the user');
 define('BOOK_LOST_RETURN', 'Book is has successfully been reported as lost');
@@ -71,7 +70,7 @@ function invalidUserType($userType): string
     return "'$userType' is not a recognized userType";
 }
 
-function authenticatedSuccesfully($userType): string
+function authenticatedSuccessfully($userType): string
 {
     $userType = htmlentities($userType);
     $return = (object)[

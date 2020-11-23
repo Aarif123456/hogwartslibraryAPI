@@ -37,13 +37,14 @@ function login($loginInfo, $conn, $debug = false)
 {
     $auth = getAuth($conn);
     $result = $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);
-    if ($debug) {
-        echo $result['message'];
-        if (!$result['error']) {
-            echo 'br />';
-            echo $result['hash'];
-        }
-    }
+
+    /* if ($debug) {
+         echo $result['message'];
+         if (!$result['error']) {
+             echo 'br />';
+             echo $result['hash'];
+         }
+     }*/
 
     return !$result['error'];
 }

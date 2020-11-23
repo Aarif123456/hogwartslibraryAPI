@@ -49,7 +49,7 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
         // $_SESSION['userID'] = getUserID($conn);
         $_SESSION['userID'] = getUserID($conn);
         $_SESSION['username'] = htmlentities($row['fname'] . ' ' . $row['lname']);
-        echo authenticatedSuccesfully($_SESSION['userType']);
+        echo authenticatedSuccessfully($_SESSION['userType']);
     } else {
         http_response_code(403);
         header('HTTP/1.0 403 Forbidden');
