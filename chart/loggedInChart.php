@@ -44,7 +44,7 @@ if (checkSessionInfo() && validateUser($conn)) {
         exit(INVALID_CHART);
     }
 
-    if($result === true){
+    if ($result === true) {
         exit(NO_ROWS_RETURNED);
     }
     echo createQueryJSON($result);

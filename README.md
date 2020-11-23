@@ -363,7 +363,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Report book as lost</summary>
 
-    1. Description: A user can report a book as lost and then pay off a portion of the cost of buying the book. A librarian CANNOT report a book as lsot on behalf of a user
+    1. Description: A user can report a book as lost and then pay off a portion of the cost of buying the book. A librarian CANNOT report a book as lost on behalf of a user
     2. library/lostBook.php --> /api/library/lostBook
     3. Parameter list:
         Accepts POST variable: bookBarcode

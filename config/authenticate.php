@@ -19,7 +19,7 @@ function validateUser($conn): bool
 {
     $auth = getAuth($conn);
     if ($auth->isLogged()) {
-        return (int)$auth->getCurrentUID() === (int)($_SESSION['userID']??-1);
+        return (int)$auth->getCurrentUID() === (int)($_SESSION['userID'] ?? -1);
     }
 
     return false;
