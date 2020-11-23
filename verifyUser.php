@@ -44,7 +44,6 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
         if ($determineUser) {
             $_SESSION['userType'] = $row['userType'];
         }
-        // $_SESSION['userID'] = getUserID($conn);
         $_SESSION['userID'] = getUserID($conn);
         $_SESSION['username'] = htmlentities($row['fname'] . ' ' . $row['lname']);
         echo authenticatedSuccessfully($_SESSION['userType']);

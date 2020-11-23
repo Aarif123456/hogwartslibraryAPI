@@ -15,7 +15,7 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $holderID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $holderID = isLibrarian() ? $_POST['userID'] ?? '' : getUserID($conn);
     $holdID = $_POST['holdID'] ?? '';
     $debug = DEBUG;
     if (empty($holdID) || empty($holderID)) {

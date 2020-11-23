@@ -15,7 +15,7 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $renewerID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $renewerID = isLibrarian() ? $_POST['userID'] ?? '' : getUserID($conn);
     $bookBarcode = $_POST['bookBarcode'] ?? '';
     $debug = DEBUG;
     if (empty($bookBarcode) || empty($renewerID)) {

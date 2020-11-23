@@ -339,7 +339,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Cancel a hold</summary>
 
     1. Description: Allow user to cancel a hold or a librarian to cancel a hold on their behalf. If there are other users waiting for a book, the book will be reserved for them. 
-    2. library/cancelHoldBook.php --> /api/library/cancelHoldBook
+    2. library/cancelHoldBooks.php --> /api/library/cancelHoldBooks
     3. Parameter list:
         Accepts POST variable: holdID
         if librarian: userID

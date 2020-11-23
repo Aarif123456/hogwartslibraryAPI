@@ -15,7 +15,7 @@ requiredHeaderAndSessionStart();
 $conn = getConnection();
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $holderID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $holderID = isLibrarian() ? $_POST['userID'] ?? '' : getUserID($conn);
     $bookISBN = $_POST['bookISBN'] ?? '';
     $courseID = $_POST['courseID'] ?? '';
     $debug = DEBUG;

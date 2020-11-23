@@ -20,7 +20,7 @@ function librarianListJSON($listType, $conn)
                                 headmasters
                         )'
             );
-            $stmt->bindValue(':id', $_SESSION['userID'], PDO::PARAM_INT);
+            $stmt->bindValue(':id', getUserID($conn), PDO::PARAM_INT);
 
             return $stmt;
         case 'loadFinedMember':
@@ -34,7 +34,7 @@ function librarianListJSON($listType, $conn)
                     memberID != :id 
                     AND memberID>0 AND fines>0'
             );
-            $stmt->bindValue(':id', $_SESSION['userID'], PDO::PARAM_INT);
+            $stmt->bindValue(':id', getUserID($conn), PDO::PARAM_INT);
 
             return $stmt;
         case 'loadBookBarcode':

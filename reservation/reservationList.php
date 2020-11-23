@@ -17,7 +17,7 @@ if (!(isValidPostVar('listType'))) {
 }
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $userID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
+    $userID = isLibrarian() ? $_POST['userID'] ?? '' : getUserID($conn);
     $debug = false;
     $listType = $_POST['listType'];
     if ((strcmp($listType, "loadCourses") == 0)) {
