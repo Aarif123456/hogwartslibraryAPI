@@ -2,7 +2,6 @@
 /* program to verify login*/
 
 require_once __DIR__ . '/config/apiReturn.php';
-require_once __DIR__ . '/config/secretKey.php';
 require_once __DIR__ . '/config/authenticate.php';
 require_once __DIR__ . '/repository/database.php';
 require_once __DIR__ . '/repository/verifyUserRepo.php';
@@ -63,7 +62,7 @@ $conn = null;
 function getArrayFromResult($rows)
 {
     if (count($rows) == 0) {
-        echo USERNAME_NOT_IN_TABLE;
+        exit (USERNAME_NOT_IN_TABLE);
     }
 
     return $rows[0];
