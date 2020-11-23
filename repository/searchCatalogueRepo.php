@@ -1,7 +1,7 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
+require_once __DIR__ . '/error.php';
 
 function queryCatalog($searchType, $term, $conn)
 {
@@ -22,9 +22,14 @@ function queryCatalog($searchType, $term, $conn)
 function bindSearchQuery($searchType, $term, $stmt)
 {
     if (strcmp($searchType, 'keyword') == 0) {
-        $stmt->bind_param("ssssss", $term, $term, $term, $term, $term, $term);
+        $stmt->bindValue(':bookISBN', $term, PDO::PARAM_STR);
+        $stmt->bindValue(':bookName', $term, PDO::PARAM_STR);
+        $stmt->bindValue(':author', $term, PDO::PARAM_STR);
+        $stmt->bindValue(':pages', $term, PDO::PARAM_STR);
+        $stmt->bindValue(':edition', $term, PDO::PARAM_STR);
+        $stmt->bindValue(':category', $term, PDO::PARAM_STR);
     } else {
-        $stmt->bind_param("s", $term);
+        $stmt->bindValue(':term', $term, PDO::PARAM_STR);
     }
 }
 
@@ -32,11 +37,11 @@ function bindSearchQuery($searchType, $term, $stmt)
 function validSearchMethod($searchType)
 {
     switch ($searchType) {
-        case "keyword":       // INTENTIONAL FALLTHROUGH
-        case "title":         // INTENTIONAL FALLTHROUGH
-        case "author":        // INTENTIONAL FALLTHROUGH
-        case "ISBN":          // INTENTIONAL FALLTHROUGH
-        case "tag":           // INTENTIONAL FALLTHROUGH
+        case 'keyword':       // INTENTIONAL FALLTHROUGH
+        case 'title':         // INTENTIONAL FALLTHROUGH
+        case 'author':        // INTENTIONAL FALLTHROUGH
+        case 'ISBN':          // INTENTIONAL FALLTHROUGH
+        case 'tag':           // INTENTIONAL FALLTHROUGH
             return true;
         default:
             return false;
@@ -47,32 +52,32 @@ function validSearchMethod($searchType)
 function getQueryForCatalog($searchType)
 {
     // common start of search query
-    $query = "SELECT bookISBN, bookName, author, pages, edition, express, category, holds FROM `books` WHERE ";
+    $query = 'SELECT bookISBN, bookName, author, pages, edition, express, category, holds FROM `books` WHERE ';
 
     switch ($searchType) {
-        case "keyword":
+        case 'keyword':
             //separate keyword because it uses multiple parameter
-            $query .= "bookISBN like CONCAT('%',?,'%') OR ";
-            $query .= "bookName like CONCAT('%',?,'%') OR ";
-            $query .= "author like CONCAT('%',?,'%') OR ";
-            $query .= "pages like CONCAT('%',?,'%') OR ";
-            $query .= "edition like CONCAT('%',?,'%') OR ";
-            $query .= "category like CONCAT('%',?,'%')";
+            $query .= 'bookISBN like CONCAT(\'%\',:bookISBN,\'%\') OR ';
+            $query .= 'bookName like CONCAT(\'%\',:bookName,\'%\') OR ';
+            $query .= 'author like CONCAT(\'%\',:author,\'%\') OR ';
+            $query .= 'pages like CONCAT(\'%\',:pages,\'%\') OR ';
+            $query .= 'edition like CONCAT(\'%\',:edition,\'%\') OR ';
+            $query .= 'category like CONCAT(\'%\',:category,\'%\')';
             break;
-        case "title":
-            $query .= "bookName like CONCAT('%',?,'%')";
+        case 'title':
+            $query .= 'bookName like CONCAT(\'%\',:term,\'%\')';
             break;
-        case "author":
-            $query .= "author like CONCAT('%',?,'%')";
+        case 'author':
+            $query .= 'author like CONCAT(\'%\',:term,\'%\')';
             break;
-        case "ISBN":
-            $query .= "bookISBN like CONCAT('%',?,'%')";
+        case 'ISBN':
+            $query .= 'bookISBN like CONCAT(\'%\',:term,\'%\')';
             break;
-        case "tag":
-            $query .= "bookISBN IN (SELECT `bookISBN` FROM bookTags WHERE tag LIKE CONCAT('%',?,'%'))";
+        case 'tag':
+            $query .= 'bookISBN IN (SELECT `bookISBN` FROM bookTags WHERE tag LIKE CONCAT(\'%\',:term,\'%\'))';
             break;
         default:
-            return "";
+            return '';
     }
 
     return $query;
