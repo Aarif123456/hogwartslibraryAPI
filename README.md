@@ -59,6 +59,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list: 
          Accepts POST variable:  username
     4. httpie command:
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/checkUserName username='Snape1@hogwarts.com'
 
 </details>
 
@@ -288,7 +289,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Put a hold on a book</summary>
 
-    1. Description: 
+    1. Description: Endpoint handles the case where either a user tries to place a hold on a book,a librarian places a hold on the behalf of a user or either of those two cases where the book is also reserved for a class
     2. library/holdBook.php --> /api/library/holdBook
     3. Parameter list:
         Accepts POST variable: bookISBN 
