@@ -1,23 +1,23 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
+require_once __DIR__ . '/error.php';
 
-function insertLibrarian($userID, $conn, $debug = false)
+function insertLibrarian($librarianID, $conn, $debug = false)
 {
     $stmt = $conn->prepare(
-        "INSERT INTO librarianAccount (librarianID, active) VALUES (?, 1) ON DUPLICATE KEY UPDATE active = 1"
+        'INSERT INTO librarianAccount (librarianID, active) VALUES (:librarianID, 1) ON DUPLICATE KEY UPDATE active = 1'
     );
-    $stmt->bind_param("i", $userID);
+    $stmt->bindValue(':librarianID', $librarianID, PDO::PARAM_INT);
 
     return safeWriteQueries($stmt, $conn, $debug);
 }
 
-function deleteLibrarian($userID, $conn, $debug = false)
+function deleteLibrarian($librarianID, $conn, $debug = false)
 {
-    $deleteStmt = "UPDATE librarianAccount SET active = 0 WHERE librarianID =?";
-    $stmt = $conn->prepare($deleteStmt);
-    $stmt->bind_param("i", $userID);
+    $deleteQuery = 'UPDATE librarianAccount SET active = 0 WHERE librarianID = :librarianID';
+    $stmt = $conn->prepare($deleteQuery);
+    $stmt->bindValue(':librarianID', $librarianID, PDO::PARAM_INT);
 
     return safeWriteQueries($stmt, $conn, $debug);
 }

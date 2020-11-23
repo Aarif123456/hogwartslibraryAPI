@@ -174,7 +174,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Viewing fines on user's account</summary>
 
-    1. Description: 
+    1. Description: Users can view the fines on their account
     2. user/userFines.php --> /api/user/userFines
     3. Parameter list:
         Accepts POST variable: listType: distinguish if we just want the total fine or a 
@@ -191,11 +191,11 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Viewing holds on user account </summary>
 
-    1. Description: 
+    1. Description: Users can view and track their holds
     2. user/userHolds.php --> /api/user/userHolds
     3. Parameter list:
-        Accepts POST variable: 
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/userHolds
 
 </details>
 
@@ -207,6 +207,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list: courseName & professorID
         Accepts POST variable: 
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/addCourses courseName='The language of magic' professorID=397
 
 </details>
 
@@ -215,9 +216,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 
     1. Description: Headmaster can delete courses from the database
     2. headmaster/deleteCourses.php --> /api/headmaster/deleteCourses
-    3. Parameter list: courseID
-        Accepts POST variable: 
+    3. Parameter list: 
+        Accepts POST variable: courseID
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/deleteCourses courseID=26
 
 </details>
 
@@ -230,6 +232,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list: 
         Accepts POST variable: courseID, studentID
     4. httpie command:
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/addEnrollment courseID=4 studentID=18
 
 </details>
 
@@ -241,17 +244,18 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list: 
         Accepts POST variable: enrollmentNumber
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/deleteEnrollment enrollmentNumber=18
 
 </details>
 
 <details>
 <summary> Make user's librarians</summary>
 
-    1. Description: Give user's librarian privileges
+    1. Description: Allow headmaster to grant librarian privileges to users
     2. headmaster/addLibrarian.php --> /api/headmaster/addLibrarian
     3. Parameter list:
         Accepts POST variable: userID
-    4. httpie command:
+    4. httpie command:  http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/addLibrarian userID=589
 
 </details>
 
@@ -265,6 +269,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list:
         Accepts POST variable: userID
     4. httpie command:
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/headmaster/deleteLibrarian userID=589
 
 </details>
 
@@ -299,6 +304,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     2. library/searchCatalogue.php --> /api/library/searchCatalogue
     3. Parameter list:
         Accepts REQUEST variable: searchType, searchWord
+            searchType (valid values): keyword, title, author, ISBN, tag
     4. httpie command:
 
 </details>
@@ -369,29 +375,31 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Professor reserves book copies for class </summary>
 
-    1. Description: 
+    1. Description: Professors can reserve up to 10 of any book for any of their course, this will make it so only students of that class can place a hold and checkout those books.
     2. reservation/addReservation.php --> /api/reservation/addReservation
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: courseID, bookISBN, numCopies - userID(if librarian)
     4. httpie command:
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/reservation/addReservation courseID=18 bookISBN='978-0-6514-7775-8' numCopies=10 userID=577
 
 </details>
 
 <details>
 <summary>Professor cancels reservation for book copies</summary>
 
-    1. Description: 
+    1. Description: Remove all copies of the reserved book for the given course
     2. reservation/deleteReservation.php --> /api/reservation/deleteReservation
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: courseID, bookISBN - userID(if librarian)
     4. httpie command:
+        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/reservation/deleteReservation courseID=18 bookISBN='978-0-6514-7775-8' userID=577
 
 </details>
 
 <details>
 <summary> View books to reserve and list of current reservations</summary>
 
-    1. Description: 
+    1. Description: Lists related to reserving books, will be re factored into separate endpoint later
     2. reservation/reservationList.php --> /api/reservation/reservationList
     3. Parameter list:
         Accepts POST variable: listType

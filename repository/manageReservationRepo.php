@@ -1,66 +1,60 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
-require_once 'statusConstants.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/statusConstants.php';
 
 function insertReservation($courseID, $bookISBN, $professorID, $numCopies, $conn, $debug = false): int
 {
-    $query = "
+    $query = '
             UPDATE 
                 bookItem 
             SET 
-                reservedFor = ? 
+                reservedFor = :reservedFor
             WHERE 
                 reservedFor IS NULL 
-                AND bookISBN = ? 
-                AND ? IN 
+                AND bookISBN = :bookISBN
+                AND :courseIDKey IN 
                     (
                         SELECT 
                             courseID
                         FROM 
                             courses 
                         WHERE 
-                            courseID = ? 
-                            AND professorID = ?
+                            courseID = :courseID
+                            AND professorID = :professorID
                     )
-                LIMIT ?
-            ";
-    $reserveStmt = $conn->prepare($query);
+                LIMIT :numCopies
+            ';
+    $stmt = $conn->prepare($query);
     $numCopies = min(MAXIMUM_COPIES_RESERVED, max($numCopies, 1));
-    $reserveStmt->bind_param(
-        "isiiii",
-        $courseID,
-        $bookISBN,
-        $courseID,
-        $courseID,
-        $professorID,
-        $numCopies
-    );
+    $stmt->bindValue(':bookISBN', $bookISBN, PDO::PARAM_STR);
+    $stmt->bindValue(':courseIDKey', $courseID, PDO::PARAM_INT);
+    $stmt->bindValue(':reservedFor', $courseID, PDO::PARAM_INT);
+    $stmt->bindValue(':courseID', $courseID, PDO::PARAM_INT);
+    $stmt->bindValue(':professorID', $professorID, PDO::PARAM_INT);
+    $stmt->bindValue(':numCopies', (int)$numCopies, PDO::PARAM_INT);
 
-    return safeUpdateQueries($reserveStmt, $conn, $debug);
+    return safeUpdateQueries($stmt, $conn, $debug);
 }
 
 function deleteReservation($professorID, $courseID, $bookISBN, $conn, $debug = false): bool
 {
-    $query = "
+    $query = '
                 UPDATE 
                     bookItem 
                     INNER JOIN courses ON courseID = reservedFor
                 SET 
                     reservedFor = NULL 
                 WHERE 
-                    bookISBN = ? 
-                    AND courseID = ? 
-                    AND professorID = ?
-            ";
+                    bookISBN = :bookISBN
+                    AND courseID = :courseID
+                    AND professorID = :professorID
+            ';
     $stmt = $conn->prepare($query);
-    $stmt->bind_param(
-        "sii",
-        $bookISBN,
-        $courseID,
-        $professorID
-    );
+    $stmt->bindValue(':bookISBN', $bookISBN, PDO::PARAM_STR);
+    $stmt->bindValue(':courseID', $courseID, PDO::PARAM_INT);
+    $stmt->bindValue(':professorID', $professorID, PDO::PARAM_INT);
 
     return safeWriteQueries($stmt, $conn, $debug);
 }

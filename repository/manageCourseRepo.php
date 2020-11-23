@@ -1,23 +1,26 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
+require_once __DIR__ . '/error.php';
 
 /* Queries */
 function getInsertQuery($courseName, $professorID, $conn)
 {
-    $insertCourse = "INSERT INTO `courses` (`courseName`, `professorID`) VALUES (?, ?)";
+    $insertCourse = 'INSERT INTO `courses` (`courseName`, `professorID`) VALUES (:courseName, :professorID)';
     $stmt = $conn->prepare($insertCourse);
-    $stmt->bind_param("si", $courseName, $professorID);
+    $stmt->bindValue(':courseName', $courseName, PDO::PARAM_STR);
+    $stmt->bindValue(':professorID', $professorID, PDO::PARAM_INT);
 
     return $stmt;
 }
 
 function getInsertQueryWithTerm($courseName, $professorID, $termOffered, $conn)
 {
-    $insertCourseWithTerm = "INSERT INTO `courses` (`courseName`, `professorID`, `TermOffered`) VALUES (?, ?, ?)";
+    $insertCourseWithTerm = 'INSERT INTO `courses` (`courseName`, `professorID`, `TermOffered`) VALUES (:courseName, :professorID, :termOffered)';
     $stmt = $conn->prepare($insertCourseWithTerm);
-    $stmt->bind_param("sis", $courseName, $professorID, $termOffered);
+    $stmt->bindValue(':courseName', $courseName, PDO::PARAM_STR);
+    $stmt->bindValue(':professorID', $professorID, PDO::PARAM_INT);
+    $stmt->bindValue(':termOffered', $termOffered, PDO::PARAM_STR);
 
     return $stmt;
 }
@@ -36,9 +39,9 @@ function insertCourse($courseName, $professorID, $termOffered, $conn, $debug = f
 
 function deleteCourse($courseID, $conn, $debug = false)
 {
-    $deleteCourse = "DELETE FROM courses WHERE courseID=?";
+    $deleteCourse = 'DELETE FROM courses WHERE courseID = :courseID';
     $stmt = $conn->prepare($deleteCourse);
-    $stmt->bind_param("i", $courseID);
+    $stmt->bindValue(':courseID', $courseID, PDO::PARAM_INT);
 
     return safeWriteQueries($stmt, $conn, $debug);
 }
