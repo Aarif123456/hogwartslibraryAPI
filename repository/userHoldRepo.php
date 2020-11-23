@@ -9,7 +9,9 @@ require_once __DIR__ . '/holds/createHolds.php';
 
 function holdExists($bookISBN, $holderID, $conn)
 {
-    $stmt = $conn->prepare('SELECT * FROM holds WHERE bookISBN = :bookISBN AND holderID = :id AND (status = :activeHold OR status= :inQueue)');
+    $stmt = $conn->prepare(
+        'SELECT * FROM holds WHERE bookISBN = :bookISBN AND holderID = :id AND (status = :activeHold OR status= :inQueue)'
+    );
     $stmt->bindValue(':id', $holderID, PDO::PARAM_INT);
     $stmt->bindValue(':bookISBN', $bookISBN, PDO::PARAM_STR);
     $stmt->bindValue(':activeHold', HOLD_ACTIVE, PDO::PARAM_INT);
