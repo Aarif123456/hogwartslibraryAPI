@@ -309,8 +309,9 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: A librarian can authorize a payment toward user fines
     2. librarian/payFine.php --> /api/librarian/payFine
     3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
+        Accepts POST variable: pay, userID
+    4. httpie command: 
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/librarian/payFine pay=40 userID=5
 
 </details>
 
@@ -345,21 +346,23 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <summary> Renew a book</summary>
 
     1. Description: Allow users to renew books if there are no holds on the book. A book can be renewed a maximum of two times
-    2. library/renewBook.php --> /api/library/renewBook
+    2. library/renewBooks.php --> /api/library/renewBooks
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: bookBarcode, userID (if librarian)
     4. httpie command:
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/library/renewBooks bookBarcode=902773774468 userID=2
 
 </details>
 
 <details>
 <summary> Report book as lost</summary>
 
-    1. Description: 
+    1. Description: A user can report a book as lost and then pay off a portion of the cost of buying the book. A librarian CANNOT report a book as lsot on behalf of a user
     2. library/lostBook.php --> /api/library/lostBook
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: bookBarcode
     4. httpie command:
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/library/lostBook bookBarcode=902773770485
 
 </details>
 

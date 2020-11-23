@@ -1,8 +1,8 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
-require_once 'statusConstants.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/statusConstants.php';
 
 /* report book as lost
         1. change bookItem status to lost
@@ -13,7 +13,7 @@ require_once 'statusConstants.php';
 function reportLostBook($userID, $bookBarcode, $conn, $debug = false)
 {
     $query =
-        "
+        '
         UPDATE 
             transactions
             INNER JOIN bookItem  
@@ -23,7 +23,7 @@ function reportLostBook($userID, $bookBarcode, $conn, $debug = false)
             INNER JOIN members  
                 ON transactions.borrowedBy=members.memberID
         SET 
-            bookItem.status = ?,
+            bookItem.status = :lostBook,
             bookItem.reservedFor = NULL,
             books.totalCopies = books.totalCopies - 1,
             members.fines = (members.fines + transactions.fine + bookItem.price),
@@ -36,7 +36,7 @@ function reportLostBook($userID, $bookBarcode, $conn, $debug = false)
                                                 members.fines + 
                                                 transactions.fine + 
                                                 bookItem.price
-                                            ) >=? 
+                                            ) >=:studentLimit
                                             AND members.memberID IN 
                                             (
                                                 SELECT studentID AS memberID FROM students
@@ -47,43 +47,31 @@ function reportLostBook($userID, $bookBarcode, $conn, $debug = false)
                                                 members.fines + 
                                                 transactions.fine + 
                                                 bookItem.price
-                                            ) >=? 
+                                            ) >=:professorLimit
                                             AND members.memberID IN 
                                             (
                                                 SELECT professorID AS memberID FROM professor
                                             )
                                         )
                                     ), 
-                                    ?, 
+                                    :blacklisted, 
                                     members.status 
                                 )
         WHERE 
-            transactions.bookBarcode = ? 
-            AND transactions.borrowedBy = ?
+            transactions.bookBarcode = :bookBarcode 
+            AND transactions.borrowedBy = :userID
             AND transactions.returnDate IS NULL
-            AND bookItem.status = ? 
-            ";
-    $lostBook = BOOK_LOST;
-    $bookCheckedOut = BOOK_CHECKED_OUT;
-    $blacklisted = ACCOUNT_BLACKLISTED;
-    $studentLimit = STUDENT_BOOK_LIMIT;
-    $professorLimit = PROFESSOR_BOOK_LIMIT;
+            AND bookItem.status = :checkedOut
+            ';
     $stmt = $conn->prepare($query);
-    $stmt->bind_param(
-        "iiiiiii",
-        $lostBook,
-        $studentLimit,
-        $professorLimit,
-        $blacklisted,
-        $bookBarcode,
-        $userID,
-        $bookCheckedOut
-    );
+    $stmt->bindValue(':lostBook', BOOK_LOST, PDO::PARAM_INT);
+    $stmt->bindValue(':studentLimit', STUDENT_BOOK_LIMIT, PDO::PARAM_INT);
+    $stmt->bindValue(':professorLimit', PROFESSOR_BOOK_LIMIT, PDO::PARAM_INT);
+    $stmt->bindValue(':blacklisted', ACCOUNT_BLACKLISTED, PDO::PARAM_INT);
+    $stmt->bindValue(':bookBarcode', $bookBarcode, PDO::PARAM_INT);
+    $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+    $stmt->bindValue(':checkedOut', BOOK_CHECKED_OUT, PDO::PARAM_INT);
     $numRows = safeUpdateQueries($stmt, $conn, $debug);
-    echo $conn->affected_rows;
-    echo '  ';
-    echo $numRows;
-    echo '  ';
 
     return $numRows === 3;
 }
