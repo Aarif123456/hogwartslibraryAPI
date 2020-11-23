@@ -1,20 +1,20 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
-require_once 'fineCalculator.php';
-require_once 'statusConstants.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/fineCalculator.php';
+require_once __DIR__ . '/statusConstants.php';
 
 function renewBook($renewerID, $bookBarcode, $conn, $debug = false)
 {
     try {
         return
-            $conn->autocommit(false) &&
+            $conn->beginTransaction() &&
             /* calculating overdue fee if book is checked out */
             addOverdueFines($bookBarcode, $conn, $debug) &&
             /* Renew the book - change the new due date and increment renewal */
             renewBookQuery($renewerID, $bookBarcode, $conn, $debug) &&
-            $conn->autocommit(true);
+            $conn->commit();
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
         $conn->rollback();
@@ -27,36 +27,31 @@ function renewBook($renewerID, $bookBarcode, $conn, $debug = false)
 
 function renewBookQuery($renewerID, $bookBarcode, $conn, $debug = false): bool
 {
-    $query = "
+    $query = '
                 UPDATE `transactions` 
-                    INNER JOIN bookItem ON bookItem.bookBarcode=transactions.bookBarcode
-                    INNER JOIN books ON books.bookISBN=bookItem.bookISBN
+                    INNER JOIN bookItem ON bookItem.bookBarcode = transactions.bookBarcode
+                    INNER JOIN books ON books.bookISBN = bookItem.bookISBN
                 SET 
-                    renewedTime = renewedTime +1, 
-                    dueDate=CURDATE() 
+                    renewedTime = renewedTime + 1, 
+                    dueDate = CURDATE() 
                 WHERE 
-                    transactions.borrowedBy =? 
-                    AND transactions.bookBarcode =? 
+                    transactions.borrowedBy = :id 
+                    AND transactions.bookBarcode = :bookBarcode
                     AND transactions.returnDate IS NULL 
-                    AND transactions.renewedTime<? 
-                    AND books.express=0 
-                    AND books.holds=0 
+                    AND transactions.renewedTime < :maxRenewalTime
+                    AND books.express = 0 
+                    AND books.holds = 0 
                     AND bookItem.reservedFor IS NULL 
-                    AND bookItem.status=?
-             ";
+                    AND bookItem.status = :checkedOut
+             ';
     $stmt = $conn->prepare($query);
-    $maxRenewalTime = MAXIMUM_RENEWAL_TIME;
-    $checkedOut = BOOK_CHECKED_OUT;
-    $success = $stmt->bind_param(
-        "iiii",
-        $renewerID,
-        $bookBarcode,
-        $maxRenewalTime,
-        $checkedOut
-    );
+    $success = $stmt->bindValue(':maxRenewalTime', MAXIMUM_RENEWAL_TIME, PDO::PARAM_INT) &&
+               $stmt->bindValue(':checkedOut', BOOK_CHECKED_OUT, PDO::PARAM_INT) &&
+               $stmt->bindValue(':id', $renewerID, PDO::PARAM_INT) &&
+               $stmt->bindValue(':bookBarcode', $bookBarcode, PDO::PARAM_INT);
     $numRows = safeUpdateQueries($stmt, $conn, $debug);
     if ($debug) {
-        echo debugQuery($numRows, $success, "renewBookQuery");
+        echo debugQuery($numRows, $success, 'renewBookQuery');
     }
 
     return $success && $numRows === 1;
