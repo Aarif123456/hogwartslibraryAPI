@@ -37,8 +37,8 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Registering user </summary>
 
-    1. Description: 
-    2. userManagement/addUser.php --> /api/userManagement/addUser
+    1. Description: Users can register for their own account if they have a registration passcode 
+    2. userManagement/addUser.php --> /api/userManagement/addUsers
     3. Parameter list:
         Accepts POST variable: fname, lname, userType, username, password, passcode
         // IF user is a student we need parameter of house and major
@@ -54,10 +54,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Check username </summary>
 
-    1. Description: Check if username is in database
+    1. Description: Check if username/email is in database
     2. userManagement/checkUserName.php  --> /api/userManagement/checkUserName
     3. Parameter list: 
-         Accepts POST variable:  username
+         Accepts POST variable: username
     4. httpie command:
         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/checkUserName username='Snape1@hogwarts.com'
 
@@ -85,6 +85,10 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
         Accepts request variable: chartType
         Current charts are: category,  major, allTime, houseFine, 
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/guestCharts chartType='houseFine'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/guestCharts chartType='category'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/guestCharts chartType='major'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/guestCharts chartType='allTime'
 
 </details>
 
@@ -106,7 +110,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list:
         Accepts POST variable: chartType
         if headmaster
-            valid values: reservationList ,fineList ,activeList
+            valid values: reservationList, fineList, activeList
         if librarian
             valid values: unusedList, lostList
         if professor
@@ -114,7 +118,17 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
         if student
             valid values: numBooksPerCategory
     4. httpie command:
-
+        if headmaster 
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='reservationList'
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='fineList'
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='activeList'
+        If librarian 
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='unusedList'
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='lostList'
+        If professor
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='activityPerMajorAndDepartment'
+        If student
+        http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/chart/loggedInChart chartType='numBooksPerCategory'
 </details>
 
 <details>
@@ -127,21 +141,33 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list:
         Accepts POST variable: listType
         if headmaster
-            valid values: reservationList ,fineList ,activeList
+            valid values: loadPotentialLibrarian, loadLibrarian, loadCourses, loadEnrollment, loadStudents, loadProfessor, loadMember, loadUsers
         if librarian
-            valid values: unusedList, lostList
+            valid values: loadPotentialBorrower, loadFinedMember, loadBookBarcode
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadPotentialLibrarian'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadLibrarian'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadCourses'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadEnrollment'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadStudents'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadProfessor'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadMember'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadUsers'
+
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadPotentialBorrower'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadFinedMember'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/loadList listType='loadBookBarcode'
 
 </details>
 
 <details>
 <summary> Viewing checked out books </summary>
 
-    1. Description: 
+    1. Description:  Users can view books checked on their account
     2. user/userCheckedOut.php --> /api/user/userCheckedOut
     3. Parameter list:
-        Accepts POST variable: 
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/userCheckedOut
 
 </details>
 
@@ -158,6 +184,8 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
         Future - May not show fines that are no longer relevant - e.g. over the 
         total outstanding fine on the user's account
     4. httpie command:
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/userFines listType='getOutstandingFineOnAccount'
+         http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/user/userFines listType='getTransactionWithFines'
 </details>
 
 <details>
@@ -278,7 +306,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> User pay off fine</summary>
 
-    1. Description: 
+    1. Description: A librarian can authorize a payment toward user fines
     2. librarian/payFine.php --> /api/librarian/payFine
     3. Parameter list:
         Accepts POST variable: 
@@ -316,7 +344,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
 <details>
 <summary> Renew a book</summary>
 
-    1. Description: 
+    1. Description: Allow users to renew books if there are no holds on the book. A book can be renewed a maximum of two times
     2. library/renewBook.php --> /api/library/renewBook
     3. Parameter list:
         Accepts POST variable: 
