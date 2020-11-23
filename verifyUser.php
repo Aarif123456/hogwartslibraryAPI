@@ -1,11 +1,11 @@
 <?php
 /* program to verify login*/
 
-require_once 'config/apiReturn.php';
-require_once 'config/secretKey.php';
-require_once 'config/authenticate.php';
-require_once 'repository/database.php';
-require_once 'repository/verifyUserRepo.php';
+require_once __DIR__ . '/config/apiReturn.php';
+require_once __DIR__ . '/config/secretKey.php';
+require_once __DIR__ . '/config/authenticate.php';
+require_once __DIR__ . '/repository/database.php';
+require_once __DIR__ . '/repository/verifyUserRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -13,13 +13,9 @@ requiredHeaderAndSessionStart();
 /* Connect to database */
 $conn = getConnection();
 
-/*if (validateUser($conn)) {
-    exit(ALREADY_LOGGED_IN);
-}*/
-unset($_COOKIE['rememberMe']);
-session_destroy();
-session_start();
-$_SESSION = [];
+if (validateUser($conn)) {
+    logout($conn);
+}
 
 if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('password')) {
     /* Store user type in session */
@@ -27,7 +23,8 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
     $_SESSION['userType'] = $userType;
     $email = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
-    $remember = $_POST['remember'] ?? 0;
+    $remember = $_POST['remember'] ?? true;
+    $debug = DEBUG;
 
     if (!(verifyUserType($userType))) {
         /* Exit and tell the client that their user type is invalid */
@@ -43,16 +40,15 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
         'hashedPassword' => $row['password'],
     ];
     /* Make sure the password is correct */
-    if (login($loginInfo, $conn)) {
+    if (login($loginInfo, $conn, $debug)) {
         /* If we are determining user from table then determine it */
         $determineUser = strcmp($userType, 'user') == 0;
         if ($determineUser) {
             $_SESSION['userType'] = $row['userType'];
         }
         // $_SESSION['userID'] = getUserID($conn);
-        $_SESSION['userID'] = $row['id'];
+        $_SESSION['userID'] = getUserID($conn);
         $_SESSION['username'] = htmlentities($row['fname'] . ' ' . $row['lname']);
-        storeUserAuthenticationInformation(getUserID($conn));
         echo authenticatedSuccesfully($_SESSION['userType']);
     } else {
         http_response_code(403);
@@ -73,20 +69,3 @@ function getArrayFromResult($rows)
 
     return $rows[0];
 }
-
-/* store information regarding the user's login */
-function storeUserAuthenticationInformation($userID)
-{
-    try {
-        $token = random_bytes(128);
-    } catch (Exception $e) {
-        exit(INTERNAL_SERVER_ERROR);
-    }
-    $_SESSION['token'] = $token; //need some way for user to store token 
-    $cookie = $userID . ':' . $token;
-    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
-    $cookie .= ':' . $mac;
-    setcookie('rememberMe', $cookie, time() + (86400 * 30), '/', 'arif115.myweb.cs.uwindsor.ca', true, true);
-}
-
-

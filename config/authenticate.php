@@ -1,9 +1,9 @@
 <?php
 //verify login
 
-require_once 'constants.php';
-require_once 'secretKey.php';
-/*require_once '../vendor/autoload.php';
+require_once __DIR__ . '/constants.php';
+require_once __DIR__ . '/secretKey.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPAuth\Auth as PHPAuth;
 use PHPAuth\Config as PHPAuthConfig;
@@ -13,59 +13,44 @@ function getAuth($conn)
     $config = new PHPAuthConfig($conn);
 
     return new PHPAuth($conn, $config);
-}*/
+}
 
 /*Make sure user is validated */
-/*function validateUser($conn): bool
+function validateUser($conn): bool
 {
     $auth = getAuth($conn);
     if ($auth->isLogged()) {
-        return $auth->getCurrentUID() === (int)($_SESSION['userID']);
+        return (int)$auth->getCurrentUID() === (int)($_SESSION['userID']);
     }
-
-    return false;
-}*/
-
-function validateUser($conn)
-{ //verify user did not fake authentication
-    $cookie = $_COOKIE['rememberMe'] ?? '';
-    if ($cookie) {
-        [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
-        if (!(hash_equals(hash_hmac('sha256', $userID . ':' . $token, SECRET_KEY), $mac))) {
-            return false;
-        }
-        $userToken = $_SESSION['token']; //**  vulnerable if session was compromised
-
-        return hash_equals($userToken, $token);
-    }
-
 
     return false;
 }
 
 function getUserID($conn): int
 {
-    /*$auth = getAuth($conn);
+    $auth = getAuth($conn);
 
-    return $auth->getCurrentUID();*/
-    return $_SESSION['userID'];
+    return $auth->getCurrentUID();
 }
 
-function login($loginInfo, $conn)
+function login($loginInfo, $conn, $debug=false)
 {
-    /* $auth = getAuth($conn);
+    $auth = getAuth($conn);
+    $result = $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);
+    if($debug){
+        echo $result['message'];
+        echo 'br />';
+        echo $result['hash'];
+    }
 
-     return $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);*/
-    return password_verify($loginInfo->password, $loginInfo->hashedPassword);
+    return !$result['error'];
 }
 
 function logout($conn): bool
 {
-    /*$auth = getAuth($conn);
+    $auth = getAuth($conn);
 
-    return $auth->logout($auth->getCurrentSessionHash());*/
-    // TODO remove this
-    return destroy_session_and_data();
+    return $auth->logout($auth->getCurrentSessionHash());
 }
 
 function checkSessionInfo(): bool
@@ -77,7 +62,6 @@ function checkSessionInfo(): bool
 function redirectToLogin()
 {
     header('HTTP/1.0 403 Forbidden');
-    destroy_session_and_data();
     exit(UNAUTHORIZED_NO_LOGIN);
 }
 
@@ -121,28 +105,4 @@ function validateHeadmaster($conn): bool
 function validateLibrarian($conn): bool
 {
     return isLibrarian() && validateUser($conn);
-}
-
-/* function to destroy session */
-function destroy_session_and_data()
-{
-    $_SESSION = [];
-    setcookie(session_name(), '', time() - 1, '/');
-    $cookie = $_COOKIE['rememberMe'] ?? '';
-    if ($cookie) {
-        [$userID, $token, $mac] = explode(':', $cookie); //get info from cookie
-        setcookie(
-            'rememberMe',
-            $userID . ':' . $token . ':' . $mac,
-            time() - 1,
-            '/',
-            'arif115.myweb.cs.uwindsor.ca',
-            true,
-            true
-        );
-        unset($_COOKIE['rememberMe']);
-    }
-    session_destroy();
-
-    return true;
 }

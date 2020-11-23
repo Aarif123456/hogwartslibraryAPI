@@ -1,7 +1,7 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
+require_once __DIR__ . '/error.php';
 
 function queryUserVerify($username, $userType, $conn)
 {
