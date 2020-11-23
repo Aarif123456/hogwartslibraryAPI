@@ -18,9 +18,9 @@ function headmasterListJSON($listType)
         case 'loadMember':
             return 'SELECT memberID,fname,lname FROM members WHERE memberID NOT IN (Select `headmasterID` as `memberID` FROM headmasters) ORDER BY memberID';
         case 'loadUsers':
-            return 'SELECT userID,userName FROM userAccount WHERE userID NOT IN (Select `headmasterID` as `userID` FROM headmasters) ORDER BY userID';
+            return 'SELECT id,email FROM phpauth_users WHERE id NOT IN (Select `headmasterID` as `id` FROM headmasters) ORDER BY id';
         default:
-            return "";
+            return '';
     }
 }
 

@@ -2,32 +2,56 @@
 
 function librarianListJSON($listType, $conn)
 {
-    $stmt = null;
     switch ($listType) {
         case 'loadPotentialBorrower':
             $stmt = $conn->prepare(
-                "SELECT memberID,fname,lname FROM members WHERE memberID !=? AND memberID NOT IN (SELECT headmasterID AS memberID FROM headmasters)"
+                '
+                SELECT 
+                    memberID,fname,lname 
+                FROM 
+                    members 
+                WHERE 
+                    memberID != :id 
+                    AND memberID NOT IN 
+                        (
+                            SELECT 
+                                headmasterID AS memberID 
+                            FROM 
+                                headmasters
+                        )'
             );
-            $stmt->bind_param("i", $_SESSION['userID']);
+            $stmt->bindValue(':id', $_SESSION['userID'], PDO::PARAM_INT);
 
             return $stmt;
         case 'loadFinedMember':
             $stmt = $conn->prepare(
-                "SELECT memberID,fname,lname,fines FROM members WHERE memberID !=? AND memberID>0 AND fines>0"
+                '
+                SELECT 
+                    memberID,fname,lname,fines 
+                FROM 
+                    members 
+                WHERE 
+                    memberID != :id 
+                    AND memberID>0 AND fines>0'
             );
-            $stmt->bind_param("i", $_SESSION['userID']);
+            $stmt->bindValue(':id', $_SESSION['userID'], PDO::PARAM_INT);
 
             return $stmt;
         case 'loadBookBarcode':
-            if (isValidPostVar('bookBarcode')) {
-                $stmt = $conn->prepare(
-                    "SELECT * FROM books NATURAL JOIN bookItem WHERE bookBarcode LIKE CONCAT('%',?,'%')"
-                );
-                $stmt->bind_param("s", $_POST['bookBarcode']);
+            $stmt = $conn->prepare(
+                '
+                SELECT 
+                    * 
+                FROM 
+                    books NATURAL JOIN bookItem 
+                WHERE 
+                    bookBarcode LIKE CONCAT(\'%\',:bookBarcode,\'%\')'
+            );
+            $bookBarcode = $_POST['bookBarcode'] ?? 'NONE';
+            $stmt->bindValue(':bookBarcode', $bookBarcode, PDO::PARAM_STR);
 
-                return $stmt;
-            }
-            break;
+            return $stmt;
+
         default:
     }
 
