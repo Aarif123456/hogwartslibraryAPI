@@ -16,10 +16,10 @@ function insertUser($user, $account, $conn, $debug = false)
 
         $conn->beginTransaction();
         $result = $auth->register($account->email, $account->password, $account->password);
-        if($result['error']){
+        if ($result['error']) {
             exit($result['message']);
         }
-        if($debug){
+        if ($debug) {
             echo $result['message'];
             echo "<br />";
         }

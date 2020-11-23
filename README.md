@@ -71,7 +71,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list:
         Accepts POST variable: uID, uPassword, developerPassword
     4. httpie command:
-        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/resetPassword uID=userID uPassword='newPasss' developerPassword='devPass'
+        http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/userManagement/resetPassword uID=userID uPassword='newPasss' developerPassword='devPass'
 
 </details>
 
