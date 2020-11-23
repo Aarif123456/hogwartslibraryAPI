@@ -43,6 +43,10 @@ if (checkSessionInfo() && validateUser($conn)) {
     if (empty($result)) {
         exit(INVALID_CHART);
     }
+
+    if($result === true){
+        exit(NO_ROWS_RETURNED);
+    }
     echo createQueryJSON($result);
 } else {
     redirectToLogin();

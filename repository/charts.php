@@ -18,7 +18,7 @@ function getHeadmasterChartsResults($chartType, $conn)
     }
 
     // otherwise return back result from query
-    return $conn->query($query);
+    return getExecutedResult($conn->prepare($query)) ?: true;
 }
 
 function getLibrarianChartsResults($chartType, $conn)
@@ -31,7 +31,7 @@ function getLibrarianChartsResults($chartType, $conn)
     }
 
     // otherwise return back result from query
-    return $conn->query($query);
+    return getExecutedResult($conn->prepare($query)) ?: true;
 }
 
 function getProfessorChartsResults($chartType, $conn)
@@ -44,7 +44,7 @@ function getProfessorChartsResults($chartType, $conn)
     }
 
     // otherwise return back result from query
-    return $conn->query($query);
+    return getExecutedResult($conn->prepare($query)) ?: true;
 }
 
 function getStudentChartsResults($chartType, $conn)
@@ -57,7 +57,7 @@ function getStudentChartsResults($chartType, $conn)
     }
 
     // otherwise return back result from query
-    return $conn->query($query);
+    return getExecutedResult($conn->prepare($query)) ?: true;
 }
 
 function getGuestChartsResults($chartType, $conn)
@@ -70,6 +70,6 @@ function getGuestChartsResults($chartType, $conn)
     }
 
     // otherwise return back result from query
-    return $conn->query($query);
+    return getExecutedResult($conn->prepare($query)) ?: true;
 }
 
