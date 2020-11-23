@@ -246,8 +246,8 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: Endpoint used by librarian's to checkout book to users
     2. librarian/checkOut.php --> /api/librarian/checkOut
     3. Parameter list:
-        Accepts POST variable: 
-    4. httpie command:
+        Accepts POST variable: bookBarcode, borrowedBy
+    4. httpie command:  http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/librarian/checkOut bookBarcode=902773774468 borrowedBy=2
 
 </details>
 
