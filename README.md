@@ -259,7 +259,7 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     3. Parameter list: 
         Accepts POST variable: bookBarcode
     4. httpie command:
-         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/librarian/returnBook bookBarcode=
+         http -f --session=/tmp/session.json POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/librarian/returnBook bookBarcode=902773774468 
 
 </details>
 
@@ -363,8 +363,14 @@ API url: https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/ENDPOINT_NAME
     1. Description: 
     2. reservation/reservationList.php --> /api/reservation/reservationList
     3. Parameter list:
-        Accepts POST variable: 
+        Accepts POST variable: listType
+        listType valid values: loadReservedBooks, loadCoursesStudent, loadCoursesProfessor, loadAvailableBooks, loadProfessor
+        for loadReservedBooks - we need a courseID - these should really be their own endpoint...
+        If librarian: we must put in userID
     4. httpie command:
+            -  http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/reservation/reservationList listType='loadCoursesProfessor' userID=3
+            - http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/reservation/reservationList listType='loadAvailableBooks'
+            - http --session=/tmp/session.json --form POST https://arif115.myweb.cs.uwindsor.ca/hogwartslibrary/api/reservation/reservationList listType='loadProfessor'
 
 </details>
 

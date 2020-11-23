@@ -20,14 +20,18 @@ if (checkSessionInfo() && validateUser($conn)) {
     $userID = isLibrarian() ? $_POST['userID'] ?? '' : $_SESSION['userID'];
     $debug = false;
     $listType = $_POST['listType'];
-    $courseID = isset($_POST['courseID']) ?? '';
+    if ((strcmp($listType, "loadCourses") == 0)) {
+        $listType = isStudent() ? 'loadCoursesStudent' : 'loadCoursesProfessor';
+    }
+    $courseID = $_POST['courseID'] ?? '';
     $params = (object)[
         'userID' => (int)$userID,
         'courseID' => $courseID,
     ];
     $result = getReservationListResults($listType, $params, $conn);
-    if (empty($result)) {
-        exit(INVALID_LIST);
+
+    if (empty(count($result))) {
+        exit(NO_ROWS_RETURNED);
     }
     echo createQueryJSON($result);
 } else {
