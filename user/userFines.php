@@ -17,9 +17,6 @@ if (checkSessionInfo() && validateUser($conn)) {
     $userID = getUserID($conn);
     $listType = $_REQUEST['listType'] ?? '';
     $result = getUserFines($userID, $listType, $conn);
-    if (empty($result)) {
-        exit(INVALID_LIST);
-    }
     echo createQueryJSON($result);
 } else {
     redirectToLogin();

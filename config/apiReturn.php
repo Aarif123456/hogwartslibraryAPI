@@ -34,7 +34,6 @@ define(
 );
 define('INTERNAL_SERVER_ERROR', 'something went wrong:(');
 define('INVALID_CHART', 'Invalid chart type');
-define('INVALID_LIST', 'Invalid list type');
 define('INVALID_PARAMETERS', 'Parameter do no have expected type');
 define('INVALID_PASSCODE', 'Invalid passcode.');
 define('INVALID_PASSWORD', '{"success":false}');
@@ -44,10 +43,6 @@ define('MISSING_PARAMETERS', 'Missing value');
 define('NO_ROWS_RETURNED', 'No rows');
 define('PAID_SUCCESSFULLY', 'The fine is paid');
 define('PROFESSOR_ADDED', 'Professor added');
-define(
-    'QUERY_FAILURE',
-    'Query failed please check the integrity of the database as well as the PHP commands used to run the query'
-);
 define('RETURN_FAILED', 'Failed to update tables for return, make sure book is not already returned available');
 define('RESERVATION_DELETED', 'book reservation deleted');
 define('RESERVATION_RESET_FAILED', 'Unable to reset old reservation. Failed to reserve books');

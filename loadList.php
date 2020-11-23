@@ -27,9 +27,6 @@ if (checkSessionInfo() && validateUser($conn)) {
             $result = getHeadmasterListResults($listType, $conn);
         }
     }
-    if (empty($result)) {
-        exit(INVALID_LIST);
-    }
     echo createQueryJSON($result);
 } else {
     redirectToLogin();

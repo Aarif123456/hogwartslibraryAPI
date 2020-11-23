@@ -2,7 +2,6 @@
 //verify login
 
 require_once __DIR__ . '/constants.php';
-require_once __DIR__ . '/secretKey.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPAuth\Auth as PHPAuth;
@@ -33,18 +32,10 @@ function getUserID($conn): int
     return $auth->getCurrentUID();
 }
 
-function login($loginInfo, $conn, $debug = false)
+function login($loginInfo, $conn)
 {
     $auth = getAuth($conn);
     $result = $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);
-
-    /* if ($debug) {
-         echo $result['message'];
-         if (!$result['error']) {
-             echo 'br />';
-             echo $result['hash'];
-         }
-     }*/
 
     return !$result['error'];
 }
@@ -90,16 +81,6 @@ function isLibrarian(): bool
 }
 
 /* utility function to make sure user has the correct permission*/
-function validateStudent($conn): bool
-{
-    return isStudent() && validateUser($conn);
-}
-
-function validateProfessor($conn): bool
-{
-    return isProfessor() && validateUser($conn);
-}
-
 function validateHeadmaster($conn): bool
 {
     return isHeadmaster() && validateUser($conn);

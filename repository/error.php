@@ -1,9 +1,7 @@
 <?php
 
 /* Error handling for calls to the database */
-define('WRITE_QUERY_FAILED', 'Failed to update the database');
-define('SQL_ERROR', 'The following SQL error was detected:');
-define('PHP_EXCEPTION', 'The following exception was thrown:');
+
 define(
     'MISSING_PARAMETER_FOR_USER_TYPE',
     'Missing required parameter for selected user type'
@@ -15,6 +13,10 @@ define(
     'or the reserved to a class that the user is not taking'
 );
 define('CHECKOUT_UPDATE_FAILED', 'Failed to update tables for checkout');
+define('INVALID_LIST', 'Invalid list type');
+define('PHP_EXCEPTION', 'The following exception was thrown:');
+define('SQL_ERROR', 'The following SQL error was detected:');
+define('WRITE_QUERY_FAILED', 'Failed to update the database');
 
 /* getting back the result of query as a JSON file */
 function getExecutedResult($stmt)

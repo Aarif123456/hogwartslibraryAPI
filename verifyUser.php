@@ -24,7 +24,6 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
     $email = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     $remember = $_POST['remember'] ?? true;
-    $debug = DEBUG;
 
     if (!(verifyUserType($userType))) {
         /* Exit and tell the client that their user type is invalid */
@@ -40,7 +39,7 @@ if (isValidPostVar('username') && isValidPostVar('userType') && isValidPostVar('
         'hashedPassword' => $row['password'],
     ];
     /* Make sure the password is correct */
-    if (login($loginInfo, $conn, $debug)) {
+    if (login($loginInfo, $conn)) {
         /* If we are determining user from table then determine it */
         $determineUser = strcmp($userType, 'user') == 0;
         if ($determineUser) {
