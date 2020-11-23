@@ -2,10 +2,10 @@
 /*Runs once a day to mark holds that are expired as expired */
 
 /* Imports */
-require_once 'error.php';
-require_once 'statusConstants.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/statusConstants.php';
 
-function updateHoldTable($conn, $debug = false)
+function markExpiredHolds($conn, $debug = false)
 {
     $stmt = $conn->prepare(
         '

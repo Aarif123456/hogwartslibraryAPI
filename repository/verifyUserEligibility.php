@@ -1,7 +1,7 @@
 <?php
 //verify if user can take out book
 /* Imports */
-require_once 'error.php';
+require_once __DIR__ . '/error.php';
 
 /* Return true if user is blacklisted  */
 function checkUserBlacklisted($userID, $conn)

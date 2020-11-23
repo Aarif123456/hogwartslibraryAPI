@@ -1,12 +1,12 @@
 <?php
 
 /* Imports */
-require_once 'charts/headmasterCharts.php';
-require_once 'charts/librarianCharts.php';
-require_once 'charts/professorCharts.php';
-require_once 'charts/studentCharts.php';
-require_once 'charts/guestCharts.php';
-require_once 'error.php';
+require_once __DIR__ . '/charts/headmasterCharts.php';
+require_once __DIR__ . '/charts/librarianCharts.php';
+require_once __DIR__ . '/charts/professorCharts.php';
+require_once __DIR__ . '/charts/studentCharts.php';
+require_once __DIR__ . '/charts/guestCharts.php';
+require_once __DIR__ . '/error.php';
 
 function getHeadmasterChartsResults($chartType, $conn)
 {

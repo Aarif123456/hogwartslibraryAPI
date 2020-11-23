@@ -1,11 +1,11 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
-require_once '../repository/userCheckoutRepo.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/userCheckoutRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -19,7 +19,7 @@ if (!(isValidPostVar('bookBarcode') && isValidPostVar('borrowedBy'))) {
 if (checkSessionInfo() && validateLibrarian($conn)) {
     $bookBarcode = $_POST['bookBarcode'];
     $borrowedBy = $_POST['borrowedBy'];
-    $librarianID = $_SESSION['userID'];
+    $librarianID = getUserID($conn);
     $debug = DEBUG;
     verifySelfCheckout($librarianID, $borrowedBy);
     /* Make sure user is not blacklisted or above their limit */

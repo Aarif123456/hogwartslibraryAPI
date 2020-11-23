@@ -1,8 +1,8 @@
 <?php
 
 /* Imports */
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
 
 function getProfessorID(): int
 {

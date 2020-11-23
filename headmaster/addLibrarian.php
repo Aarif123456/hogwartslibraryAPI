@@ -1,6 +1,6 @@
 <?php
 
-require_once 'librarianHelper.php';
+require_once __DIR__ . '/librarianHelper.php';
 librarianEndpointSetup();
 
 /* Connect to database */

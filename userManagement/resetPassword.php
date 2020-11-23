@@ -1,13 +1,13 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
 /* Used to double check that the headmaster is the one resetting the password */
-require_once '../repository/headmasterVerifyRepo.php';
-require_once '../repository/resetPassword.php';
+require_once __DIR__ . '/../repository/headmasterVerifyRepo.php';
+require_once __DIR__ . '/../repository/resetPassword.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -22,7 +22,7 @@ if (!(isValidPostVar('uID') && isValidPostVar('uPassword')
 
 if (checkSessionInfo() && validateHeadmaster($conn)) {
     $developerPassword = $_POST['developerPassword'];
-    $developerID = $_SESSION['userID'];
+    $developerID = getUserID($conn);
     $rows = queryDeveloperPassword($developerID, $conn);
     $password = $_POST['uPassword'];
     $uID = $_POST['uID'];

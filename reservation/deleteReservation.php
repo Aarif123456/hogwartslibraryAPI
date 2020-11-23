@@ -1,12 +1,12 @@
 <?php
 
 /* Imports */
-require_once 'reservationHelper.php';
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
-require_once '../repository/manageReservationRepo.php';
+require_once __DIR__ . '/reservationHelper.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/manageReservationRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();

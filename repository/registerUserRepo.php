@@ -1,9 +1,9 @@
 <?php
 
 /* Imports */
-require_once 'error.php';
-require_once 'statusConstants.php';
-// require_once 'vendor/autoload.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/statusConstants.php';
+// require_once __DIR__ .'/vendor/autoload.php';
 
 // use PHPAuth\Auth as PHPAuth;
 // use PHPAuth\Config as PHPAuthConfig;

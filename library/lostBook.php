@@ -1,11 +1,11 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
-require_once '../repository/lostRepo.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/lostRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -18,7 +18,7 @@ if (!(isValidPostVar('bookBarcode'))) {
 }
 
 if (checkSessionInfo() && validateUser($conn)) {
-    $userID = $_SESSION['userID'];
+    $userID = getUserID($conn);
     $bookBarcode = $_POST['bookBarcode'];
     $debug = DEBUG;
     if (reportLostBook($userID, $bookBarcode, $conn, $debug)) {

@@ -1,9 +1,9 @@
 <?php
 /* program to verify login*/
 
-require_once '../config/apiReturn.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();

@@ -1,7 +1,7 @@
 <?php
 
 /* Used to get mysql database connection */
-require_once 'loginConstants.php';
+require_once __DIR__ . '/loginConstants.php';
 
 /*function getConnection()
 {

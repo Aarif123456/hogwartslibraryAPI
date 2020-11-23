@@ -1,12 +1,12 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/verifyUserEligibility.php';
-require_once '../repository/database.php';
-require_once '../repository/renewRepo.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/verifyUserEligibility.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/renewRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();

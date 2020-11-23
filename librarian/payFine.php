@@ -1,11 +1,11 @@
 <?php
 
 /* Imports */
-require_once '../config/apiReturn.php';
-require_once '../config/constants.php';
-require_once '../config/authenticate.php';
-require_once '../repository/database.php';
-require_once '../repository/userFinesRepo.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/userFinesRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();
@@ -19,7 +19,7 @@ if (!(isValidPostVar('userID') && isValidPostVar('pay'))) {
 if (checkSessionInfo() && validateLibrarian($conn)) {
     $userID = $_POST['userID'];
     $pay = $_POST['pay'];
-    $librarianID = $_SESSION['userID'];
+    $librarianID = getUserID($conn);
     $debug = DEBUG;
     verifySelfCheckout($librarianID, $pay);
     if (payFine($pay, $userID, $conn, $debug)) {
