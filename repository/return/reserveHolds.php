@@ -1,8 +1,8 @@
 <?php
 
 /* Imports */
-require_once  __DIR__ .'/../error.php';
-require_once  __DIR__ .'/../statusConstants.php';
+require_once __DIR__ . '/../error.php';
+require_once __DIR__ . '/../statusConstants.php';
 
 
 /* When the book get returned we check the holds table to see if the book has any holds, if it does we reserve this copy to 

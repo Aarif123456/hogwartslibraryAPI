@@ -3,8 +3,8 @@
 
 /* Calculate fees on user account */
 /* Imports */
-require_once __DIR__ .'/error.php';
-require_once __DIR__ .'/statusConstants.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/statusConstants.php';
 
 function addOverdueFines($bookBarcode, $conn, $debug = false)
 {

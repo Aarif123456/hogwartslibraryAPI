@@ -1,9 +1,9 @@
 <?php
 
 /* Imports */
-require_once  __DIR__ .'/../error.php';
-require_once  __DIR__ .'/../statusConstants.php';
-require_once  __DIR__ .'/updateReturnTables.php';
+require_once __DIR__ . '/../error.php';
+require_once __DIR__ . '/../statusConstants.php';
+require_once __DIR__ . '/updateReturnTables.php';
 /* If lost book is found then return a portion of the money and mark book as available */
 function refundLostBook($parameter, $conn, $debug = false)
 {

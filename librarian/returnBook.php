@@ -1,11 +1,11 @@
 <?php
 
 /* Imports */
-require_once __DIR__ .'/../config/apiReturn.php';
-require_once __DIR__ .'/../config/constants.php';
-require_once __DIR__ .'/../config/authenticate.php';
-require_once __DIR__ .'/../repository/database.php';
-require_once __DIR__ .'/../repository/userReturnRepo.php';
+require_once __DIR__ . '/../config/apiReturn.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/authenticate.php';
+require_once __DIR__ . '/../repository/database.php';
+require_once __DIR__ . '/../repository/userReturnRepo.php';
 
 /* Set required header and session start */
 requiredHeaderAndSessionStart();

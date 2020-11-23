@@ -33,7 +33,7 @@ function safeWriteQueries($stmt, $conn, $debug): bool
         return $stmt->execute() && $stmt->closeCursor();
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        if($conn->inTransaction()) {
+        if ($conn->inTransaction()) {
             $conn->rollback();
         }
         if ($debug) {
@@ -57,7 +57,7 @@ function safeUpdateQueries($stmt, $conn, $debug): int
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        if($conn->inTransaction()) {
+        if ($conn->inTransaction()) {
             $conn->rollback();
         }
         if ($debug) {
@@ -78,7 +78,7 @@ function safeInsertQueries($stmt, $conn, $debug): int
         }
     } catch (Exception $e) {
         /* remove all queries from queue if error (undo) */
-        if($conn->inTransaction()) {
+        if ($conn->inTransaction()) {
             $conn->rollback();
         }
         if ($debug) {

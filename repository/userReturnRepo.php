@@ -1,12 +1,12 @@
 <?php
 
 /* Imports */
-require_once __DIR__ .'/error.php';
-require_once __DIR__ .'/fineCalculator.php';
-require_once __DIR__ .'/statusConstants.php';
-require_once __DIR__ .'/return/reserveHolds.php';
-require_once __DIR__ .'/return/updateReturnTables.php';
-require_once __DIR__ .'/return/refundLostBook.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/fineCalculator.php';
+require_once __DIR__ . '/statusConstants.php';
+require_once __DIR__ . '/return/reserveHolds.php';
+require_once __DIR__ . '/return/updateReturnTables.php';
+require_once __DIR__ . '/return/refundLostBook.php';
 
 /* Return book means we need add the return date to the transaction as well as the librarian who returned the book. 
 *   Then we need to add the fine on the transaction to the user account

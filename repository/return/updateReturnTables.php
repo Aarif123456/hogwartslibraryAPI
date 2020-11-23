@@ -1,8 +1,8 @@
 <?php
 
 /* Imports */
-require_once  __DIR__ .'/../error.php';
-require_once  __DIR__ .'/../statusConstants.php';
+require_once __DIR__ . '/../error.php';
+require_once __DIR__ . '/../statusConstants.php';
 
 
 function updateReturnInfo($parameter, $conn, $debug = false)
