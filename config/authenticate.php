@@ -39,7 +39,7 @@ function login($loginInfo, $conn, $debug = false)
     $result = $auth->login($loginInfo->email, $loginInfo->password, $loginInfo->remember);
     if ($debug) {
         echo $result['message'];
-        if(!$result['error']){
+        if (!$result['error']) {
             echo 'br />';
             echo $result['hash'];
         }

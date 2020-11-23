@@ -24,7 +24,7 @@ if (checkSessionInfo() && validateUser($conn)) {
     if (checkUserBlacklisted($holderID, $conn)) {
         exit(USER_BLACKLISTED);
     }
-    // TODO add update table on return, hold and cancel hold - since that's when you get a reserved copy 
+    // TODO add update expired hold table on return, hold and cancel hold - since that's when you get a reserved copy 
 
     if (!cancelHold($holdID, $holderID, $conn, $debug)) {
         exit(HOLD_NOT_EXISTS);
